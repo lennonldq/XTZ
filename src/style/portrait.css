@@ -1,0 +1,71 @@
+.module{
+  margin-bottom: 40px;
+  box-shadow: 0 0 18px #d4d2d2;
+  border-radius:0 0 20px 20px;
+}
+.module .title{
+  height: 45px;
+  line-height: 45px;
+  padding-left: 36px;
+  position: relative;
+  border-bottom: #dcdcdc solid 2px;
+}
+.module .title:after{
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 30px;
+  background-color: #0088a0;
+  content:"";
+  top:8px;
+  color:#444444;
+  left: 20px;
+
+}
+.header{
+  height: 80px;
+  margin-bottom: 40px;
+}
+.header .titleBox{
+  height: 80px;
+  line-height: 80px;
+  display: flex;
+  box-shadow: 0 0 18px #d4d2d2;
+  width: 800px;
+  float: left;
+  color: #444444;
+}
+.header .titleBox div{
+  flex: 1;
+  text-align: center;
+  border-right: 2px solid #f6f6f6;
+}
+.titleBox div img{
+    display: block;
+margin: 14px auto;
+}
+.header .titleBox p:nth-child(2),.titleBox p:nth-child(3){
+  flex: 2;
+  text-align: center;
+  border-right: 2px solid #f6f6f6;
+}
+.header .titleBox p:nth-child(4){
+  flex: 3;
+  text-indent: 30px;
+}
+.header button{
+  width: 140px;
+  height: 80px;
+  background-color: #10859d;
+  color: #fff;
+  border-radius: 4px;
+  text-align: center;
+  float: right;
+  font-size: 17px;
+  cursor: pointer;
+}
+.noData{
+  height:50px;
+  line-height:50px;
+  text-align: center;
+}
