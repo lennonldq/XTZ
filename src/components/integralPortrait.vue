@@ -347,7 +347,6 @@
      width: 780px;
      padding-top: 28px;
      margin-left: 12px;
-
   }
   .middleWarp .talentLabel .labelBox span{
      color:#10859d;
@@ -400,7 +399,7 @@
      margin-right: 20px;
      margin-bottom: 20px;
   }
-  .scoreBox > div:nth-child(5n){
+  .scoreBox > div:nth-child(6n){
     margin-right: 0px;
   }
   .scoreBox > div:nth-child(1){

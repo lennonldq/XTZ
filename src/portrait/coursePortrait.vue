@@ -412,7 +412,8 @@
              data: [stu,'班级平均'],
            },
            tooltip : {
-             trigger: 'item'
+             trigger: 'item',
+             confine:true
            },
           radar: {
             name: {
