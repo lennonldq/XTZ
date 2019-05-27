@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login' //登录页
+import Logintwo from '@/components/loginTwo' //登录页
 import Home from '@/components/home' //首页
 import Company from '@/components/company' // 企业
 import IntegralPortrait from '@/components/integralPortrait' //积分画像
@@ -26,6 +27,11 @@ let router =  new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/loginTwo',
+      name: 'Logintwo',
+      component: Logintwo
     },
     {
       path: '/home',

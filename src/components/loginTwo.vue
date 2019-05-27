@@ -54,12 +54,10 @@ export default {
          //  
          console.log(this.theRequest.naughty);
          
-           this.$ajax.get(`http://192.168.1.102:8096/new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res=>{
+           this.$ajax.get(`http://124.172.243.65:8096/new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res=>{
               let data = JSON.parse(res.data);
               console.log(data);
-              
               console.log(data.msg);
-              
               if(data.msg == "登录成功"){
                //保存登录信息
                 // sessionStorage.setItem("token", data.data.accessToken);

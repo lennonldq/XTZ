@@ -89,9 +89,9 @@
           </div>
           <div class="form-item2">
             <label>搜索性格：</label>
-            <select v-model="searchData.personalCharacter" >
+            <select v-model="searchData.personalCharacter" @change="character">
               <option>全部</option>
-              <option>活泼型/社交型</option>
+              <option>活泼型/社交者</option>
               <option>支配型/控制者</option>
               <option>稳定型/支持者</option>
               <option>完美型/服从者</option>
@@ -143,7 +143,7 @@
           </div>
           <div class="form-item2">
             <label>搜索性格：</label>
-            <select v-model="searchData.personalCharacter">
+            <select v-model="searchData.personalCharacter" @change="character">
               <option>全部</option>
               <option>活泼型/社交者</option>
               <option>支配型/控制者</option>
@@ -191,8 +191,9 @@
           </div>
           <div class="form-item2">
             <label>搜索性格：</label>
-            <select v-model="searchData.personalCharacter" >
-              <option>活泼型/社交型</option>
+            <select v-model="searchData.personalCharacter" @change="character" >
+                 <option>全部</option>
+              <option>活泼型/社交者</option>
               <option>支配型/控制者</option>
               <option>稳定型/支持者</option>
               <option>完美型/服从者</option>
@@ -346,6 +347,25 @@
               break
             default:
               this.talentSelect = 10;
+          }
+        },
+        // 性格
+         character(){
+           switch (this.searchData.personalCharacter){
+            case '全部':
+              this.personalCharacter = '';
+              break
+            case '活泼型/社交者':
+              this.personalCharacter = "活泼型/社交者";
+              break
+            case '支配型/控制者':
+              this.personalCharacter = "支配型/控制者";
+              break
+            case '稳定型/支持者':
+              this.personalCharacter = "稳定型/支持者";
+              break
+            default:
+              this.personalCharacter = "完美型/服从者";
           }
         },
         getTableData(dta){ // 获取表格数据
