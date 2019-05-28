@@ -51,7 +51,7 @@
       <div class="course">
 
       </div>
-      <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}${small}${smallWord}；`}}</p>
+      <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p>
     </div>
   </div>
 </template>
@@ -95,7 +95,6 @@ export default {
     this.getIntegralData();
     this.getLearningTrajectoryTrackingData();
     this.getLearningSituationData()
-    this.words()
   },
   methods: {
     getIntegralData () { //获取课程画像数据
@@ -376,7 +375,29 @@ export default {
         if (data.code == 200) {
           let str = '';
           this.situationData = data.data;
-          this.words();
+          console.log(data.data);
+          //  计算出课程学习情况的最多和最少
+          for (let j = 0; j < data.data.length; j++) {
+            for (let i = 0; i < data.data[j].length; i++) {
+              if (data.data[j][i].integralValue > data.data[j][i].sumIntegralValue) {
+                this.large.push(data.data[j][i].integralName + "  ")
+              } else {
+                this.small.push(data.data[j][i].integralName + "  ")
+              }
+            }
+          }
+          if (this.small.length <= 0) {
+            this.smallWord = ""
+          } else if (this.large.length <= 0) {
+            this.largeWord = ""
+          }  
+          if (this.large.length > 5) {
+            // 假设一个最大值
+            let cur = this.large
+            for (var y = 0; y < this.large.length; y++) {
+              this.large[i]
+            }
+          }
           let integralName = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
             integralName.push([]);
@@ -409,22 +430,8 @@ export default {
 
       })
     },
-    words () {
-      //  计算出课程学习情况的最多和最少
-      for (let j = 0; j < this.situationData.length; j++) {
-        for (let i = 0; i < this.situationData[j].length; i++) {
-          if (this.situationData[j][i].integralValue > this.situationData[j][i].sumIntegralValue) {
-            this.large.push(this.situationData[j][i].integralName + "  ")
-          } else {
-            this.small.push(this.situationData[j][i].integralName + "  ")
-          }
-        }
-      }
-      if (this.small.length <= 0) {
-        this.smallWord = ""
-      } else if (this.large.length <= 0) {
-        this.largeWord = ""
-      }
+    words(){
+
     },
     learningSituationEchart (el, year, integralName, integralValue, sumIntegralValue) { // 课程学习情况
       let fistYearChart = this.$echart.init(el);
