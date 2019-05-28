@@ -134,7 +134,6 @@ export default {
             let arr = ["课程积分", "班级平均积分"];
             str = `${this.baseInfo.username}${arr[0]}:${params[0].value}分<br>${arr[1]}:${params[1].value}分`
             return str;
-
           },
         },
         xAxis: {
@@ -392,12 +391,11 @@ export default {
             this.largeWord = ""
           }  
           if (this.large.length > 5) {
-            // 假设一个最大值
-            let cur = this.large
-            for (var y = 0; y < this.large.length; y++) {
-              this.large[i]
-            }
+            this.large = this.large.slice(0,5)
+          }else if(this.small.length > 5){
+            this.small = this.small.slice(0,5)
           }
+           
           let integralName = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
             integralName.push([]);
