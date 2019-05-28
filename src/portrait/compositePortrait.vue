@@ -38,7 +38,7 @@
           </div>
           <div class="interest">
             <p>{{ personalCharacter }}</p>
-            <span>{{ personalCharacter }}</span>
+            <span>{{ personalCharacterRemark }}</span>
           </div>
           <div class="interest">
             <p>{{ professionalCharacter }}</p>
@@ -81,11 +81,11 @@
       return {
         resultData:[],
         talentLabelNameArr:[],
-        emotionalIntelligence:'',
+        emotionalIntelligence:'职业兴趣',
         emotionalIntelligenceRemark:'',
-        personalCharacter:"",
+        personalCharacter:"职业性格",
         personalCharacterRemark:"",
-        professionalCharacter:"",
+        professionalCharacter:"个人性格",
         professionalCharacterRemark:"",
         professionalInterest:"",
         professionalInterestRemark:"",
@@ -264,7 +264,7 @@
         this.$ajax.get(this.baseUrl + potentialEvaluation+'?userId=' + this.$route.query.userId).then(res=>{
           let data = JSON.parse(res.data);
           if(data.code == 200){
-              this.emotionalIntelligence = data.data.emotionalIntelligence
+              // this.emotionalIntelligence = data.data.emotionalIntelligence
               this.emotionalIntelligenceRemark = data.data.emotionalIntelligenceRemark
               this.personalCharacter = data.data.personalCharacter;
               this.personalCharacterRemark = data.data.personalCharacterRemark;
