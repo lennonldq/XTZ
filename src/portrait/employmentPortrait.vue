@@ -18,9 +18,12 @@
       </div>
       <div class="module" style="margin-bottom: 0">
         <p class="title">实习情况</p>
+        <!-- <div class="detail" v-if="evaluate = false">
+          未有具体数据
+        </div> -->
         <div class="detail">
-          <p>实习评分：<span>90</span>分</p>
-          <p>实习评价：实习评价：综合素质优秀，爱岗敬业，工作能力强，能较好的与同事友好相处，基本掌握了工作的要点和技巧，并将其运用到工作中去</p>
+          <p>实习评分：<span>{{evaluate.practiceScore}}</span>分</p>
+          <p>实习评价：{{evaluate.practiceEvaluation}}</p>
         </div>
         <div class="situtation">
           <div class="situtationItem" :class="{'typeName':item.typeName=='实习'}" v-for="item in situtationData">
@@ -35,18 +38,21 @@
 </template>
 
 <script>
-    import { practicePortrait,practiceInfoD } from "../js/url"
+    import { practicePortrait,practiceInfoD,getPracticeInfo } from "../js/url"
     export default {
       props:['baseInfo'],
       name:"EmploymentPortrait",
       data(){
         return{
-          situtationData:[]
+          situtationData:[],
+          // 评语
+          evaluate:''
         }
       },
       mounted(){
         this.getPracticePortraitData();
-        this.getPracticeInfoData()
+        this.getPracticeInfoData();
+        this.PracticeInfoData();
       },
       methods:{
         scoreEchart(termid,integralValue,sumIntegralValue){ // 实习积分
@@ -170,8 +176,19 @@
                  }
                })
                this.situtationData = data.data;
-               console.log(data.data)
+              //  console.log(data.data)
             }
+          })
+        },
+        PracticeInfoData(){//获取实习情况评分
+          let {userId} = this.$route.query;
+          this.$ajax.get(this.baseUrl + getPracticeInfo,{
+            params:{userId}
+          }).then(res=>{
+            this.evaluate = JSON.parse(res.data).data
+           console.log(this.evaluate);
+           
+            
           })
         }
       }

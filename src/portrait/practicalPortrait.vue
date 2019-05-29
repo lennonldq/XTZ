@@ -31,7 +31,7 @@
       <p class="title">实验实训</p>
       <p class="ExperimentalResult">{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
        {{`${good}实训技能掌握较好；`}}<br />
-        快递系统掌握较差；</p>
+       {{ `${difference}掌握较差；`}}</p>
       <div
         class="ExperimentalChart"
         ref="ExperimentalChart"
@@ -355,7 +355,6 @@ export default {
       for (let i = 0; i < dataoname.length; i++) {
         for (let j = i+1; j < dataoname.length; j++) {
           if (dataoname[i].score < dataoname[j].score) {
-            //如果arr[j]大就把此时的值赋值给最大值变量max
              max = dataoname[i]
              dataoname[i] = dataoname[j]
              dataoname[j] = max

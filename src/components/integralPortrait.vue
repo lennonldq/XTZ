@@ -19,7 +19,7 @@
            <div class="labelBox">
                <span>人才标签:</span>
                <div class="labelList">
-                 <p :class="item.className" v-for="item in personalCharacterArr">{{ item.talentLabelName }}</p>
+                 <p :class="item.className" v-for="item in personalCharacterArr" :key="item.id">{{ item.talentLabelName }}</p>
                </div>
            </div>
        </div>
@@ -28,7 +28,7 @@
                 <router-link tag="button" :to="{path:'portrait/coursePortrait',query:$route.query}">查看课程画像</router-link>
            </div>
            <div class="scoreItem"
-                v-for="item in dataPortrait"
+                v-for="item in dataPortrait" :key="item.id"
                 :class="parseInt(item.integralValue)>=parseInt(item.sumIntegralValue)?'up':'down'"
 
            >

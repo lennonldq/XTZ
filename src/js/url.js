@@ -27,6 +27,7 @@ export const experimentalTraining = "portrait/experimentalTraining" // 实验(�
 
 export const practicePortrait = "portrait/practicePortrait"; //实习就业 实习积分
 export const practiceInfoD = "portrait/practiceInfoD";//实习就业 实习情况
+export const getPracticeInfo = "portrait/getPracticeInfo";//实习就业 实习情况评分
 
 export const entrepreneurPortrait = "portrait/entrepreneurPortrait"; // 创业画像 创业积分
 export const pioneerInfo = "portrait/pioneerInfo"; // 创业画像 创业知识跟踪与项目参与

@@ -199,31 +199,30 @@
 
         formatTerm(termid) {
           switch (termid) {
-            case 1:
+            case "1":
               return '第一学期'
               break
-            case 2:
+            case "2":
               return '第二学期'
               break
-            case 3:
+            case "3":
               return '第三学期'
               break
-            case 4:
+            case "4":
               return '第四学期'
               break
-            case 5:
+            case "5":
               return '第五学期'
               break
-            case 6:
+            case "6":
               return '第六学期'
               break
-            case 7:
+            case "7":
               return '第七学期'
               break
-            case 8:
+            case "8":
               return '第八学期'
               break
-                
             default:
               return ''
           }
@@ -259,11 +258,10 @@
               console.log(data.data);
               let countNo = [],termid = [];
               for(let i = 0;i<data.data.length;i++){
-                termid.push(data.data[i].termid)
+                termid.push(this.formatTerm(data.data[i].termid))
                 countNo.push(data.data[i].countNo);
                 this.totalcountNo += parseInt(data.data[i].countNo)
               }
-
               this.situtationEchart(termid,countNo);
             }
           })

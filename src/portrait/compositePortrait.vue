@@ -274,7 +274,7 @@
               this.professionalInterestRemark = data.data.professionalInterestRemark;
               this.abilityChart(data.data.mentalAge);
               this.renderZZT(
-                ["创新性","人际交往","判断力","管理能力","观察能力","计划性",'问题处理','空间想象能力'],
+                ["人际交往","问题处理","观察能力","管理能力","判断力","空间想象能力",'计划性','创新性'],
                 [
                   data.data.innovative,
                   data.data.interpersonalCommunication,

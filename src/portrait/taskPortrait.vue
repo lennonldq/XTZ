@@ -23,7 +23,7 @@
           参与项目：{{ joinItem }}
         </p>
         <div class="echartBox">
-             <div class="type">
+             <div class="type" v-if="project_count1 && project_count2 !== 0 || 'null'">
                  <p>任务参与类型</p>
                  <div class="present">
                      <p :style="{width: project_count1_present}">{{ project_count1 }}个</p>
@@ -33,6 +33,9 @@
                     <p style="width: 20%">个人参与</p>
                     <p style="width: 80%">团队参与</p>
                  </div>
+             </div>
+              <div class="type" v-else>
+                 <p>无具体数据</p>
              </div>
              <div class="taskChart" ref="taskChart"></div>
         </div>
