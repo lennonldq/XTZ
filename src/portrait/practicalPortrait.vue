@@ -30,8 +30,8 @@
     >
       <p class="title">实验实训</p>
       <p class="ExperimentalResult">{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
-       {{`${good}实训技能掌握较好；`}}<br />
-       {{ `${difference}掌握较差；`}}</p>
+        {{`${good}实训技能掌握较好；`}}<br />
+        {{ `${difference}掌握较差；`}}</p>
       <div
         class="ExperimentalChart"
         ref="ExperimentalChart"
@@ -63,7 +63,9 @@ export default {
       // 掌握好的
       good: [],
       // 掌握较差
-      difference: []
+      difference: [],
+      // 分数占比
+      score_rateArr:[]
     }
   },
   mounted () {
@@ -201,11 +203,19 @@ export default {
         ]
       })
     },
-    histogramEchart (type_nameArr, scoreArr, sum_scoreArr) {
+    histogramEchart (type_nameArr, scoreArr, sum_scoreArr,score_rateArr) {
       let histogramChart = this.$echart.init(this.$refs.histogramChart);
+      console.log(score_rateArr);
+      
       histogramChart.setOption({
         tooltip: {
           trigger: 'axis',
+         formatter: (params)=> {
+              let str = "";
+              str += `分数百分比:${score_rateArr[params[1].dataIndex]}%<br/>`;
+              str += `平均分:${params[1].value}`;
+              return str;
+            },
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           }
@@ -254,7 +264,7 @@ export default {
 
         series: [
           {
-            name: '分数',
+            name: '分数占比',
             type: 'bar',
             stack: '总量',
             barWidth: 60,
@@ -323,15 +333,21 @@ export default {
           this.dataList = JSON.parse(res.data).data;
           let type_name = [], valueArr = [];
           let type_nameArr = [], scoreArr = [], sum_scoreArr = [];
+          let score_rateArr=[];
           for (let i = 0; i < data.data.length; i++) {
+              score_rateArr.push(data.data[i].score_rate)
             valueArr.push(data.data[i].score)
             type_name.push({ text: data.data[i].type_name, max: 600 });
             type_nameArr.push(data.data[i].type_name);
             scoreArr.push(parseInt(data.data[i].score));
             sum_scoreArr.push(parseInt(data.data[i].sum_score))
           }
+          console.log(score_rateArr);
+          
+          
+  
           this.ExperimentalEchart(type_name, valueArr);
-          this.histogramEchart(type_nameArr, scoreArr, sum_scoreArr);
+          this.histogramEchart(type_nameArr, scoreArr, sum_scoreArr,score_rateArr);
           this.listdata()
         }
       })
@@ -353,19 +369,19 @@ export default {
 
       var max;
       for (let i = 0; i < dataoname.length; i++) {
-        for (let j = i+1; j < dataoname.length; j++) {
+        for (let j = i + 1; j < dataoname.length; j++) {
           if (dataoname[i].score < dataoname[j].score) {
-             max = dataoname[i]
-             dataoname[i] = dataoname[j]
-             dataoname[j] = max
+            max = dataoname[i]
+            dataoname[i] = dataoname[j]
+            dataoname[j] = max
           }
         }
       };
-      let go = dataoname.slice(0,3)
-      for(let k = 0; k < go.length;k++){
+      let go = dataoname.slice(0, 3)
+      for (let k = 0; k < go.length; k++) {
         this.good.push(go[k].type_name)
       }
-      
+
     }
   }
 }

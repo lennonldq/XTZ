@@ -32,6 +32,9 @@
       <p class="title">潜质评测</p>
       <div class="evaluatMain">
           <div class="ability" ref="ability"></div>
+          <div class="ma">
+            <img src="../assets/images/ma.png" alt="">
+          </div>
           <div class="interest">
              <p>{{ emotionalIntelligence }}</p>
              <span>{{ emotionalIntelligenceRemark }}</span>
@@ -358,6 +361,13 @@
     height: 100px;
     top: 138px;
     left: 392px;
+  }
+  .module .evaluatMain  .ma{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 10px;
+        right: 116px;
   }
   .module .evaluatMain .interest{
      display: flex;
