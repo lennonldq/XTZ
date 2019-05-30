@@ -17,7 +17,7 @@
          <p class="title">创业积分</p>
          <div class="scoreChart" ref="scoreChart"></div>
       </div>
-      <div class="scoreBox">
+      <div class="scoreBoxs">
         <div class="module">
           <p class="title">创业知识跟踪</p>
           <div class="follow">
@@ -269,76 +269,76 @@
   .scoreChart{
     height: 400px;
   }
-  .scoreBox{
+  .scoreBoxs{
     display: flex;
     height: 450px;
     justify-content: space-between;
   }
-  .scoreBox .module{
+  .scoreBoxs .module{
      width: 470px;
      margin-bottom: 0;
   }
-  .scoreBox .module .follow{
+  .scoreBoxs .module .follow{
      display: flex;
      height: 329px;
      padding-top: 60px;
      position: relative;
   }
-  .scoreBox .module .follow > div{
+  .scoreBoxs .module .follow > div{
     width: 50%;
   }
-  .scoreBox .module .follow > p{
+  .scoreBoxs .module .follow > p{
     position: absolute;
     text-align: center;
     width:50%;
     top:206px;
     line-height: 24px;
   }
-  .scoreBox .module .follow > p span{
+  .scoreBoxs .module .follow > p span{
      color:#e64f15
   }
-  .scoreBox .module .follow >p:nth-of-type(1){
+  .scoreBoxs .module .follow >p:nth-of-type(1){
     left: 0;
     color: #7384f4;
   }
-  .scoreBox .module .follow >p:nth-of-type(2){
+  .scoreBoxs .module .follow >p:nth-of-type(2){
     right: 0;
     color:#7edfb4
   }
-  .scoreBox .module{
+  .scoreBoxs .module{
      position: relative;
   }
-  .scoreBox .module .join > div{
+  .scoreBoxs .module .join > div{
      position: absolute;
   }
-  .scoreBox .module .join > p{
+  .scoreBoxs .module .join > p{
     position: absolute;
     font-size: 13px;
   }
-  .scoreBox .module .join > div:nth-of-type(1){
+  .scoreBoxs .module .join > div:nth-of-type(1){
       width: 240px;
       height: 240px;
       top: 106px;
       left: 20px;
       z-index: 2;
   }
-  .scoreBox .module .join > div:nth-of-type(2){
+  .scoreBoxs .module .join > div:nth-of-type(2){
     width: 360px;
     height: 360px;
     top: 50px;
     left:80px;
   }
-  .scoreBox .module .join p:nth-of-type(1){
+  .scoreBoxs .module .join p:nth-of-type(1){
      top: 162px;
      left: 70px;
      color: #7384f4;
   }
-  .scoreBox .module .join p:nth-of-type(2){
+  .scoreBoxs .module .join p:nth-of-type(2){
     top: 158px;
     left: 306px;
     color: #7edfb4;
   }
-  .scoreBox .module .join > span{
+  .scoreBoxs .module .join > span{
      position: absolute;
      top: 112px;
      left: 100px;

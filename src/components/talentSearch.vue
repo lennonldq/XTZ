@@ -411,10 +411,13 @@ export default {
     }
   },
   created () {
+    
     this.userTypeId = localStorage.getItem("userTypeId")
     this.getTableData();
     this.getClasses();
-    this.getProfessional()
+    this.getProfessional();
+    this.$forceUpdate();
+   
   },
   methods: {
     getClassName () {
@@ -562,6 +565,7 @@ export default {
     changexuejie (event) {
       this.xuejie = event.target.value;
     }
+    
   }
 }
 </script>

@@ -113,7 +113,7 @@ let router =  new Router({
       component: TalentSearch,
       meta:{
         auth:true,
-        keepAlive:true
+        keepAlive:false
       }
     }
   ]
