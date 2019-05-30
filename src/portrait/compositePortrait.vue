@@ -31,33 +31,39 @@
     <div class="module">
       <p class="title">潜质评测</p>
       <div class="evaluatMain">
-          <div class="ability" ref="ability"></div>
+          
           <div class="ma">
             <img src="../assets/images/ma.png" alt="">
           </div>
           <div class="interest">
-             <p>{{ emotionalIntelligence }}</p>
-             <span>{{ emotionalIntelligenceRemark }}</span>
+             <p>职业兴趣</p>
+            <span class="Thickening"> {{ professionalInterest }}</span>
+             <span class="one">{{ professionalInterestRemark }}</span>
           </div>
           <div class="interest">
-            <p>{{ personalCharacter }}</p>
-            <span>{{ personalCharacterRemark }}</span>
+            <p>职业性格</p>
+            <span class="Thickening"> {{ professionalCharacter }}</span>
+            
+            <span class="one">{{ professionalCharacterRemark }}</span>
           </div>
           <div class="interest">
-            <p>{{ professionalCharacter }}</p>
-            <span>{{ professionalCharacterRemark }}</span>
+            <p>个人性格</p>
+            <span class="Thickening"> {{ personalCharacter }}</span>
+            <span class="one">{{personalCharacterRemark }}</span>
           </div>
-          <div class="interest">
-            <p>心理测评</p>
-            <span>心理年龄很成熟</span>
+          <div class="interest" style="position: relative;">
+            <p>心理年龄</p>
+            <div class="ability" ref="ability"></div>
+            <span style="padding-left: 112px;" class="one">{{mentalAgeRemark}}</span>
           </div>
           <div class="potentialBox">
             <p>软能力预测</p>
             <div class="potentialChart" ref="potentialChart"></div>
           </div>
           <div class="interest">
-            <p>{{ professionalInterest }}</p>
-            <span>{{ professionalInterestRemark }}</span>
+            <p>情商</p>
+             <span class="Thickening"> {{emotionalIntelligence }}</span>
+            <span class="one">{{emotionalIntelligenceRemark}}</span>
           </div>
       </div>
     </div>
@@ -84,15 +90,16 @@
       return {
         resultData:[],
         talentLabelNameArr:[],
-        emotionalIntelligence:'职业兴趣',
+        professionalInterest:'',
         emotionalIntelligenceRemark:'',
-        personalCharacter:"职业性格",
         personalCharacterRemark:"",
-        professionalCharacter:"个人性格",
         professionalCharacterRemark:"",
-        professionalInterest:"",
         professionalInterestRemark:"",
-        agvIntegralValue:""
+        agvIntegralValue:"",
+        professionalCharacter:"",
+        personalCharacter:"",
+        mentalAgeRemark:"",
+        emotionalIntelligence:""
       }
     },
     mounted(){
@@ -227,9 +234,9 @@
               integralValue.push(this.resultData[i].integralValue);
               arr.push({value:this.resultData[i].integralValue,name:this.resultData[i].moduleName})
              }
-             console.log(data.data)
+               console.log(moduleName);
              this.mixedAbilityEchart(arr);
-             this.renderZZT(moduleName,integralValue)
+        
           }
         })
       },
@@ -268,16 +275,21 @@
           let data = JSON.parse(res.data);
           if(data.code == 200){
               // this.emotionalIntelligence = data.data.emotionalIntelligence
+              this.professionalInterest =data.data. professionalInterest
+              this.professionalCharacter = data.data.professionalCharacter
               this.emotionalIntelligenceRemark = data.data.emotionalIntelligenceRemark
-              this.personalCharacter = data.data.personalCharacter;
               this.personalCharacterRemark = data.data.personalCharacterRemark;
-              this.professionalCharacter = data.data.professionalCharacter;
               this.professionalCharacterRemark = data.data.professionalCharacterRemark;
-              this.professionalInterest = data.data.professionalInterest;
               this.professionalInterestRemark = data.data.professionalInterestRemark;
+              this.personalCharacter = data.data.personalCharacter;
+              this.mentalAgeRemark = data.data.mentalAgeRemark;
+              this.emotionalIntelligence = data.data.emotionalIntelligence;
               this.abilityChart(data.data.mentalAge);
+              console.log(data.data);
+              let moduleName =   ["人际交往","问题处理","观察能力","管理能力","判断力","空间想象能力",'计划性','创新性'];
+                   this.renderZZT(moduleName,data)
               this.renderZZT(
-                ["人际交往","问题处理","观察能力","管理能力","判断力","空间想象能力",'计划性','创新性'],
+                moduleName,
                 [
                   data.data.innovative,
                   data.data.interpersonalCommunication,
@@ -359,8 +371,8 @@
     position: absolute;
     width: 100px;
     height: 100px;
-    top: 138px;
-    left: 392px;
+    top: -30px;
+    left: 224px;
   }
   .module .evaluatMain  .ma{
     position: absolute;
@@ -383,14 +395,22 @@
      text-align: center;
      line-height: 30px;
   }
-  .module .evaluatMain .interest span{
+  .module .evaluatMain .interest .one{
+    width: 400px;
      display: block;
-     flex: 1;
-     height: 30px;
      line-height: 30px;
-     text-indent: 24px;
+    padding-left: 1em;
      font-size: 14px;
      color:#444444
+  }
+  .module .evaluatMain .interest .Thickening{
+         color:#444444;
+      display: block;
+          padding-left: 1em;
+            line-height: 30px;
+     height: 30px;
+    font-size: 16px;
+    font-weight: 600;
   }
   .module .evaluatMain .potentialBox .potentialChart{
      height: 350px;

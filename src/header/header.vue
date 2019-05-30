@@ -15,19 +15,20 @@
       <div class="phoBox">
         <p class="btn">下载APP</p>
         <p class="ling"><span>1</span></p>
-        <el-dropdown class="but">
+        <el-dropdown class="but" @command="handleCommand">
           <span class="el-dropdown-link">
             <i class="pho"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人资料</el-dropdown-item>
             <el-dropdown-item>修改密码</el-dropdown-item>
-            <el-dropdown-item @click="signOut()">退出</el-dropdown-item>
+            <el-dropdown-item command="退出">退出</el-dropdown-item>
             
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </div>
+ 
   </el-header>
 </template>
 
@@ -41,6 +42,13 @@ export default {
         { title: "企业服务", path: "/company" },
       ]
     }
+  },
+  methods:{
+     handleCommand() {
+          localStorage.clear();
+          sessionStorage.clear(); 
+          this.$router.push({path:'/login'})  
+      }
   }
 }
 </script>

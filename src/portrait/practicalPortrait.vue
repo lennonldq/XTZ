@@ -29,9 +29,10 @@
       style="margin-bottom: 0"
     >
       <p class="title">实验实训</p>
-      <p class="ExperimentalResult">{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
+      <p v-if="nuber > 0" class="ExperimentalResult">{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
         {{`${good}实训技能掌握较好；`}}<br />
         {{ `${difference}掌握较差；`}}</p>
+        <p v-else class="wu">暂无数据</p>
       <div
         class="ExperimentalChart"
         ref="ExperimentalChart"
@@ -400,6 +401,11 @@ export default {
   color: #444;
   margin: 0 auto;
   line-height: 24px;
+}
+.module .wu{
+  font-size: 18px;
+  text-align: center;
+  line-height: 200px;
 }
 .module .histogramChart {
   height: 458px;
