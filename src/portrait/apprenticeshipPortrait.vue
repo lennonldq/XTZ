@@ -153,6 +153,7 @@ import {
   skillsPortrait
 }
   from "../js/url"
+import { log } from 'util';
 export default {
   props: ["baseInfo"],
   data () {
@@ -512,9 +513,11 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          let excellent_rate = parseInt(data.data.excellent_rate);//成绩优秀的比例
-          let good_rate = parseInt(data.data.good_rate); //成绩良好的比例
-          let medium_rate = parseInt(data.data.medium_rate);//成绩中等的比例
+            console.log(data.data.excellent_rate);
+          let excellent_rate = this.gitnull(data.data.excellent_rate);//成绩优秀的比例
+          console.log(excellent_rate);
+          let good_rate = this.gitnull(data.data.good_rate); //成绩良好的比例
+          let medium_rate = this.gitnull(data.data.medium_rate);//成绩中等的比例
           this.excellent_rate = excellent_rate;
           this.good_rate = good_rate;
           this.medium_rate = medium_rate;
@@ -526,8 +529,8 @@ export default {
           this.goodPre = this.commonJs.percentNum(this.good_count, total);
           this.mediumPre = this.commonJs.percentNum(this.medium_count, total);
           this.cypf = data.data.cypf;
-          this.pf = parseInt(data.data.pf);
-          this.counti = data.data.counti;
+          this.pf = this.gitnull(data.data.pf);
+          this.counti = this.gitnull(data.data.counti);
           this.tackEchart(excellent_rate, good_rate, medium_rate)
           let pfArr = [
             data.data.pf31,
@@ -553,6 +556,16 @@ export default {
           this.abilityEChart(pfArr, pfbzArr)
         }
       })
+    },
+    // 让数据为null时转为0
+
+    gitnull(data){
+      if(data == null){
+        data = 0
+      }else{
+       data =  parseInt(data)
+      }
+      return data
     },
     getCourseListData (termnum) { //获取课程得分数据
       this.loading = true;

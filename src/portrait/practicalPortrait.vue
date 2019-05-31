@@ -214,7 +214,7 @@ export default {
          formatter: (params)=> {
               let str = "";
               str += `分数百分比:${score_rateArr[params[1].dataIndex]}%<br/>`;
-              str += `平均分:${params[1].value}`;
+              str += `总分:${params[1].value}`;
               return str;
             },
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -283,7 +283,7 @@ export default {
             data: scoreArr
           },
           {
-            name: '平均分',
+            name: '总分',
             type: 'bar',
             stack: '总量',
             barWidth: 60,

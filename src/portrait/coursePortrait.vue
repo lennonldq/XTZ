@@ -38,8 +38,8 @@
       </div>
       <p class="trajectoryDetail">
         {{
-        `${baseInfo.username}在课程学习过程中，${maxType}是最多的学习类型，占总类的${maxPersent}，${minType}是最少的学习类型，占总类的${minPersent}；作业成绩平均分为${typeScore1}分
-        （班级平均分为${sumTypeScore1}分），课堂练习成绩平均分为${typeScore2}分（班级平均分为${sumTypeScore2}分），考试成绩为${typeScore3}分（班级平均分为${sumTypeScore3}分）；平时表现优于平均水平，课堂练习优于平均水平，考试表现需加强；`
+        `${baseInfo.username}在课程学习过程中，${maxType}是最多的学习类型，占总类的${maxPersent}，${minType}是最少的学习类型，占总类的${minPersent}；作业成绩平均分为${typeScore3}分
+        （班级平均分为${sumTypeScore3}分），课堂练习成绩平均分为${typeScore2}分（班级平均分为${sumTypeScore2}分），考试成绩为${typeScore1}分（班级平均分为${sumTypeScore1}分）；平时表现优于平均水平，课堂练习优于平均水平，考试表现需加强；`
         }}
       </p>
     </div>
@@ -73,7 +73,7 @@ export default {
       minPersent: "", //最小占比
 
       typeScore3: "",//作业成绩
-      sumTypeScore3: "", // 班级成绩
+      sumTypeScore3: "", // 班级作业成绩
 
       typeScore2: "",//课堂练习成绩
       sumTypeScore2: "", // 班级课堂练习成绩
@@ -106,7 +106,8 @@ export default {
         if (data.code == 200) {
           let termid = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
-            termid.push(data.data[i].termid);
+            termid.push(data.data[i].termid); 
+            
             integralValue.push(data.data[i].integralValue);
             sumIntegralValue.push(data.data[i].sumIntegralValue)
           }
@@ -114,10 +115,12 @@ export default {
         } else {
           this.$message({ type: 'error', message: "请求出错，请联系技术人员" })
         }
+      
       }).catch(() => {
         this.$message({ type: 'error', message: "请求出错，请联系技术人员" })
       })
     },
+    
     courseIntegralEchart (termid, integralValue, sumIntegralValue) { // 课程积分情况
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
@@ -210,12 +213,12 @@ export default {
         if (data.code == 200) {
           let typeCount = [], typeArr = ["考试次数", "课堂练习次数", "作业次数"];
           let sumTypeScore = [], typeScore = [], numArr = [];
-          this.typeScore3 = data.data.typeScore3;
-          this.sumTypeScore3 = data.data.sumTypeScore3;
-          this.typeScore2 = data.data.typeScore2;
-          this.sumTypeScore2 = data.data.sumTypeScore2;
-          this.typeScore1 = data.data.typeScore1;
-          this.sumTypeScore1 = data.data.sumTypeScore1;
+          this.typeScore3 = this.gitdata(data.data.typeScore3);//个人作业成成绩
+          this.sumTypeScore3 = this.gitdata(data.data.sumTypeScore3);//班级作业成绩
+          this.typeScore2 = this.gitdata(data.data.typeScore2);//个人课堂练习成绩
+          this.sumTypeScore2 = this.gitdata(data.data.sumTypeScore2);//班级课堂练习成绩
+          this.typeScore1 = this.gitdata(data.data.typeScore1);//个人考试成绩
+          this.sumTypeScore1 = this.gitdata(data.data.sumTypeScore1);//班级考试成绩
           for (let attr in data.data) {
             if (attr.indexOf("typeCount") > -1) {
               typeCount.push({
@@ -223,10 +226,12 @@ export default {
               })
             }
             if (attr.indexOf("sumTypeScore") > -1) {
-              sumTypeScore.push(parseInt(data.data[attr]))
+              console.log(data.data[attr]);
+              
+              sumTypeScore.push(this.gitdata(data.data[attr]))
             }
             if (attr.indexOf("typeScore") > -1) {
-              typeScore.push(parseInt(data.data[attr]))
+              typeScore.push(this.gitdata(data.data[attr]))
             }
           }
           for (let i = 0; i < typeCount.length; i++) {
@@ -246,11 +251,23 @@ export default {
               this.minType = typeCount[k].name
             }
           }
+          console.log(sumTypeScore, typeScore);
+          
           this.proportionEchart(typeCount);
           this.achievementEchart(sumTypeScore, typeScore)
         }
       })
     },
+// 判断是否为null
+    gitdata(data){
+      if(data == null){
+        data = 0
+      }else{
+        data = parseInt(data)
+      }
+      return data;
+    },
+
     proportionEchart (typeCount) { // 学习类型占比
       let proportionChart = this.$echart.init(this.$refs.proportionChart);
       proportionChart.setOption({
@@ -285,7 +302,8 @@ export default {
           }
         ]
       })
-    },
+    },         
+                        //        班级分   , 个人分
     achievementEchart (sumTypeScore, typeScore) {//学习类型成绩
       let achievementChart = this.$echart.init(this.$refs.achievementChart);
       achievementChart.setOption({
@@ -319,9 +337,9 @@ export default {
         radar: [
           {
             indicator: [
-              { text: '平时成绩（作业）', max: 100 },
-              { text: '课堂学习成绩', max: 100 },
               { text: '考试成绩', max: 100 },
+              { text: '课堂学习成绩', max: 100 },
+              { text: '平时成绩（作业）', max: 100 },
             ],
             center: ['50%', '65%'],
             radius: '80%',
@@ -432,7 +450,12 @@ export default {
 
     },
     learningSituationEchart (el, year, integralName, integralValue, sumIntegralValue) { // 课程学习情况
+      console.log(el);
+      
+
       let fistYearChart = this.$echart.init(el);
+      console.log(fistYearChart);
+      
       let stu = this.baseInfo.username;
       fistYearChart.setOption({
         title: {

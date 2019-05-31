@@ -416,7 +416,7 @@ export default {
     this.getTableData();
     this.getClasses();
     this.getProfessional();
-    this.$forceUpdate();
+    
    
   },
   methods: {
