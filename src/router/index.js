@@ -19,6 +19,7 @@ import EmploymentPortrait from "../portrait/employmentPortrait" //实训就业�
 import TaskPortrait  from "../portrait/taskPortrait.vue" //企业任务画像
 import CertifiedPortrai from "../portrait/certifiedPortrai" //认证画像
 import CompetitionPortrait from "../portrait/competitionPortrait" //竞赛画像
+// import { resolve } from 'dns';
 Vue.use(Router)
 let router =  new Router({
   linkActiveClass:"is-active",
@@ -26,17 +27,17 @@ let router =  new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component:resolve=>require(['@/components/login'],resolve)
     },
     {
       path: '/loginTwo',
       name: 'Logintwo',
-      component: Logintwo
+      component: resolve=>require(['@/components/loginTwo'],resolve)
     },
     {
       path: '/home',
       name: 'Home',
-      component: Home,
+      component:  resolve=>require(['@/components/home'],resolve),
       meta:{
         auth:true
       }
@@ -44,7 +45,7 @@ let router =  new Router({
     {
       path: '/company',
       name: 'Company',
-      component: Company,
+      component:  resolve=>require(['@/components/company'],resolve),
       meta:{
         auth:true
       }
@@ -52,14 +53,14 @@ let router =  new Router({
     {
       path:"/integralPortrait",
       name: 'IntegralPortrait',
-      component: IntegralPortrait,
+      component:  resolve=>require(['@/components/integralPortrait'],resolve),
       meta:{
         auth:true
       }
     },
     {
       path: '/portrait',
-      component:Portrait,
+      component: resolve=>require(['@/components/portrait'],resolve),
       meta:{
         auth:true,
       },
@@ -67,50 +68,50 @@ let router =  new Router({
         {
           path:"compositePortrait",
           name:"CompositePortrait",
-          component:CompositePortrait
+          component: resolve=>require(['../portrait/compositePortrait'],resolve)
         },{
           path:"coursePortrait",
           name:"CoursePortrait",
-          component:CoursePortrait
+          component:resolve=>require(['../portrait/coursePortrait'],resolve)
         },{
           path:"practicalPortrait",
           name:"PracticalPortrait",
-          component:PracticalPortrait
+          component:resolve=>require(['../portrait/practicalPortrait'],resolve)
         },{
           path:"actualPortrait",
           name:"ActualPortrait",
-          component:ActualPortrait
+          component:resolve=>require(['../portrait/actualPortrait'],resolve)
         },{
           path:"apprenticeshipPortrait",
           name:"ApprenticeshipPortrait",
-          component:ApprenticeshipPortrait
+          component:resolve=>require(['../portrait/apprenticeshipPortrait'],resolve)
         },{
           path:"entrepreneurialPortrait",
           name:"EntrepreneurialPortrait",
-          component:EntrepreneurialPortrait
+          component:resolve=>require(['../portrait/entrepreneurialPortrait'],resolve)
         },{
           path:'employmentPortrait',
           name:"EmploymentPortrait",
-          component:EmploymentPortrait
+          component:resolve=>require(['../portrait/employmentPortrait'],resolve)
         },{
           path:"taskPortrait",
           name:"TaskPortrait",
-          component:TaskPortrait
+          component:resolve=>require(['../portrait/taskPortrait'],resolve)
         },{
           path:"certifiedPortrai",
           name:"CertifiedPortrai",
-          component:CertifiedPortrai
+          component:resolve=>require(['../portrait/certifiedPortrai'],resolve)
         },{
           path:"competitionPortrait",
           name:"CompetitionPortrait",
-          component:CompetitionPortrait
+          component:resolve=>require(['../portrait/competitionPortrait'],resolve)
         }
       ]
     },
     {
       path: '/talentSearch',
       name: 'TalentSearch',
-      component: TalentSearch,
+      component: resolve=>require(['@/components/talentSearch'],resolve),
       meta:{
         auth:true,
         keepAlive:false

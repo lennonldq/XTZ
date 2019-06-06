@@ -10,12 +10,17 @@
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
       </div>
+     
       <router-link
         tag="button"
         :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
       >
         返回上页
       </router-link>
+       <div class="synchronization">
+        <div class="one">同步数据</div>
+        <div class="two">上次同步:<span>2019.4.1 10:00</span> </div>
+      </div>
     </div>
     <div class="module">
       <p class="title">综合能力</p>
@@ -226,7 +231,7 @@ export default {
     },
     mixedAbilityEchart (arr) { // 获取综合能力数据
       console.log(arr);
-      
+
       let skillChart = this.$echart.init(this.$refs.skillChart);
       skillChart.setOption({
         tooltip: {
@@ -267,6 +272,8 @@ export default {
             integralValue.push(this.resultData[i].integralValue);
             arr.push({ value: this.resultData[i].integralValue, name: this.resultData[i].moduleName })
           }
+          this.mixedAbilityEchart(arr);
+          this.renderZZT(moduleName, integralValue)
         }
       })
     },
@@ -339,7 +346,7 @@ export default {
 
     // 、、判断null
     gitdata (data) {
-      if(data == null ){
+      if (data == null) {
         data = 0
       }
       return data

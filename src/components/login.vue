@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     login () {
-      this.$ajax.get(`http://124.172.243.65:8096/xtz/account/login?username=${this.formLabelAlign.username}&password=${this.formLabelAlign.password}`).then(res => {
+      this.$ajax.get(`http://124.172.243.65:8092/xtz/account/login?username=${this.formLabelAlign.username}&password=${this.formLabelAlign.password}`).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
           localStorage.setItem("accessToken", data.accessToken);

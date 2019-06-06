@@ -256,8 +256,8 @@
                    ["#7edfb4",'#dadada'],
                    [{value:this.pioneerPlan, name:'直接访问'},{value:100-this.pioneerPlan, name:''}]
                  );
-               this.joinEchart(this.$refs.join1,"#7384f4",this.pioneerRelease,"创业项目参与数");
-               this.joinEchart(this.$refs.join2,"#7edfb4",this.pioneerParticipate,"创业项目发布数");
+               this.joinEchart(this.$refs.join1,"#7384f4",this.pioneerParticipate,"创业项目参与数");
+               this.joinEchart(this.$refs.join2,"#7edfb4",this.pioneerRelease,"创业项目发布数");
              }
           })
         }

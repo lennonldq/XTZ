@@ -157,15 +157,25 @@ export default {
                 color: '#6dc2b4'
               }
             }
-          },
+          }, 
         }]
       })
     },
-    ExperimentalEchart (type_name, valueArr) { // 实验实训
+    ExperimentalEchart (type_name, valueArr,ExperimentalEchart) { // 实验实训
       let ExperimentalChart = this.$echart.init(this.$refs.ExperimentalChart);
+      // console.log(type_name);
+      
       ExperimentalChart.setOption({
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          
+             formatter: (params) => {
+            let str = "";
+            for (let i = 0; i < ExperimentalEchart.length; i++) {
+              str += `${type_name[i].text}占班级平均分:${ExperimentalEchart[i]}%<br/>`;
+            }
+            return str;
+          },
         },
         textStyle: {
           color: '#444444'
@@ -343,11 +353,7 @@ export default {
             scoreArr.push(parseInt(data.data[i].score));
             sum_scoreArr.push(parseInt(data.data[i].sum_score))
           }
-          console.log(score_rateArr);
-          
-          
-  
-          this.ExperimentalEchart(type_name, valueArr);
+          this.ExperimentalEchart(type_name, valueArr,score_rateArr);
           this.histogramEchart(type_nameArr, scoreArr, sum_scoreArr,score_rateArr);
           this.listdata()
         }

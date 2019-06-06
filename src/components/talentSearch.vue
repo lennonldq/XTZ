@@ -115,7 +115,7 @@
             <option>全部</option>
             <option>课程</option>
             <option>实验实训</option>
-            <option>实战实训</option>
+            <option>实战运营</option>
             <option>学徒制</option>
             <option>创业</option>
             <option>任务外包</option>
@@ -244,7 +244,7 @@
             <option>全部</option>
             <option>课程</option>
             <option>实验实训</option>
-            <option>实战实训</option>
+            <option>实战运营</option>
             <option>学徒制</option>
             <option>创业</option>
             <option>任务外包</option>
@@ -481,7 +481,7 @@ export default {
         case '实验实训':
           this.talentSelect = 2;
           break
-        case '实战实训':
+        case '实战运营':
           this.talentSelect = 3;
           break
         case '学徒制':

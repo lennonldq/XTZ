@@ -76,7 +76,7 @@
     <div class="module">
       <p class="title">软技能得分</p>
       <p class="scoreResult">本平台根据逻辑思维能力、人际交流能力、领导组织能力、适应调整能力、解决问题能力、创新想象能力、学习总结能力、信息收集能力等八项软
-        能力对在学徒制过程进行软能力诊断，达标率为：<span>49%</span><br />
+        能力对在学徒制过程进行软能力诊断，达标率为：<span>{{poss}}</span><br />
       </p>
       <div
         class="scoreChart"
@@ -87,6 +87,19 @@
         ref="abilityChart"
       ></div>
     </div>
+
+    <div class="module">
+      <p class="title">岗位分析</p>
+      <p class="scoreResult">本平台根据岗位分析得出，适合岗位为：<span>{{fit}}</span><br />
+      </p>
+      <div
+        class="postAnalysis"
+        ref="postAnalysis"
+      >
+
+      </div>
+    </div>
+
     <div
       class="module"
       style="margin-bottom: 0"
@@ -150,6 +163,7 @@
 import {
   userPortrait,
   courseList,
+  jbsStatistics,
   skillsPortrait
 }
   from "../js/url"
@@ -185,12 +199,15 @@ export default {
       courseData: [],
       courseid: "",
       loading: true,
+      fit: '',//适合岗位
+      poss: ''//达标率
 
     }
   },
   mounted () {
     this.getuserPortraitData();
     this.getCourseListData(null);
+    this.getJbsStatistics();
 
   },
   methods: {
@@ -228,11 +245,30 @@ export default {
         ]
       })
     },
-    scoreEchart (pf) { // 软技能得分雷达图
+    scoreEchart (pf, percentage) {
+      // 软技能得分雷达图
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          formatter: (params) => {
+
+            let str = "";
+            let arr = [
+              '逻辑思维',
+              '人际交流',
+              '领导组织',
+              '适应调整',
+              '解决问题',
+              '创新想象',
+              '学习总结',
+              '信息收集',
+            ];
+            for (let i = 0; i < percentage.length; i++) {
+              str += `${arr[i]}占班级平均分:${percentage[i]}%<br/>`;
+            }
+            return str;
+          },
         },
         textStyle: {
           color: '#444444'
@@ -282,13 +318,18 @@ export default {
         ]
       })
     },
-    abilityEChart (pfArr, pfbzArr) { //软技能得分柱状图
+    abilityEChart (pfArr, percentage) { //软技能得分柱状图
       let abilityChart = this.$echart.init(this.$refs.abilityChart);
       abilityChart.setOption({
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter: (params) => {
+            let str = "";
+            str += `${[params[0].name]}:${percentage[params[0].dataIndex]}%<br/>`;
+            return str;
           }
         },
         grid: {
@@ -354,25 +395,6 @@ export default {
               }
             },
             data: pfArr
-          },
-          {
-            name: '总分',
-            type: 'bar',
-            stack: '总量',
-            barWidth: 60,
-            label: {
-              normal: {
-                show: true,
-                position: 'insideRight'
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: '#5ac1e9',
-                barBorderRadius: [4, 4, 4, 4],
-              }
-            },
-            data: pfbzArr
           }
         ]
       })
@@ -513,9 +535,7 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-            console.log(data.data.excellent_rate);
           let excellent_rate = this.gitnull(data.data.excellent_rate);//成绩优秀的比例
-          console.log(excellent_rate);
           let good_rate = this.gitnull(data.data.good_rate); //成绩良好的比例
           let medium_rate = this.gitnull(data.data.medium_rate);//成绩中等的比例
           this.excellent_rate = excellent_rate;
@@ -552,18 +572,37 @@ export default {
             data.data.pfbz37,
             data.data.pfbz38
           ];
-          this.scoreEchart(pfArr);
-          this.abilityEChart(pfArr, pfbzArr)
+          // 百分比
+          let percentage = [
+            data.data.pfrate31,
+            data.data.pfrate32,
+            data.data.pfrate33,
+            data.data.pfrate34,
+            data.data.pfrate35,
+            data.data.pfrate36,
+            data.data.pfrate37,
+            data.data.pfrate38
+          ];
+          // 得出评分超过600的
+          let nuber = 0;
+          for (let i = 0; i < pfArr.length; i++) {
+            if (pfArr[i] > 60) {
+              nuber++
+            }
+          }
+          this.poss = nuber / 8 * 100 + "%"
+          this.scoreEchart(pfArr, percentage);
+          this.abilityEChart(pfArr, percentage)
         }
       })
     },
     // 让数据为null时转为0
 
-    gitnull(data){
-      if(data == null){
+    gitnull (data) {
+      if (data == null) {
         data = 0
-      }else{
-       data =  parseInt(data)
+      } else {
+        data = parseInt(data)
       }
       return data
     },
@@ -604,10 +643,96 @@ export default {
             allPf.push(data.data[i].allPf)
           }
           this.kczxtEchart(pf, courseid);
-          console.log(pf, allPf)
           this.kcldtEchart(taskName, pf, allPf, courseid)
 
         }
+      })
+    },
+    getJbsStatistics () {   //获取岗位分析数据
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + jbsStatistics, {
+        params: {
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          let dataName = [], pf = [], many = data.data[0].pf;
+
+          for (let i = 0; i < data.data.length; i++) {
+
+            dataName.push(data.data[i].positionName)
+            pf.push(data.data[i].pf);
+          }
+
+          for (let k = 1; k < data.data.length; k++) {
+            if (data.data[k].pf > many) {
+              many = data.data[k].pf;
+              this.fit = data.data[k].positionName
+            } else {
+              this.fit = data.data[0].positionName
+            }
+          }
+          this.gangwei(dataName, pf)
+        }
+      })
+    },
+    gangwei (dataName, pf) {
+      let postAnalysis = this.$echart.init(this.$refs.postAnalysis);
+      postAnalysis.setOption({
+        grid: {
+          left: '100',
+          right: '100',
+          bottom: '20',
+          top: '100',
+          containLabel: true
+        },
+        xAxis: {
+          data: dataName,
+          name: '岗位',
+          axisTick: {
+            show: false
+          },
+          nameTextStyle: {
+            color: 'black',
+            fontWeight: 800,
+            fontSize: 18
+          }
+
+        },
+        yAxis: {
+          name: '得分',
+          splitLine: {
+            nameTextStyle: {
+              color: 'black',
+              fontWeight: 800,
+              fontSize: 18
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#ff7f27',
+                width: 1,//这里是为了突出显示加上的  
+              }
+            }
+          },
+          type: "value",
+          max: 100
+          // data:['0人','10人','20人','20人','20人'],
+        },
+        series: [{
+          data: pf,
+          barWidth: 50,
+          type: 'bar',
+          itemStyle: {
+            normal: {
+              color: '#ff7f27',
+              label: {
+                show: true,
+                position: 'top',
+              }
+            }
+          }
+        }]
       })
     }
   }
@@ -644,17 +769,17 @@ export default {
   height: 60px;
   position: absolute;
   top: 78px;
-      left: 85px;
+  left: 85px;
 }
 .module .taskShow .grade .bdjt .one {
   width: 100%;
-    height: 33px;
-  background: url('../assets/images/bd.png')16px 16px no-repeat;
+  height: 33px;
+  background: url('../assets/images/bd.png') 16px 16px no-repeat;
 }
 .module .taskShow .grade .bdjt .two {
   height: 100%;
   width: 100%;
-  background: url('../assets/images/jt.png')0px -1px no-repeat;
+  background: url('../assets/images/jt.png') 0px -1px no-repeat;
 }
 .module .taskShow .gradeAly {
   width: 144px;
@@ -767,6 +892,11 @@ export default {
 .module .abilityChart canvas {
   border-radius: 10px;
 }
+
+.module .postAnalysis {
+  height: 400px;
+}
+
 .module .title .tab {
   position: absolute;
   top: 0;

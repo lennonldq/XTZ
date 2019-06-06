@@ -200,7 +200,7 @@
              case '实验实训':
                this.$router.push({path:'/portrait/practicalPortrait',query:this.$route.query});
                break;
-             case '实战实训':
+             case '实战运营':
                this.$router.push({path:'/portrait/actualPortrait',query:this.$route.query});
                break;
              case '学徒制':

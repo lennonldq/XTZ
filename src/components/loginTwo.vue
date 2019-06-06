@@ -54,7 +54,7 @@ export default {
          //  
          console.log(this.theRequest.naughty);
          
-           this.$ajax.get(`http://124.172.243.65:8096/new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res=>{
+           this.$ajax.get(`http://124.172.243.65:8092/new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res=>{
               let data = JSON.parse(res.data);
               console.log(data);
               console.log(data.msg);

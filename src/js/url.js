@@ -32,10 +32,10 @@ export const getPracticeInfo = "portrait/getPracticeInfo";//实习就业 实习�
 export const entrepreneurPortrait = "portrait/entrepreneurPortrait"; // 创业画像 创业积分
 export const pioneerInfo = "portrait/pioneerInfo"; // 创业画像 创业知识跟踪与项目参与
 
+
 export const userPortrait = "apprentice/userPortrait"; // 学徒制画像 获取用户画像
-
 export const courseList = "apprentice/courseList"; //学徒制画像 技能画像课程列表
-
+export const jbsStatistics = "apprentice/jbsStatistics"; //学徒制画像 岗位分析
 export const skillsPortrait = "apprentice/skillsPortrait"// 学徒制画像 技能画像
 
 export const integralPortrait = "portrait/integralPortrait";

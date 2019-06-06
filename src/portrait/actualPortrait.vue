@@ -18,7 +18,7 @@
       </router-link>
     </div>
     <div class="module">
-      <p class="title">实战实训积分</p>
+      <p class="title">实战运营积分</p>
       <div
         class="scoreChart"
         ref="scoreChart"
@@ -158,11 +158,18 @@ export default {
         }]
       })
     },
-    ExperimentalEchart (type_name, valueArr) { // 实战实训
+    ExperimentalEchart (type_name, valueArr, score_rateArr) { // 实战实训
       let ExperimentalChart = this.$echart.init(this.$refs.ExperimentalChart);
       ExperimentalChart.setOption({
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+           formatter: (params) => {
+            let str = "";
+            for (let i = 0; i < score_rateArr.length; i++) {
+              str += `${type_name[i].text}占班级平均分:${score_rateArr[i]}%<br/>`;
+            }
+            return str;
+          },
         },
         textStyle: {
           color: '#444444'
@@ -194,7 +201,7 @@ export default {
             data: [
               {
                 value: valueArr,
-                name: '实战实训'
+                name: '实战运营'
               }
             ]
           }
@@ -202,14 +209,19 @@ export default {
       })
     },
     histogramEchart (type_nameArr, scoreArr, sum_scoreArr,score_rateArr) {
+      console.log(type_nameArr, scoreArr, sum_scoreArr,score_rateArr);
+      
       let histogramChart = this.$echart.init(this.$refs.histogramChart);
       histogramChart.setOption({
         tooltip: {
           trigger: 'axis',
           formatter: (params)=> {
+            console.log(params);
               let str = "";
               str += `分数百分比:${score_rateArr[params[1].dataIndex]}%<br/>`;
               str += `平均分:${params[1].value}`;
+              console.log(str);
+              
               return str;
             },
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -336,7 +348,7 @@ export default {
             scoreArr.push(parseInt(data.data[i].score));
             sum_scoreArr.push(parseInt(data.data[i].sum_score))
           }
-          this.ExperimentalEchart(type_name, valueArr);
+          this.ExperimentalEchart(type_name, valueArr, score_rateArr);
           this.histogramEchart(type_nameArr, scoreArr, sum_scoreArr,score_rateArr)
           this.listdata()
         }

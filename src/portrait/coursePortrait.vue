@@ -226,7 +226,7 @@ export default {
               })
             }
             if (attr.indexOf("sumTypeScore") > -1) {
-              console.log(data.data[attr]);
+              // console.log(data.data[attr]);
               
               sumTypeScore.push(this.gitdata(data.data[attr]))
             }
@@ -392,7 +392,7 @@ export default {
         if (data.code == 200) {
           let str = '';
           this.situationData = data.data;
-          console.log(data.data);
+          // console.log(data.data);
           //  计算出课程学习情况的最多和最少
           for (let j = 0; j < data.data.length; j++) {
             for (let i = 0; i < data.data[j].length; i++) {
@@ -415,14 +415,18 @@ export default {
           }
            
           let integralName = [], integralValue = [], sumIntegralValue = [];
+          let schollyear=[];
+          
           for (let i = 0; i < data.data.length; i++) {
             integralName.push([]);
             integralValue.push([]);
             sumIntegralValue.push([]);
+            schollyear.push([]);
             for (let k = 0; k < data.data[i].length; k++) {
               integralName[i].push({ name: data.data[i][k].integralName, max: 100 });
               integralValue[i].push(data.data[i][k].integralValue);
-              sumIntegralValue[i].push(data.data[i][k].sumIntegralValue)
+              sumIntegralValue[i].push(data.data[i][k].sumIntegralValue);
+              schollyear[i].push('第'+data.data[i][k].termid+'学年')
             }
           }
           for (let i = 0; i < data.data.length; i++) {
@@ -431,12 +435,16 @@ export default {
                          id="fistYearChart${i}">
                         </div>`;
           }
-
           document.querySelector(".course").innerHTML = str;
+          let schollyearis =[];
+          for(let j = 0;j<schollyear.length;j++){
+            schollyearis[j]=schollyear[j][0]
+          }
+          console.log(schollyearis);
           for (let k = 0; k < this.situationData.length; k++) {
             this.learningSituationEchart(
               document.getElementById("fistYearChart" + k),
-              `第${k + 1}学年`,
+              schollyearis[k],
               integralName[k],
               integralValue[k],
               sumIntegralValue[k]
@@ -450,11 +458,8 @@ export default {
 
     },
     learningSituationEchart (el, year, integralName, integralValue, sumIntegralValue) { // 课程学习情况
-      console.log(el);
-      
-
+     
       let fistYearChart = this.$echart.init(el);
-      console.log(fistYearChart);
       
       let stu = this.baseInfo.username;
       fistYearChart.setOption({
