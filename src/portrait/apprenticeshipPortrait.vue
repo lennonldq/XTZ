@@ -108,7 +108,7 @@
         课程得分
         <div class="tab">
           <p
-            v-for="item,index in tab"
+            v-for="(item,index) in tab" :key="index"
             :class="{'active':inx === index}"
             @click="tabChange(index,item.termnum)"
           >{{ item.title }}</p>
@@ -127,7 +127,7 @@
           >
             <div
               class="echatWarp"
-              v-for="item,index in courseData"
+              v-for="(item,index) in courseData" :key="index"
             >
               <div class="chartTiT">
                 <span>{{ item.coursename }}</span>
