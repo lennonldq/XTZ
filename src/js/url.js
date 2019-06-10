@@ -41,3 +41,9 @@ export const skillsPortrait = "apprentice/skillsPortrait"// 学徒制画像 技�
 export const integralPortrait = "portrait/integralPortrait";
 export const classes = "portrait/classes";
 export const professional = "portrait/professional";
+
+
+
+
+
+export const updateData = "synchronous/updateData";//同步数据

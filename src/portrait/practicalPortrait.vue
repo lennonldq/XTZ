@@ -30,8 +30,8 @@
     >
       <p class="title">实验实训</p>
       <p v-if="nuber > 0" class="ExperimentalResult">{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
-        {{`${good}实训技能掌握较好；`}}<br />
-        {{ `${difference}掌握较差；`}}</p>
+        {{`${good}实训技能掌握较好；`}}</p>
+        <p v-else-if="difference.length>0">{{ `${difference}掌握较差；`}}</p>
         <p v-else class="wu">暂无数据</p>
       <div
         class="ExperimentalChart"

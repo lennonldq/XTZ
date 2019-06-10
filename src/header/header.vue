@@ -1,10 +1,10 @@
 <template>
   <el-header class="header">
     <div class="headerMain">
-      <p class="logo"></p>
+      <p class="logo"><img src="../assets/images/logo.png" alt=""> </p>
       <ul class="navList">
         <router-link
-          v-for="item,index in navList"
+          v-for="(item,index) in navList"
           tag="li"
           :key="index"
           :to="item.path"
@@ -23,7 +23,6 @@
             <el-dropdown-item>个人资料</el-dropdown-item>
             <el-dropdown-item>修改密码</el-dropdown-item>
             <el-dropdown-item command="退出">退出</el-dropdown-item>
-            
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -101,6 +100,10 @@ export default {
   width: 174px;
   height: 82px;
   float: left;
+}
+.header .headerMain .logo img{
+  width: 80%;
+  height: 100%;
 }
 .header .headerMain .navList {
   display: flex;

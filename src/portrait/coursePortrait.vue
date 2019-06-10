@@ -282,10 +282,12 @@ export default {
         },
         color: ['#7384f4', '#7edfb4', '#f09796'],
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          formatter:"{a} <br/>{b}:{c}({d}%)"
         },
         series: [
           {
+            name:'类型',
             type: 'pie',
             radius: '65%',
             center: ['50%', '55%'],
