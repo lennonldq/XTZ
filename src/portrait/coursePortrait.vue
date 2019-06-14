@@ -16,21 +16,20 @@
       >
         返回上页
       </router-link>
+          <div class="synchronization" @click="synchronization()" style="line-height: 80px;">
+            学校人才培养方案
+      </div>
     </div>
     <div class="module">
-      <p class="title">课程积分情况</p>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
+      <p class="title">课程学习情况</p>
+      <div class="course">
+
+      </div>
+      <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p>
     </div>
     <div class="module">
       <p class="title">学习轨迹跟踪</p>
       <div class="trajectory">
-        <div
-          class="proportionChart"
-          ref="proportionChart"
-        ></div>
         <div
           class="achievementChart"
           ref="achievementChart"
@@ -43,15 +42,13 @@
         }}
       </p>
     </div>
-    <div
-      class="module"
-      style="margin-bottom: 0"
-    >
-      <p class="title">课程学习情况</p>
-      <div class="course">
 
-      </div>
-      <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p>
+    <div class="module">
+      <p class="title">课程积分情况</p>
+      <div
+        class="scoreChart"
+        ref="scoreChart"
+      ></div>
     </div>
   </div>
 </template>
@@ -106,8 +103,8 @@ export default {
         if (data.code == 200) {
           let termid = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
-            termid.push(data.data[i].termid); 
-            
+            termid.push(data.data[i].termid);
+
             integralValue.push(data.data[i].integralValue);
             sumIntegralValue.push(data.data[i].sumIntegralValue)
           }
@@ -115,93 +112,100 @@ export default {
         } else {
           this.$message({ type: 'error', message: "请求出错，请联系技术人员" })
         }
-      
+
       }).catch(() => {
         this.$message({ type: 'error', message: "请求出错，请联系技术人员" })
       })
     },
-    
+
     courseIntegralEchart (termid, integralValue, sumIntegralValue) { // 课程积分情况
+      console.log(termid, integralValue, sumIntegralValue);
+
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
         grid: {
-          left: 60,
-          right: 40,
-          top: 50,
-          bottom: 50
+          left: 80,
+          right: 80,
+          top: 100,
+          bottom: 50,
+          containLabel: true
+        },
+        //图标头
+        legend: {
+          data: ['个人积分', '班级平均积分'],
+          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          y:"30",
+          itemWidth: 20,
+
+          itemHeight: 10,
+
+          itemGap: 40,
+          textStyle:{fontSize:16}
         },
         tooltip: {
           trigger: 'axis',
-          formatter: (params) => {
-            let str = "";
-            let arr = ["课程积分", "班级平均积分"];
-            str = `${this.baseInfo.username}${arr[0]}:${params[0].value}分<br>${arr[1]}:${params[1].value}分`
-            return str;
-          },
-        },
-        xAxis: {
-          name: "x",
-          type: 'category',
-          data: termid,
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
             }
           }
         },
-        yAxis: {
-          name: "y",
-          type: 'value',
-          splitLine: {
-            show: false,
-          },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ["#cbe7f2", "#fff"]
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-            }
+
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            data: termid
           }
-        },
-        series: [{
-          data: integralValue,
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#fc703a'
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '个人积分',
+            type: 'line',
+            stack: '总量',
+             areaStyle: {              normal: {
+                color: "#93dfe0"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#8cd5c2', //改变折线点的颜色
+                lineStyle: {
+                  color: '#17c6c3' //改变折线颜色
+                }
               }
-            }
+            },
+            data: integralValue
           },
-        }, {
-          data: sumIntegralValue,
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#6dc2b4'
+          {
+            name: '班级平均积分',
+            type: 'line',
+            stack: '总量',
+            label: {
+              normal: {
+                show: false,
+                position: 'top'
               }
-            }
-          },
-        }]
+            },
+             areaStyle: {              normal: {
+                color: "#d4cae8"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#b29fdd', //改变折线点的颜色
+                lineStyle: {
+                  color: '#b29fdd' //改变折线颜色
+                }
+              }
+            },
+            data: sumIntegralValue
+          }
+        ]
       })
     },
     getLearningTrajectoryTrackingData () { // 获取学习轨迹跟踪数据
@@ -227,7 +231,7 @@ export default {
             }
             if (attr.indexOf("sumTypeScore") > -1) {
               // console.log(data.data[attr]);
-              
+
               sumTypeScore.push(this.gitdata(data.data[attr]))
             }
             if (attr.indexOf("typeScore") > -1) {
@@ -252,60 +256,22 @@ export default {
             }
           }
           console.log(sumTypeScore, typeScore);
-          
-          this.proportionEchart(typeCount);
+
+
           this.achievementEchart(sumTypeScore, typeScore)
         }
       })
     },
-// 判断是否为null
-    gitdata(data){
-      if(data == null){
+    // 判断是否为null
+    gitdata (data) {
+      if (data == null) {
         data = 0
-      }else{
+      } else {
         data = parseInt(data)
       }
       return data;
     },
-
-    proportionEchart (typeCount) { // 学习类型占比
-      let proportionChart = this.$echart.init(this.$refs.proportionChart);
-      proportionChart.setOption({
-        title: {
-          text: '学习类型占比',
-          left: 'center',
-          top: 40,
-          textStyle: {
-            color: "#444444",
-            fontWeight: "normal"
-          }
-        },
-        color: ['#7384f4', '#7edfb4', '#f09796'],
-        tooltip: {
-          trigger: 'item',
-          formatter:"{a} <br/>{b}:{c}({d}%)"
-        },
-        series: [
-          {
-            name:'类型',
-            type: 'pie',
-            radius: '65%',
-            center: ['50%', '55%'],
-            selectedMode: 'single',
-            data: typeCount,
-            labelLine: {
-              normal: {
-                show: true,   // show设置线是否显示，默认为true，可选值：true ¦ false
-                lineStyle: {
-                  width: 4,
-                }
-              }
-            },
-          }
-        ]
-      })
-    },         
-                        //        班级分   , 个人分
+    //        班级分   , 个人分
     achievementEchart (sumTypeScore, typeScore) {//学习类型成绩
       let achievementChart = this.$echart.init(this.$refs.achievementChart);
       achievementChart.setOption({
@@ -409,16 +375,16 @@ export default {
             this.smallWord = ""
           } else if (this.large.length <= 0) {
             this.largeWord = ""
-          }  
-          if (this.large.length > 5) {
-            this.large = this.large.slice(0,5)
-          }else if(this.small.length > 5){
-            this.small = this.small.slice(0,5)
           }
-           
+          if (this.large.length > 5) {
+            this.large = this.large.slice(0, 5)
+          } else if (this.small.length > 5) {
+            this.small = this.small.slice(0, 5)
+          }
+
           let integralName = [], integralValue = [], sumIntegralValue = [];
-          let schollyear=[];
-          
+          let schollyear = [];
+
           for (let i = 0; i < data.data.length; i++) {
             integralName.push([]);
             integralValue.push([]);
@@ -428,7 +394,7 @@ export default {
               integralName[i].push({ name: data.data[i][k].integralName, max: 100 });
               integralValue[i].push(data.data[i][k].integralValue);
               sumIntegralValue[i].push(data.data[i][k].sumIntegralValue);
-              schollyear[i].push('第'+data.data[i][k].termid+'学年')
+              schollyear[i].push('第' + data.data[i][k].termid + '学年')
             }
           }
           for (let i = 0; i < data.data.length; i++) {
@@ -438,9 +404,9 @@ export default {
                         </div>`;
           }
           document.querySelector(".course").innerHTML = str;
-          let schollyearis =[];
-          for(let j = 0;j<schollyear.length;j++){
-            schollyearis[j]=schollyear[j][0]
+          let schollyearis = [];
+          for (let j = 0; j < schollyear.length; j++) {
+            schollyearis[j] = schollyear[j][0]
           }
           console.log(schollyearis);
           for (let k = 0; k < this.situationData.length; k++) {
@@ -456,13 +422,13 @@ export default {
 
       })
     },
-    words(){
+    words () {
 
     },
     learningSituationEchart (el, year, integralName, integralValue, sumIntegralValue) { // 课程学习情况
-     
+
       let fistYearChart = this.$echart.init(el);
-      
+
       let stu = this.baseInfo.username;
       fistYearChart.setOption({
         title: {
@@ -525,6 +491,12 @@ export default {
         }]
       })
     },
+
+    // 点击跳转静态表格
+    synchronization(){
+           let routeData = this.$router.resolve({ path:'/company' });
+      window.open(routeData.href, '_blank');
+    }
   }
 }
 </script>

@@ -12,16 +12,22 @@
           {{ item.title }}
         </router-link>
       </ul>
+      
+      <ul class="fotRit">
+        <li v-for="(item,index) in jingList" :key="index" @click="tojing(item.path)">{{item.title}}</li>
+      </ul>
       <div class="phoBox">
-        <p class="btn">下载APP</p>
-        <p class="ling"><span>1</span></p>
+        <!-- <p class="btn">下载APP</p> -->
+        <p class="ling">
+          <!-- <span></span><span></span> -->
+        </p>
         <el-dropdown class="but" @command="handleCommand">
           <span class="el-dropdown-link">
             <i class="pho"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人资料</el-dropdown-item>
-            <el-dropdown-item>修改密码</el-dropdown-item>
+            <!-- <el-dropdown-item>个人资料</el-dropdown-item>
+            <el-dropdown-item>修改密码</el-dropdown-item> -->
             <el-dropdown-item command="退出">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -38,7 +44,11 @@ export default {
     return {
       navList: [
         { title: "返回首页", path: "/talentSearch" },
-        { title: "企业服务", path: "/company" },
+        // { title: "企业服务", path: "/company" },
+      ],
+      jingList:[
+        {  title: "学校人才培养方案", path: "/company" },
+       {  title: "积分制规则说明", path: "/home" }
       ]
     }
   },
@@ -47,6 +57,10 @@ export default {
           localStorage.clear();
           sessionStorage.clear(); 
           this.$router.push({path:'/login'})  
+      },
+      tojing(path){
+      let routeData = this.$router.resolve({ path });
+      window.open(routeData.href, '_blank');
       }
   }
 }
@@ -60,6 +74,7 @@ export default {
 .header .headerMain {
   width: 1200px;
   margin: 0 auto;
+      display: flex;
 }
 .header .headerMain .phoBox {
   float: right;
@@ -102,8 +117,8 @@ export default {
   float: left;
 }
 .header .headerMain .logo img{
-  width: 80%;
-  height: 100%;
+ position: absolute;
+    top: -10px;
 }
 .header .headerMain .navList {
   display: flex;
@@ -125,5 +140,20 @@ export default {
 }
 .header .navList li:nth-child(2) {
   background: url('../assets/images/com.png') 12px 30px no-repeat;
+}
+.header .headerMain  .fotRit{
+  display: flex;
+  /* padding-right: 38px; */
+  /* float: right; */
+  padding-left: 300px;
+}
+.header .headerMain .fotRit .is-active {
+  color: #0187a2;
+}
+.header .fotRit li {
+  color: #000;
+  padding: 0 40px;
+  cursor: pointer;
+  line-height: 82px;
 }
 </style>

@@ -13,17 +13,20 @@
         返回上页
       </router-link>
     </div>
-    <div class="module">
-      <p class="title">竞赛积分情况</p>
-      <div class="scoreChart" ref="scoreChart"></div>
-    </div>
-    <div class="module" style="margin-bottom: 0">
+        <div class="module" >
       <p class="title">竞赛情况</p>
       <p class="certified">
         根据{{  baseInfo.username }}的参赛获取情况进行诊断，{{  baseInfo.username }}所获得的奖项数量为：<span>{{totalcountNo}}</span>
       </p>
       <div class="situtationChart" ref="situtationChart"></div>
     </div>
+
+    <div class="module">
+      <p class="title">竞赛积分情况</p>
+      <!-- <div class="scoreChart" v-if="dataList.length=0">暂无数据</div> -->
+      <div class="scoreChart" ref="scoreChart"></div>
+    </div>
+
   </div>
 </template>
 
@@ -33,7 +36,8 @@
     props:['baseInfo'],
     data(){
       return{
-        totalcountNo:0
+        totalcountNo:0,
+        dataList:[]
       }
     },
     mounted(){
@@ -43,88 +47,91 @@
     methods:{
       scoreEchart(termid,integralValue,sumIntegralValue){ // 认证积分情况
         let scoreChart = this.$echart.init(this.$refs.scoreChart);
-        scoreChart.setOption({
-          grid:{
-            left:60,
-            right:40,
-            top:50,
-            bottom:50
-          },
-          tooltip: {
-            trigger: 'axis',
-            formatter: (params)=> {
-              let str = "";
-               let arr = ["竞赛积分","班级平均积分"];
-             
-                str = `${this.baseInfo.username}${arr[0]}:${params[0].value}分<br>${arr[1]}:${params[1].value}分`
-                return str;
- 
-            },
-          },
-          xAxis: {
-            name:"x",
+          scoreChart.setOption({
+        grid: {
+          left: 80,
+          right: 80,
+          top: 100,
+          bottom: 50,
+          containLabel: true
+        },
+        //图标头
+        legend: {
+          data: ['个人积分', '班级平均积分'],
+          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          y:"30",
+          itemWidth: 20,
+
+          itemHeight: 10,
+
+          itemGap: 40,
+          textStyle:{fontSize:16}
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+
+        xAxis: [
+          {
             type: 'category',
-            data: termid,
-            axisLine:{
-              lineStyle:{
-                width:4,
-                color: '#5ac1e9'
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: '#444444',//坐标值得具体的颜色
-              }
-            }
-          },
-          yAxis: {
-            name:"y",
-            type: 'value',
-            splitLine: {
-              show: false,
-            },
-            splitArea: {
-              show: true,
-              areaStyle:{
-                color:["#cbe7f2","#fff"]
-              }
-            },
-            axisLine:{
-              lineStyle:{
-                width:4,
-                color: '#5ac1e9'
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: '#444444',//坐标值得具体的颜色
-              }
-            }
-          },
-          series: [{
-            data: integralValue,
+            boundaryGap: false,
+            data: termid
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '个人积分',
             type: 'line',
-            smooth: true,
-            itemStyle : {
-              normal : {
-                lineStyle:{
-                  color:'#fc703a'
+            stack: '总量',
+        areaStyle: {              normal: {
+                color: "#93dfe0"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#8cd5c2', //改变折线点的颜色
+                lineStyle: {
+                  color: '#17c6c3' //改变折线颜色
                 }
               }
             },
-          },{
-            data: sumIntegralValue,
+            data: integralValue
+          },
+          {
+            name: '班级平均积分',
             type: 'line',
-            smooth: true,
-            itemStyle : {
-              normal : {
-                lineStyle:{
-                  color:'#6dc2b4'
+            stack: '总量',
+            label: {
+              normal: {
+                show: false,
+                position: 'top'
+              }
+            },
+           areaStyle: {              normal: {
+                color: "#d4cae8"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#b29fdd', //改变折线点的颜色
+                lineStyle: {
+                  color: '#b29fdd' //改变折线颜色
                 }
               }
             },
-          }]
-        })
+            data: sumIntegralValue
+          }
+        ]
+      })
       },
       situtationEchart(termid,countNo){ //认证情况
         let situtationChart = this.$echart.init(this.$refs.situtationChart);
@@ -234,7 +241,10 @@
             userId,classId
           }
         }).then(res=>{
-          let data = JSON.parse(res.data)
+          let data = JSON.parse(res.data);
+          this.dataList=data.data;
+         
+          
           if(data.code == 200){
             let termid = [],integralValue = [],sumIntegralValue = [];
             for(let i = 0;i<data.data.length;i++){

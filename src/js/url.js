@@ -23,7 +23,8 @@ export const taskJoinInfo = "apprentice/taskJoinInfo"     // 任务参与情况
 
 
 export const experimentalTrainingPortrait = "portrait/experimentalTrainingPortrait"; //实验(实战) 实训积分画像
-export const experimentalTraining = "portrait/experimentalTraining" // 实验(实战) 实训
+export const experimentalTraining = "portrait/experimentalTraining" // 实验(实战) 训练
+export const getJobScore = "portrait/getJobScore" //实验(实战) 岗位的分
 
 export const practicePortrait = "portrait/practicePortrait"; //实习就业 实习积分
 export const practiceInfoD = "portrait/practiceInfoD";//实习就业 实习情况

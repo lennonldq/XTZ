@@ -12,11 +12,8 @@
           返回上页
         </router-link>
       </div>
+     
       <div class="module">
-         <p class="title">实习积分</p>
-         <div class="scoreChart" ref="scoreChart"></div>
-      </div>
-      <div class="module" style="margin-bottom: 0">
         <p class="title">实习情况</p>
         <!-- <div class="detail" v-if="evaluate = false">
           未有具体数据
@@ -33,6 +30,11 @@
              <span class="date" v-if="item.endDate">{{'-'+item.endDate }}</span>
           </div>
         </div>
+      </div>
+
+       <div class="module">
+         <p class="title">实习积分</p>
+         <div class="scoreChart" ref="scoreChart"></div>
       </div>
     </div>
 </template>
@@ -57,91 +59,91 @@
       methods:{
         scoreEchart(termid,integralValue,sumIntegralValue){ // 实习积分
           let scoreChart = this.$echart.init(this.$refs.scoreChart);
-          scoreChart.setOption({
-            grid:{
-              left:60,
-              right:40,
-              top:50,
-              bottom:50
-            },
-            tooltip: {
-              trigger: 'axis',
-              formatter: (params)=> {
-                let str = "";
-              //    let arr = ["实习积分","班级平均积分"];
-              // for(let i = 0;i<params.length;i++){
-              //   str += `${this.baseInfo.username}${arr[i]}:${params[i].value}分<br>`
-              // }
-               let arr = ["实习积分","班级平均积分"];
-              
-                str = `${this.baseInfo.username}${arr[0]}:${params[0].value}分<br>${arr[1]}:${params[1].value}分`
-                return str;
-              },
-            },
-            xAxis: {
-              name:"x",
-              type: 'category',
-              data: termid,
-              axisLine:{
-                lineStyle:{
-                  width:4,
-                  color: '#5ac1e9'
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#444444',//坐标值得具体的颜色
+         scoreChart.setOption({
+        grid: {
+          left: 80,
+          right: 80,
+          top: 100,
+          bottom: 50,
+          containLabel: true
+        },
+        //图标头
+        legend: {
+          data: ['个人积分', '班级平均积分'],
+          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          y:"30",
+          itemWidth: 20,
+
+          itemHeight: 10,
+
+          itemGap: 40,
+          textStyle:{fontSize:16}
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            data: termid
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '个人积分',
+            type: 'line',
+            stack: '总量',
+              areaStyle: {              normal: {
+                color: "#93dfe0"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#8cd5c2', //改变折线点的颜色
+                lineStyle: {
+                  color: '#17c6c3' //改变折线颜色
                 }
               }
             },
-            yAxis: {
-              name:"y",
-              type: 'value',
-              splitLine: {
+            data: integralValue
+          },
+          {
+            name: '班级平均积分',
+            type: 'line',
+            stack: '总量',
+            label: {
+              normal: {
                 show: false,
-              },
-              splitArea: {
-                show: true,
-                areaStyle:{
-                  color:["#cbe7f2","#fff"]
-                }
-              },
-              axisLine:{
-                lineStyle:{
-                  width:4,
-                  color: '#5ac1e9'
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#444444',//坐标值得具体的颜色
+                position: 'top'
+              }
+            },
+           areaStyle: {              normal: {
+                color: "#d4cae8"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#b29fdd', //改变折线点的颜色
+                lineStyle: {
+                  color: '#b29fdd' //改变折线颜色
                 }
               }
             },
-            series: [{
-              data: integralValue,
-              type: 'line',
-              smooth: true,
-              itemStyle : {
-                normal : {
-                  lineStyle:{
-                    color:'#fc703a'
-                  }
-                }
-              },
-            },{
-              data: sumIntegralValue,
-              type: 'line',
-              smooth: true,
-              itemStyle : {
-                normal : {
-                  lineStyle:{
-                    color:'#6dc2b4'
-                  }
-                }
-              },
-            }]
-          })
+            data: sumIntegralValue
+          }
+        ]
+      })
         },
         getPracticePortraitData(){ // 获取实习积分数据
           let {userId,classId} = this.$route.query;

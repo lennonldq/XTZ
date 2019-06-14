@@ -80,8 +80,8 @@
                   </p>
               </template>
           </el-table-column>
-          <el-table-column prop="moduleName" label="来源"></el-table-column>
-          <el-table-column width="160" prop="integralName" label="积分类型"></el-table-column>
+          <el-table-column prop="integralName" label="来源"></el-table-column>
+          <el-table-column width="160" prop="moduleName" label="积分类型"></el-table-column>
         </el-table>
         <Pagination v-show="tableData.length" :current="current" :totalPage="totalPage" @changePageHandler="changePage"></Pagination>
       </div>
@@ -358,7 +358,7 @@
       padding-top: 14px;
   }
   .middleWarp .talentLabel .labelBox .labelList p{
-      width: 120px;
+      /* width: 120px; */
       height: 30px;
       line-height: 30px;
       text-align: center;
@@ -366,6 +366,7 @@
       font-size: 13px;
       margin-bottom: 20px;
       margin-right: 10px;
+      padding: 0 16px;
   }
   .middleWarp .talentLabel .labelBox .labelList .green{
     background-color: #7edfb4;

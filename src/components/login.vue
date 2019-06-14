@@ -1,57 +1,43 @@
 <template>
   <div class="from">
-    <!-- <el-input
-      placeholder="请输入用户名"
-      v-model="username"
-      clearable
-    >
-    </el-input>
-
-    <el-input
-      placeholder="请输入密码"
-      v-model="password"
-      clearable
-    >
-    </el-input> -->
-    <!-- <input
-      type="text"
-      v-model="username"
-    /> -->
-    <!-- <input
-      type="password"
-      v-model="password"
-    /> -->
-    <!-- <button @click="login">
-      登录
-    </button> -->
-    <el-form
-      class="elform"
-      label-width="80px"
-      :model="formLabelAlign"
-    >
-      <el-form-item label="用户名">
-        <el-input v-model="formLabelAlign.username"></el-input>
-      </el-form-item>
-      <el-form-item
-        label="密码"
-        prop="pass"
+    <div class="nar">
+      <div class="logo1"><img src="../assets/images/logo1.jpg" alt="" style="    width: 200px;
+    display: block;
+    margin: 0 auto;"></div>
+    
+      <el-form
+        class="elform"
+        label-width="80px"
+        :model="formLabelAlign"
       >
-        <el-input
-          type="password"
-          v-model="formLabelAlign.password"
-          auto-complete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="primary"
-          @click="login"
-          class="denglu"
-          size="medium"
-          width="90%"
-        >登录</el-button>
-      </el-form-item>
-    </el-form>
+        <div class="wenzi"><img src="../assets/images/47.png" alt="" style="width: 250px;
+    display: block;
+    margin: 0 auto;"></div>
+        <el-form-item label="用户名">
+          <el-input v-model="formLabelAlign.username"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="密码"
+          prop="pass"
+        >
+       
+          <el-input
+            type="password"
+            v-model="formLabelAlign.password"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            @click="login"
+            class="denglu"
+            size="medium"
+            width="90%"
+          >登录</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 <script>
@@ -87,19 +73,30 @@ export default {
 </script>
 <style scoped>
 .from {
-  width: 500px;
-  /* height: 300px; */
-  /* border: 1px solid rgb(99, 98, 98); */
-  margin: 200px auto;
+  margin: 130px auto;
+     outline-color: invert ;
+	outline-style: none ;
+	outline-width: 0px ;
+	border: none ;
+	border-style: none ;
+	text-shadow: none ;
+	-webkit-appearance: none ;
+	-webkit-user-select: text ;
+	outline-color: transparent ;
+	box-shadow: none;
 }
-.elform {
-  margin: 50px 10px;
+.from .nar .elform{
+  width: 400px;
+  height: 260px;
+  border: 1px solid #c0c4cc;
+  padding-top: 20px;
+  margin: 0 auto;
 }
+
 .el-input {
-    
-    width: 80%;
+  width: 80%;
 }
- .el-button {
+.el-button {
   width: 80%;
 }
 </style>

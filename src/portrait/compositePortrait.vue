@@ -17,10 +17,10 @@
       >
         返回上页
       </router-link>
-       <div class="synchronization">
+       <!-- <div class="synchronization" @click="synchronization()">
         <div class="one">同步数据</div>
         <div class="two">上次同步:<span>2019.4.1 10:00</span> </div>
-      </div>
+      </div> -->
     </div>
     <div class="module">
       <p class="title">综合能力</p>
@@ -34,7 +34,7 @@
           <ul>
             <li v-for="item,index in resultData">
               {{ item.moduleName }}：
-              <span>{{ item.integralValue }}</span>分
+              <span>{{ item.integralValue?item.integralValue:0 }}</span>分
             </li>
           </ul>
         </div>
@@ -230,7 +230,7 @@ export default {
       })
     },
     mixedAbilityEchart (arr) { // 获取综合能力数据
-      console.log(arr);
+      // console.log(arr);
 
       let skillChart = this.$echart.init(this.$refs.skillChart);
       skillChart.setOption({
@@ -269,11 +269,13 @@ export default {
           this.agvIntegralValue = this.resultData[0].agvIntegralValue;
           for (let i = 0; i < this.resultData.length; i++) {
             moduleName.push(this.resultData[i].moduleName);
-            integralValue.push(this.resultData[i].integralValue);
-            arr.push({ value: this.resultData[i].integralValue, name: this.resultData[i].moduleName })
+            // integralValue.push(this.resultData[i].integralValue);
+            arr.push({ value: this.gitdata(this.resultData[i].integralValue) , name: this.resultData[i].moduleName })
           }
+          console.log(arr);
+          
           this.mixedAbilityEchart(arr);
-          this.renderZZT(moduleName, integralValue)
+          // this.renderZZT(moduleName, integralValue)
         }
       })
     },
@@ -310,7 +312,8 @@ export default {
     getPotentialEvaluationData () { // 获取潜质测评数据
       this.$ajax.get(this.baseUrl + potentialEvaluation + '?userId=' + this.$route.query.userId).then(res => {
         let data = JSON.parse(res.data);
-
+ 
+  
         if (data.code == 200) {
           console.log(data.data);
           // this.emotionalIntelligence = data.data.emotionalIntelligence
@@ -323,21 +326,25 @@ export default {
           this.personalCharacter = data.data.personalCharacter;
           this.mentalAgeRemark = data.data.mentalAgeRemark;
           this.emotionalIntelligence = data.data.emotionalIntelligence;
-          this.abilityChart(data.data.mentalAge);
+  
+          
+          this.abilityChart(this.gitdata(data.data.mentalAge));
 
           let moduleName = ["人际交往", "问题处理", "观察能力", "管理能力", "判断力", "空间想象能力", '计划性', '创新性'];
-          this.renderZZT(moduleName, data)
+          // this.renderZZT(moduleName, data)
+   
+
           this.renderZZT(
             moduleName,
             [
-              data.data.innovative,
-              data.data.interpersonalCommunication,
-              data.data.judgment,
-              data.data.managementAbility,
-              data.data.observation,
-              data.data.planned,
-              data.data.problemHandling,
-              data.data.spatialImagination
+              this.gitdata(data.data.innovative),
+              this.gitdata(data.data.interpersonalCommunication),
+              this.gitdata(data.data.judgment),
+              this.gitdata(data.data.managementAbility),
+              this.gitdata(data.data.observation),
+              this.gitdata(data.data.planned),
+              this.gitdata(data.data.problemHandling),
+              this.gitdata(data.data.spatialImagination)
             ]
           )
         }

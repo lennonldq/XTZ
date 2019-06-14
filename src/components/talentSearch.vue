@@ -49,6 +49,12 @@
             <option>完美型/服从者</option>
           </select>
         </div>
+        <div class="form-item">
+          <button
+            class="searchBtnTwo"
+            @click="reset"
+          >重置搜索数据</button>
+        </div>
         <div class="form-item3">
           <button
             class="searchBtn"
@@ -113,7 +119,7 @@
             @change="getTalent"
           >
             <option>全部</option>
-            <option>课程</option>
+            <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
             <option>学徒制</option>
@@ -142,6 +148,12 @@
             <option>稳定型/支持者</option>
             <option>完美型/服从者</option>
           </select>
+        </div>
+        <div class="form-item">
+          <button
+            class="searchBtnTwo"
+            @click="reset"
+          >重置搜索数据</button>
         </div>
         <div class="form-item3">
           <button
@@ -242,7 +254,7 @@
             @change="getTalent"
           >
             <option>全部</option>
-            <option>课程</option>
+            <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
             <option>学徒制</option>
@@ -261,15 +273,19 @@
         </div>
         <div class="form-item2">
           <label>搜索性格：</label>
-          <select
-            v-model="searchData.personalCharacter"
-          >
+          <select v-model="searchData.personalCharacter">
             <option>全部</option>
             <option>活泼型/社交者</option>
             <option>支配型/控制者</option>
             <option>稳定型/支持者</option>
             <option>完美型/服从者</option>
           </select>
+        </div>
+        <div class="form-item">
+          <button
+            class="searchBtnTwo"
+            @click="reset"
+          >重置搜索数据</button>
         </div>
         <div class="form-item3">
           <button
@@ -365,7 +381,7 @@ export default {
   data () {
     return {
       // 人才数量
-      talents:0,
+      talents: 0,
       // 8,9
       // 全部班级当前选中的id
       ProductActive: "",
@@ -394,7 +410,7 @@ export default {
         className: "",
         professionalName: '',
         personalCharacter: '全部',
-        talentSelect: '全部',
+        talentSelect: '学习课程',
         talentName: "",
         // // 学届
         // editorial:"全部",
@@ -411,13 +427,12 @@ export default {
     }
   },
   created () {
-    
     this.userTypeId = localStorage.getItem("userTypeId")
+    this.search();
+    this.getTalent();
     this.getTableData();
     this.getClasses();
     this.getProfessional();
-    
-   
   },
   methods: {
     getClassName () {
@@ -475,7 +490,7 @@ export default {
         case '全部':
           this.talentSelect = '';
           break
-        case '课程':
+        case '学习课程':
           this.talentSelect = 1;
           break
         case '实验实训':
@@ -564,8 +579,12 @@ export default {
     // 当前选中的学届
     changexuejie (event) {
       this.xuejie = event.target.value;
+    },
+    reset () {
+      this.searchData.talentSelect = "全部";
+    this.search();
     }
-    
+
   }
 }
 </script>
@@ -613,11 +632,12 @@ export default {
 .formBox .form_bottom .form-item1 {
   flex: 1;
 }
-.formBox .form_bottom .form-item2 {
-  padding-right: 30px;
+.formBox .form_bottom .form-item {
+  width: 150px;
+  text-align: right;
 }
 .formBox .form_bottom .form-item3 {
-  width: 176px;
+  width: 150px;
   text-align: right;
 }
 .formBox input {
@@ -629,9 +649,7 @@ export default {
 .formBox .form_top input {
   width: 186px;
 }
-.formBox .form_bottom input {
-  width: 264px;
-}
+
 .formBox .form_bottom select {
   width: 110px;
   height: 32px;
@@ -650,7 +668,7 @@ export default {
 }
 .table .tableTit .blue {
   color: #10859d;
-  padding:0px 5px;
+  padding: 0px 5px;
   font-size: 16px;
 }
 .table .lookBtn {

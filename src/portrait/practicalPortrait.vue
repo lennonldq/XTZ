@@ -17,6 +17,46 @@
         返回上页
       </router-link>
     </div>
+
+    <div class="module">
+      <p class="title">实训得分</p>
+      <p
+        v-if="nuber > 0"
+        class="ExperimentalResult"
+      >{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
+        {{`${good}实训技能掌握较好；`}}</p>
+      <p v-else-if="difference.length>0">{{ `${difference}掌握较差；`}}</p>
+      <p
+        v-else
+        class="wu"
+      >暂无数据</p>
+
+      <div
+        class="histogramChart"
+        ref="histogramChart"
+      ></div>
+    </div>
+
+    <div class="module">
+      <p class="title">岗位得分</p>
+      <p
+        v-if="nuber > 0"
+        class="ExperimentalResult"
+      >{{`
+        ${baseInfo.username}同学实训中涉及10个岗位的技能训练，达标率为：78.6%
+        其中推广员、零售店长、物流运输员岗位掌握较好，而零售店员岗位掌握较差；
+        `}}<span style="color: #0088a0">{{rate}}</span><br>
+        {{`${good}实训技能掌握较好；`}}</p>
+      <p v-else-if="difference.length>0">{{ `${difference}掌握较差；`}}</p>
+      <p
+        v-else
+        class="wu"
+      >暂无数据</p>
+      <div
+        class="postHistogramChart"
+        ref="postHistogramChart"
+      ></div>
+    </div>
     <div class="module">
       <p class="title">实验实训积分</p>
       <div
@@ -24,30 +64,13 @@
         ref="scoreChart"
       ></div>
     </div>
-    <div
-      class="module"
-      style="margin-bottom: 0"
-    >
-      <p class="title">实验实训</p>
-      <p v-if="nuber > 0" class="ExperimentalResult">{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color: #0088a0">{{rate}}</span><br>
-        {{`${good}实训技能掌握较好；`}}</p>
-        <p v-else-if="difference.length>0">{{ `${difference}掌握较差；`}}</p>
-        <p v-else class="wu">暂无数据</p>
-      <div
-        class="ExperimentalChart"
-        ref="ExperimentalChart"
-      ></div>
-      <div
-        class="histogramChart"
-        ref="histogramChart"
-      ></div>
-    </div>
   </div>
 </template>
 <script>
 import {
   experimentalTrainingPortrait,
-  experimentalTraining
+  experimentalTraining,
+  getJobScore
 } from "../js/url"
 
 export default {
@@ -57,22 +80,24 @@ export default {
     return {
       // 实验实训数据
       dataList: [],
-      // 达标率
+      //  岗位得分数据
+      jobScoreList: [],
+      // 实训得分达标率
       rate: '',
       // 个数
       nuber: 0,
-      // 掌握好的
+      // 实训掌握好的
       good: [],
-      // 掌握较差
+      //实训掌握较差
       difference: [],
-      // 分数占比
-      score_rateArr:[]
+      // 实训分数占比
+      score_rateArr: []
     }
   },
   mounted () {
-
     this.getExperimentalTrainingPortraitData();
     this.getExperimentalTrainingData();
+    this.getjobScore();
 
   },
   methods: {
@@ -80,153 +105,102 @@ export default {
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
         grid: {
-          left: 60,
-          right: 20,
-          top: 50,
-          bottom: 50
+          left: 80,
+          right: 80,
+          top: 100,
+          bottom: 50,
+          containLabel: true
+        },
+        //图标头
+        legend: {
+          data: ['个人积分', '班级平均积分'],
+          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          y: "30",
+          itemWidth: 20,
+
+          itemHeight: 10,
+
+          itemGap: 40,
+          textStyle: { fontSize: 16 }
         },
         tooltip: {
           trigger: 'axis',
-          formatter: (params) => {
-            let str = "";
-            let arr = ["实训积分", "班级平均积分"];
-            for (let i = 0; i < params.length; i++) {
-              str += `${this.baseInfo.username}${arr[i]}:${params[i].value}分<br>`
-            }
-            return str;
-          },
-        },
-        xAxis: {
-          name: "x",
-          type: 'category',
-          data: termid,
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
             }
           }
         },
-        yAxis: {
-          name: "y",
-          type: 'value',
-          splitLine: {
-            show: false,
-          },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ["#cbe7f2", "#fff"]
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-            }
-          }
-        },
-        series: [{
-          data: integralValue,
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#fc703a'
-              }
-            }
-          },
-        }, {
-          data: sumIntegralValue,
-          type: 'line',
-          smooth: true,
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#6dc2b4'
-              }
-            }
-          }, 
-        }]
-      })
-    },
-    ExperimentalEchart (type_name, valueArr,ExperimentalEchart) { // 实验实训
-      let ExperimentalChart = this.$echart.init(this.$refs.ExperimentalChart);
-      // console.log(type_name);
-      
-      ExperimentalChart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          
-             formatter: (params) => {
-            let str = "";
-            for (let i = 0; i < ExperimentalEchart.length; i++) {
-              str += `${type_name[i].text}占班级平均分:${ExperimentalEchart[i]}%<br/>`;
-            }
-            return str;
-          },
-        },
-        textStyle: {
-          color: '#444444'
-        },
-        radar: [
+
+        xAxis: [
           {
-            indicator: type_name,
-            splitLine: {
-              show: true,    //去掉网格线
-              lineStyle: {
-                width: 4,
-                color: "#adb8ff"
-              }
-            },
-            splitArea: {
-              areaStyle: {
-                color: ["#fff", "#e2e6ff"]
-              }
-            }
+            type: 'category',
+            boundaryGap: false,
+            data: termid
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
           }
         ],
         series: [
           {
-            type: 'radar',
-            tooltip: {
-              trigger: 'item'
-            },
-            itemStyle: { normal: { areaStyle: { type: 'default' } } },
-            data: [
-              {
-                value: valueArr,
-                name: '实验实训'
+            name: '个人积分',
+            type: 'line',
+            stack: '总量',
+              areaStyle: {              normal: {
+                color: "#93dfe0"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#8cd5c2', //改变折线点的颜色
+                lineStyle: {
+                  color: '#17c6c3' //改变折线颜色
+                }
               }
-            ]
+            },
+            data: integralValue
+          },
+          {
+            name: '班级平均积分',
+            type: 'line',
+            stack: '总量',
+            label: {
+              normal: {
+                show: false,
+                position: 'top'
+              }
+            },
+             areaStyle: {              normal: {
+                color: "#d4cae8"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#b29fdd', //改变折线点的颜色
+                lineStyle: {
+                  color: '#b29fdd' //改变折线颜色
+                }
+              }
+            },
+            data: sumIntegralValue
           }
         ]
       })
     },
-    histogramEchart (type_nameArr, scoreArr, sum_scoreArr,score_rateArr) {
+
+    histogramEchart (type_nameArr, scoreArr) {   //实训得分
+      console.log(type_nameArr, scoreArr);
       let histogramChart = this.$echart.init(this.$refs.histogramChart);
-      console.log(score_rateArr);
-      
       histogramChart.setOption({
         tooltip: {
           trigger: 'axis',
-         formatter: (params)=> {
-              let str = "";
-              str += `分数百分比:${score_rateArr[params[1].dataIndex]}%<br/>`;
-              str += `总分:${params[1].value}`;
-              return str;
-            },
+          formatter: (params) => {
+            let str = "";
+            str += `${params[0].name}<br/>实训得分:${params[0].data}`;
+            return str;
+          },
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           }
@@ -241,8 +215,8 @@ export default {
           type: 'value',
           axisLine: {
             lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
+              width: 2,
+              color: '#408829'
             }
           },
           splitLine: {
@@ -261,8 +235,8 @@ export default {
           type: 'category',
           axisLine: {
             lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
+              width: 2,
+              color: '#408829'
             }
           },
           axisLabel: {
@@ -287,16 +261,78 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: "#5ac1e9",
+                color: function (params) {
+                  var colorList = ['#a9cba2', '#a9cba2', '#a9cba2', '#a9cba2', '#c2dabd'];
+                  return colorList[params.dataIndex];
+                }
               }
             },
             data: scoreArr
           },
+
+        ]
+      })
+    },
+
+    postHistogramEchart (type_nameArr, scoreArr) {   //岗位得分
+      console.log(type_nameArr, scoreArr);
+      let postHistogramChart = this.$echart.init(this.$refs.postHistogramChart);
+      postHistogramChart.setOption({
+        tooltip: {
+          trigger: 'axis',
+              formatter: (params) => {
+            let str = "";
+            str += `${params[0].name}<br/>岗位得分:${params[0].data}`;
+            return str;
+          },
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        // legend: {
+        //   data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        // },
+        grid: {
+          top:0,
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              width: 2,
+              color: '#008acd'
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#444444'
+            }
+          },
+        },
+        yAxis: {
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              width: 2,
+              color: '#008acd'
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#444444'
+            }
+          },
+          data: type_nameArr
+        },
+        series: [
           {
-            name: '总分',
+            // name: '直接访问',
             type: 'bar',
             stack: '总量',
-            barWidth: 60,
             label: {
               normal: {
                 show: true,
@@ -305,14 +341,18 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: "#7edfb4",
+                color: function (params) {
+                  let colorList = ['#5ab1ef', '#5ab1ef', '#5ab1ef', '#5ab1ef', '#5ab1ef', '#5ab1ef', '#5ab1ef', '#5ab1ef', '#5ab1ef', '#8bc8f3'];
+                  return colorList[params.dataIndex];
+                }
               }
             },
-            data: sum_scoreArr
+            data: scoreArr
           }
         ]
       })
     },
+
 
     getExperimentalTrainingPortraitData () { // 获取实验实训积分数据
       let { userId, classId } = this.$route.query;
@@ -344,18 +384,39 @@ export default {
           this.dataList = JSON.parse(res.data).data;
           let type_name = [], valueArr = [];
           let type_nameArr = [], scoreArr = [], sum_scoreArr = [];
-          let score_rateArr=[];
+          let score_rateArr = [];
           for (let i = 0; i < data.data.length; i++) {
-              score_rateArr.push(data.data[i].score_rate)
+            score_rateArr.push(data.data[i].score_rate)
             valueArr.push(data.data[i].score)
             type_name.push({ text: data.data[i].type_name, max: 600 });
             type_nameArr.push(data.data[i].type_name);
             scoreArr.push(parseInt(data.data[i].score));
             sum_scoreArr.push(parseInt(data.data[i].sum_score))
           }
-          this.ExperimentalEchart(type_name, valueArr,score_rateArr);
-          this.histogramEchart(type_nameArr, scoreArr, sum_scoreArr,score_rateArr);
+          this.histogramEchart(type_nameArr, scoreArr);
           this.listdata()
+        }
+      })
+    },
+
+    getjobScore () {             //获取岗位分数
+      //  let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + getJobScore, {
+        params: { userId: 904 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.jobScoreList = data.data.scoreListResponseList;
+          let post_nameArr = [], post_scoreArr = [];
+          // console.log(this.jobScoreList[0].postName);
+
+          for (let i = 0; i < this.jobScoreList.length; i++) {
+            post_nameArr.push(this.jobScoreList[i].postName);
+            post_scoreArr.push(this.jobScoreList[i].score);
+          }
+          console.log(post_nameArr,post_scoreArr);
+
+          this.postHistogramEchart(post_nameArr, post_scoreArr);
         }
       })
     },
@@ -403,17 +464,21 @@ export default {
 }
 .module .ExperimentalResult {
   padding-top: 46px;
+  padding-bottom: 30px;
   width: 912px;
   color: #444;
   margin: 0 auto;
   line-height: 24px;
 }
-.module .wu{
+.module .wu {
   font-size: 18px;
   text-align: center;
   line-height: 200px;
 }
 .module .histogramChart {
+  height: 458px;
+}
+.module .postHistogramChart {
   height: 458px;
 }
 </style>

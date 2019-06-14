@@ -1,7 +1,13 @@
 <template>
-  <el-main>
-      <p class="title">首页</p>
-  </el-main>
+ <div class="home">
+        <div class="ne">
+            <img src="../assets/images/Snipaste_2019-06-14_10-54-52.png" alt="">
+            <img src="../assets/images/Snipaste_2019-06-14_11-03-22.png" alt="">
+            <img src="../assets/images/Snipaste_2019-06-14_11-05-10.png" alt="">
+                <img src="../assets/images/Snipaste_2019-06-14_11-08-57.png" alt="">
+                <img src="../assets/images/Snipaste_2019-06-14_11-10-44.png" alt="">
+        </div>
+    </div>
 </template>
 
 <script>
@@ -21,5 +27,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+     .home>.ne{
+       padding-top: 40px;
+         width: 45%;
+         margin: 0 auto;
+     }   
 </style>

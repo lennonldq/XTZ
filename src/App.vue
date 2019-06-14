@@ -101,6 +101,19 @@
     font-size: 15px;
     box-shadow: 2px 2px 5px #b1b0b0
   }
+   .searchBtnTwo{
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    text-align: left;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #12849c;
+    font-size: 15px;
+    box-shadow: 2px 2px 5px #b1b0b0
+  }
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
   }
