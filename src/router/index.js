@@ -24,10 +24,14 @@ Vue.use(Router)
 let router =  new Router({
   linkActiveClass:"is-active",
   routes: [
+    {path:'/',
+    name:"主页面",
+    redirect:'/login'
+  },
     {
       path: '/login',
       name: 'Login',
-      component:resolve=>require(['@/components/login'],resolve)
+      component:(resolve)=>require(['@/components/login'],resolve)
     },
     {
       path: '/loginTwo',
@@ -39,7 +43,8 @@ let router =  new Router({
       name: 'Home',
       component:  resolve=>require(['@/components/home'],resolve),
       meta:{
-        auth:true
+        auth:true,
+        requireAuth: true,
       }
     },
     {
@@ -47,7 +52,7 @@ let router =  new Router({
       name: 'Company',
       component:  resolve=>require(['@/components/company'],resolve),
       meta:{
-        auth:true
+        auth:true, requireAuth: true,
       }
     },
     {
@@ -55,14 +60,14 @@ let router =  new Router({
       name: 'IntegralPortrait',
       component:  resolve=>require(['@/components/integralPortrait'],resolve),
       meta:{
-        auth:true
+        auth:true, requireAuth: true,
       }
     },
     {
       path: '/portrait',
       component: resolve=>require(['@/components/portrait'],resolve),
       meta:{
-        auth:true,
+        auth:true, requireAuth: true,
       },
       children:[
         {
@@ -118,20 +123,25 @@ let router =  new Router({
       }
     }
   ]
-})
+});
 router.beforeEach((to, from, next) => {
+  // console.log(to,from,next);
   if (to.matched.some(record => record.meta.auth)){  // 判断该路由是否需要登录权限
     if (localStorage.getItem("userTypeId")) {  // 判断当前的userTypeId是否存在
+      // console.log( next());
       next();
     }
     else {
+      console.log( next());
+      
       next({
         path: '/login',
       })
+      console.log( next());
     }
   }
   else {
-    next();
+    next()
   }
 });
 export default router

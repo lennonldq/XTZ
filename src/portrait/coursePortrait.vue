@@ -16,31 +16,41 @@
       >
         返回上页
       </router-link>
-          <div class="synchronization" @click="synchronization()" style="line-height: 80px;">
-            学校人才培养方案
+      <div
+        class="synchronization"
+        @click="synchronization()"
+        style="line-height: 80px;"
+      >
+        学校人才培养方案
       </div>
     </div>
     <div class="module">
       <p class="title">课程学习情况</p>
+      <!-- <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p> -->
+      <p class='schoolYear'>
+        <span>{{`${baseInfo.username}在本${schools}的课程学习过程中；`}}</span>
+        <span v-if="large.length >0">{{`${large}等${largenuber}门课程掌握较好，高于或等于平均水平,`}}</span>
+        <span v-if="small.length > 0">{{`${small}等${smallnuber}门课程掌握较为一般，低于平均水平，有待加强提高`}}</span>
+      </p>
       <div class="course">
-
       </div>
-      <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p>
+
     </div>
     <div class="module">
       <p class="title">学习轨迹跟踪</p>
+      <p class="trajectoryDetail">
+        {{
+        `${baseInfo.username}在本学期的课程学习过程中,作业成绩平均分为${typeScore3}分，${compareScore3}班级平均分${sumTypeScore3}分，课程练习成绩平均分为${typeScore2}分,${compareScore2}班级平均分${sumTypeScore2}分，考试成绩为${typeScore1}分,${compareScore1}班级平均分${sumTypeScore1}分；
+        平时表现(作业)优于平均水平，课堂练习优于平均水平，考试表现优于平均水平；`
+        }}
+      </p>
       <div class="trajectory">
         <div
           class="achievementChart"
           ref="achievementChart"
         ></div>
       </div>
-      <p class="trajectoryDetail">
-        {{
-        `${baseInfo.username}在课程学习过程中，${maxType}是最多的学习类型，占总类的${maxPersent}，${minType}是最少的学习类型，占总类的${minPersent}；作业成绩平均分为${typeScore3}分
-        （班级平均分为${sumTypeScore3}分），课堂练习成绩平均分为${typeScore2}分（班级平均分为${sumTypeScore2}分），考试成绩为${typeScore1}分（班级平均分为${sumTypeScore1}分）；平时表现优于平均水平，课堂练习优于平均水平，考试表现需加强；`
-        }}
-      </p>
+
     </div>
 
     <div class="module">
@@ -64,28 +74,38 @@ export default {
   name: "CompositePortrait",
   data () {
     return {
-      maxType: '',
+      excellentList: [],//学习轨迹跟踪优于
+      failListL: [],  //学习轨迹跟踪低于
       minType: '',
-      maxPersent: "", //最大占比
       minPersent: "", //最小占比
 
       typeScore3: "",//作业成绩
       sumTypeScore3: "", // 班级作业成绩
+      compareScore3: "", //个人与班级比较
+      ContrastScore3: "",
 
       typeScore2: "",//课堂练习成绩
       sumTypeScore2: "", // 班级课堂练习成绩
+      compareScore2: "", //个人与班级比较
+      ContrastScore2: "",
 
       typeScore1: "", //考试成绩
       sumTypeScore1: "",//班级考试成绩
+      compareScore1: "", //个人与班级比较
+      ContrastScore1: "",
+
+      trajectoryData: [],
 
       situationData: [],
       // 课程学习情况文字描述
       large: [],
       small: [],
       // 高于文字
-      largeWord: '高于班级平均水平',
+      largenuber: 0,
       // 低于文字
-      smallWord: '一般，需加强学习'
+      smallnuber: 0,
+      //学期？学年
+      schools: ''
     }
   },
   mounted () {
@@ -119,7 +139,7 @@ export default {
     },
 
     courseIntegralEchart (termid, integralValue, sumIntegralValue) { // 课程积分情况
-      console.log(termid, integralValue, sumIntegralValue);
+      // console.log(termid, integralValue, sumIntegralValue);
 
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
@@ -134,13 +154,13 @@ export default {
         legend: {
           data: ['个人积分', '班级平均积分'],
           icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
-          y:"30",
+          y: "30",
           itemWidth: 20,
 
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle:{fontSize:16}
+          textStyle: { fontSize: 16 }
         },
         tooltip: {
           trigger: 'axis',
@@ -169,7 +189,7 @@ export default {
             name: '个人积分',
             type: 'line',
             stack: '总量',
-             areaStyle: {              normal: {
+            areaStyle: {              normal: {
                 color: "#93dfe0"
               }            },
             itemStyle: {
@@ -192,7 +212,7 @@ export default {
                 position: 'top'
               }
             },
-             areaStyle: {              normal: {
+            areaStyle: {              normal: {
                 color: "#d4cae8"
               }            },
             itemStyle: {
@@ -219,10 +239,17 @@ export default {
           let sumTypeScore = [], typeScore = [], numArr = [];
           this.typeScore3 = this.gitdata(data.data.typeScore3);//个人作业成成绩
           this.sumTypeScore3 = this.gitdata(data.data.sumTypeScore3);//班级作业成绩
+          this.compareScore3 = this.compare(this.typeScore3, this.sumTypeScore3); //个人与班级比较
+
           this.typeScore2 = this.gitdata(data.data.typeScore2);//个人课堂练习成绩
           this.sumTypeScore2 = this.gitdata(data.data.sumTypeScore2);//班级课堂练习成绩
+          this.compareScore2 = this.compare(this.typeScore2, this.sumTypeScore2);//个人与班级比较
+
           this.typeScore1 = this.gitdata(data.data.typeScore1);//个人考试成绩
           this.sumTypeScore1 = this.gitdata(data.data.sumTypeScore1);//班级考试成绩
+          this.compareScore1 = this.compare(this.typeScore1, this.sumTypeScore1);//个人与班级比较
+
+
           for (let attr in data.data) {
             if (attr.indexOf("typeCount") > -1) {
               typeCount.push({
@@ -255,9 +282,6 @@ export default {
               this.minType = typeCount[k].name
             }
           }
-          console.log(sumTypeScore, typeScore);
-
-
           this.achievementEchart(sumTypeScore, typeScore)
         }
       })
@@ -271,6 +295,29 @@ export default {
       }
       return data;
     },
+
+    // 比较个人分与班级平均分
+    compare (arr1, arr2) {
+      if (arr1 >= arr2) {
+        return "高于或等于"
+      } else if (arr1 < arr2) {
+        return "低于"
+      }
+    },
+    contrast (arr1, arr2) {
+      if (arr1 >= arr2) {
+        return "于或等于"
+      } else if (arr1 < arr2) {
+        return "低于"
+      }
+    },
+
+
+
+    // 比较个人分与班级优于与低于
+
+
+
     //        班级分   , 个人分
     achievementEchart (sumTypeScore, typeScore) {//学习类型成绩
       let achievementChart = this.$echart.init(this.$refs.achievementChart);
@@ -357,47 +404,55 @@ export default {
         params: { userId, classId }
       }).then(res => {
         let data = JSON.parse(res.data);
+        // console.log(data.data);
+        
         if (data.code == 200) {
           let str = '';
-          this.situationData = data.data;
-          // console.log(data.data);
+          for (let i in data.data) {
+            this.situationData.push(data.data[i]);
+          }
           //  计算出课程学习情况的最多和最少
-          for (let j = 0; j < data.data.length; j++) {
-            for (let i = 0; i < data.data[j].length; i++) {
-              if (data.data[j][i].integralValue > data.data[j][i].sumIntegralValue) {
-                this.large.push(data.data[j][i].integralName + "  ")
-              } else {
-                this.small.push(data.data[j][i].integralName + "  ")
+          for (let j = 0; j < this.situationData.length; j++) {
+        
+            
+            for (let i = 0; i <this.situationData[j].length; i++) {
+              if (this.situationData[j][i].integralValue >= this.situationData[j][i].sumIntegralValue && this.large.length <= 4) {
+                this.large.push(this.situationData[j][i].integralName + "  ");
+              } else if (this.situationData[j][i].integralValue < this.situationData[j][i].sumIntegralValue && this.small.length <= 4) {
+                this.small.push(this.situationData[j][i].integralName + "  ")
               }
             }
           }
-          if (this.small.length <= 0) {
-            this.smallWord = ""
-          } else if (this.large.length <= 0) {
-            this.largeWord = ""
-          }
-          if (this.large.length > 5) {
-            this.large = this.large.slice(0, 5)
-          } else if (this.small.length > 5) {
-            this.small = this.small.slice(0, 5)
+          this.largenuber = this.large.length;
+          this.smallnuber = this.small.length;
+
+
+        
+          // 判断学期还是学年
+          if(this.situationData.length == 1){
+            this.schools = "学期"
+          }else if(this.situationData.length >  1){
+            this.schools = "学年"
           }
 
           let integralName = [], integralValue = [], sumIntegralValue = [];
           let schollyear = [];
 
-          for (let i = 0; i < data.data.length; i++) {
+          for (let i = 0; i < this.situationData.length; i++) {
             integralName.push([]);
             integralValue.push([]);
             sumIntegralValue.push([]);
             schollyear.push([]);
-            for (let k = 0; k < data.data[i].length; k++) {
-              integralName[i].push({ name: data.data[i][k].integralName, max: 100 });
-              integralValue[i].push(data.data[i][k].integralValue);
-              sumIntegralValue[i].push(data.data[i][k].sumIntegralValue);
-              schollyear[i].push('第' + data.data[i][k].termid + '学年')
+            for (let k = 0; k < this.situationData[i].length; k++) {
+              integralName[i].push({ name: this.situationData[i][k].integralName, max: 100 });
+              // console.log(integralName[i]);
+
+              integralValue[i].push(this.situationData[i][k].integralValue);
+              sumIntegralValue[i].push(this.situationData[i][k].sumIntegralValue);
+              schollyear[i].push('第' + this.situationData[i][k].termid + '学年')
             }
           }
-          for (let i = 0; i < data.data.length; i++) {
+          for (let i = 0; i <this.situationData.length; i++) {
             str += `<div class="fistYearChart"
                          style="width: 490px;height: 450px;float:left"
                          id="fistYearChart${i}">
@@ -408,7 +463,7 @@ export default {
           for (let j = 0; j < schollyear.length; j++) {
             schollyearis[j] = schollyear[j][0]
           }
-          console.log(schollyearis);
+          // console.log(integralName);
           for (let k = 0; k < this.situationData.length; k++) {
             this.learningSituationEchart(
               document.getElementById("fistYearChart" + k),
@@ -445,7 +500,7 @@ export default {
             width: 6,
           }
         },
-        color: ["#7edfb4", '#ef9898'],
+        color: ["#7edfb4", '#b6a2de'],
         legend: {
           top: 40,
           icon: 'rect',
@@ -470,10 +525,9 @@ export default {
           splitLine: {
             show: true,    //去掉网格线
             lineStyle: {
-              width: 4,
-              color: "#adb8ff"
+              width: 2
             }
-          }
+          },
         },
         series: [{
           name: '预算 vs 开销',
@@ -493,8 +547,8 @@ export default {
     },
 
     // 点击跳转静态表格
-    synchronization(){
-           let routeData = this.$router.resolve({ path:'/company' });
+    synchronization () {
+      let routeData = this.$router.resolve({ path: '/company' });
       window.open(routeData.href, '_blank');
     }
   }
@@ -571,7 +625,7 @@ export default {
   margin: 0 auto;
   color: #444444;
   line-height: 26px;
-  padding-bottom: 60px;
+  padding-top: 60px;
 }
 .module .course {
   padding-top: 50px;

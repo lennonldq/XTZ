@@ -19,13 +19,17 @@
     </div>
 
     <div class="module">
-      <p class="title">实战运营</p>
+      <p class="title">运营得分</p>
       <p
         v-if="nuber > 0"
         class="ExperimentalResult"
-      >{{`${baseInfo.username}实训中涉及：${nuber}个系统的实训实训,达标率为:`}}<span style="color:#0088a0">{{rate}}</span><br>
-        {{`${good}实训技能掌握较好；`}}<br />
-        {{ `${difference}掌握较差；`}}</p>
+      >{{`${baseInfo.username}实战运营过程中，共参与：${operateName}等${nuber}个系统的实训实训,达标率为:`}}<span style="color:#0088a0">{{rate}}</span><br>
+        <span v-if="skilled.length > 0">{{`其中在${skilled}中能熟悉掌握实战运营的相关步骤；`}}</span>
+
+        <span v-if="secondary.length > 0">{{ `在${secondary}系统中能掌握基本的步骤，有待提高；`}}</span>
+        <span v-if="unfamiliar.length > 0">{{ `在${unfamiliar}系统中未能完成实战运营大部分操作，掌握较差，需进一步加强；`}}</span>
+
+      </p>
       <p
         v-else
         class="wu"
@@ -36,18 +40,20 @@
         ref="histogramChart"
       ></div>
     </div>
-    
+
     <div class="module">
       <p class="title">岗位得分</p>
       <p
-        v-if="nuber > 0"
+        v-if="jobScoreList.length > 0"
         class="ExperimentalResult"
-      >{{`
-        ${baseInfo.username}同学实训中涉及10个岗位的技能训练，达标率为：78.6%
-        其中推广员、零售店长、物流运输员岗位掌握较好，而零售店员岗位掌握较差；
-        `}}<span style="color: #0088a0">{{rate}}</span><br>
-        {{`${good}实训技能掌握较好；`}}</p>
-      <p v-else-if="difference.length>0">{{ `${difference}掌握较差；`}}</p>
+      >
+        {{`
+        ${baseInfo.username}同学实战运营过程中，共参与${postName}等${participate}个系统技能训练，按岗位进行计分，达标率：
+        `}}<span style="color: #0088a0">{{rateScore}}%</span>
+        <span v-if="postSkilled.length > 0"> {{`其中在${postSkilled}能够熟悉掌握相关岗位技能，`}}</span>
+        <span v-if="postSecondary.length > 0">{{`在${postSecondary}中能掌握基本的岗位技能`}}</span>
+        <span v-if="postUnfamiliar.length > 0"> {{ `而在${postUnfamiliar}岗位及鞥呢训练中掌握较差，需进一步加强`}}</span>
+      </p>
       <p
         v-else
         class="wu"
@@ -80,12 +86,34 @@ export default {
     return {
       // 实战运营数据
       dataList: [],
-       //  岗位得分数据
+      //  岗位得分数据
       jobScoreList: [],
+      // 岗位达标率
+      rateScore: '',
+      // 岗位得分超过80的
+      postSkilled: [],
+      //岗位得分60-80的
+      postSecondary: [],
+      //岗位的分低于60
+      postUnfamiliar: [],
+      // 岗位参与个数
+      participate: 0,
+      //岗位参与名字
+      postName: [],
+
+
+      // 实训得分超过80的
+      skilled: [],
+      //实训得分60-80的
+      secondary: [],
+      //实训的分低于60
+      unfamiliar: [],
       // 达标率
       rate: '',
-      // 个数
+      // 实训得分个数
       nuber: 0,
+      //实训参与名字
+      operateName: [],
       // 掌握好的
       good: [],
       // 掌握较差
@@ -150,7 +178,7 @@ export default {
             name: '个人积分',
             type: 'line',
             stack: '总量',
-       areaStyle: {              normal: {
+            areaStyle: {              normal: {
                 color: "#93dfe0"
               }            },
             itemStyle: {
@@ -173,7 +201,7 @@ export default {
                 position: 'top'
               }
             },
-              areaStyle: {              normal: {
+            areaStyle: {              normal: {
                 color: "#d4cae8"
               }            },
             itemStyle: {
@@ -197,7 +225,7 @@ export default {
       histogramChart.setOption({
         tooltip: {
           trigger: 'axis',
-            formatter: (params) => {
+          formatter: (params) => {
             let str = "";
             str += `${params[0].name}<br/>运营得分:${params[0].data}`;
             return str;
@@ -208,9 +236,9 @@ export default {
         },
         grid: {
           top: 0,
-          left: '100',
           right: '4%',
-
+          left:'20',
+           containLabel: true
         },
         xAxis: {
           type: 'value',
@@ -241,6 +269,29 @@ export default {
             }
           },
           axisLabel: {
+            interval: 0,
+            formatter: function (value) {
+              console.log(value.length);
+
+              var result = "";//拼接加\n返回的类目项
+              var maxLength = 3;//每项显示文字个数
+              var valLength = value.length;//X轴类目项的文字个数
+              var rowNumber = Math.ceil(valLength / maxLength); //类目项需要换行的行数
+              if (rowNumber > 3)//如果文字大于5,
+              {
+                for (var i = 0; i < rowNumber; i++) {
+                  var temp = "";//每次截取的字符串
+                  var start = i * maxLength;//开始截取的位置
+                  var end = start + maxLength;//结束截取的位置
+                  temp = value.substring(start, end) + "\n";
+                  result += temp; //拼接生成最终的字符串
+                }
+                return result;
+              }
+              else {
+                return value;
+              }
+            },
             textStyle: {
               color: '#444444',//坐标值得具体的颜色
             }
@@ -274,13 +325,13 @@ export default {
         ]
       })
     },
-     postHistogramEchart (type_nameArr, scoreArr) {   //岗位得分
+    postHistogramEchart (type_nameArr, scoreArr) {   //岗位得分
       console.log(type_nameArr, scoreArr);
       let postHistogramChart = this.$echart.init(this.$refs.postHistogramChart);
       postHistogramChart.setOption({
         tooltip: {
           trigger: 'axis',
-            formatter: (params) => {
+          formatter: (params) => {
             let str = "";
             str += `${params[0].name}<br/>岗位得分:${params[0].data}`;
             return str;
@@ -293,7 +344,7 @@ export default {
         //   data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
         // },
         grid: {
-          top:0,
+          top: 0,
           left: '3%',
           right: '4%',
           bottom: '3%',
@@ -378,7 +429,7 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code = 200) {
-          this.dataList = JSON.parse(res.data).data;
+          this.dataList = data.data;
           let type_name = [], valueArr = [];
           let type_nameArr = [], scoreArr = [], sum_scoreArr = [];
           let score_rateArr = [];
@@ -388,7 +439,18 @@ export default {
             type_name.push({ text: data.data[i].type_name, max: 600 });
             type_nameArr.push(data.data[i].type_name);
             scoreArr.push(parseInt(data.data[i].score));
-            sum_scoreArr.push(parseInt(data.data[i].sum_score))
+            sum_scoreArr.push(parseInt(data.data[i].sum_score));
+            if (this.operateName.length < 5) {
+              this.operateName.push(this.dataList[i].type_name)
+            }
+            // 循环获取实训得分的文字数据
+            if (this.dataList[i].score > 80) {
+              this.skilled.push(this.dataList[i].type_name);
+            } else if (this.dataList[i].score < 80 && this.dataList[i].score > 60) {
+              this.secondary.push(this.dataList[i].type_name);
+            } else {
+              this.unfamiliar.push(this.dataList[i].type_name)
+            }
           }
           this.histogramEchart(type_nameArr, score_rateArr)
           this.listdata()
@@ -397,23 +459,41 @@ export default {
 
       })
     },
-      getjobScore () {             //获取岗位分数
-      //  let { userId } = this.$route.query;
+    getjobScore () {             //获取岗位分数
+      let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + getJobScore, {
-        params: { userId: 904 }
-      }).then(res => {
-        let data = JSON.parse(res.data);
+        params: { userId }
+      }).then(res => {let data = JSON.parse(res.data);
         if (data.code == 200) {
           this.jobScoreList = data.data.scoreListResponseList;
+          this.rateScore = data.data.rateScore;
           let post_nameArr = [], post_scoreArr = [];
-          // console.log(this.jobScoreList[0].postName);
 
           for (let i = 0; i < this.jobScoreList.length; i++) {
-            post_nameArr.push(this.jobScoreList[i].postName);
-            post_scoreArr.push(this.jobScoreList[i].score);
-          }
-          console.log(post_nameArr,post_scoreArr);
 
+            this.participate++;
+            if (this.postName.length < 5) {
+              this.postName.push(this.jobScoreList[i].postName)
+            }
+            if (post_nameArr.length < 10) {
+              post_nameArr.push(this.jobScoreList[i].postName);
+            }
+            if (post_scoreArr.length < 10) {
+              post_scoreArr.push(this.jobScoreList[i].score);
+            }
+            // 循环获取岗位得分的文字数据
+            if (this.jobScoreList[i].score > 80 && this.postSkilled.length < 3) {
+              this.postSkilled.push(this.jobScoreList[i].postName);
+            } else if (this.jobScoreList[i].score < 80 && this.jobScoreList[i].score > 60 && this.postSecondary.length < 3) {
+
+              this.postSecondary.push(this.jobScoreList[i].postName);
+
+            } else {
+              if (this.postUnfamiliar.length < 3) {
+                this.postUnfamiliar.push(this.jobScoreList[i].postName)
+              }
+            }
+          }
           this.postHistogramEchart(post_nameArr, post_scoreArr);
         }
       })

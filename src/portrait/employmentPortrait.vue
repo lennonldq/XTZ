@@ -15,10 +15,9 @@
      
       <div class="module">
         <p class="title">实习情况</p>
-        <!-- <div class="detail" v-if="evaluate = false">
-          未有具体数据
-        </div> -->
-        <div class="detail">
+      
+        <div  v-if="situtationData.length > 0">
+         <div class="detail">
           <p>实习评分：<span>{{evaluate.practiceScore}}</span>分</p>
           <p>实习评价：{{evaluate.practiceEvaluation}}</p>
         </div>
@@ -29,6 +28,10 @@
              <span class="date icon">{{ item.beginDate }}</span>
              <span class="date" v-if="item.endDate">{{'-'+item.endDate }}</span>
           </div>
+        </div>
+        </div>
+         <div class="wei" v-else>
+          未有具体数据
         </div>
       </div>
 
@@ -188,9 +191,6 @@
             params:{userId}
           }).then(res=>{
             this.evaluate = JSON.parse(res.data).data
-           console.log(this.evaluate);
-           
-            
           })
         }
       }
@@ -207,6 +207,10 @@
      font-size: 13px;
      line-height: 24px;
      padding-top: 4px;
+  }
+  .module .wei{
+    text-align: center;
+    line-height: 320px;
   }
   .module .detail p span{
      color: #2e8ea4;

@@ -20,7 +20,7 @@
     <div class="module">
       <p class="title">认证情况</p>
       <p class="certified">
-        根据{{ baseInfo.username }}的认证获取情况进行诊断，{{ baseInfo.username }}所获得的认证数量为：<span>{{totalcountNo}}</span>
+        根据{{ baseInfo.username }}的云平台数据进行分析，{{ baseInfo.username }}同学认证通过的证书数量为：<span>{{totalcountNo}}</span>
       </p>
       <div
         class="situtationChart"
@@ -50,7 +50,7 @@ export default {
   },
   mounted () {
     this.getCertificationData();
-    this.getCertificationSituationData()
+    this.getCertificationSituationData();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 认证积分情况
@@ -141,74 +141,68 @@ export default {
         ]
       })
     },
-    situtationEchart (termid, countNo) { //认证情况
+    situtationEchart (termid, countNo,name) { //认证情况
       let situtationChart = this.$echart.init(this.$refs.situtationChart);
       situtationChart.setOption({
+        grid: {
+          left: 80,
+          right: 80,
+          top: 100,
+          bottom: 50,
+          containLabel: true
+        },
+        //图标头
+        legend: {
+          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          y: "30",
+          itemWidth: 20,
+
+          itemHeight: 10,
+
+          itemGap: 40,
+          textStyle: { fontSize: 16 }
+        },
         tooltip: {
           trigger: 'axis',
-          formatter: (params) => {
-            let str = "";
-            for (let i = 0; i < params.length; i++) {
-              str += `${this.baseInfo.username}认证个数:${params[i].value}个`
-            }
-            return str;
-          },
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ['#fff'],
-              width: 2,
-              type: 'solid'
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-              align: 'center'
-            }
-          },
-          data: termid
-        },
-        yAxis: {
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ["#cbe7f2", "#fff"]
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-            }
-          },
-          type: 'value'
-        },
-        color: "#82a7da",
-        series: [{
-          data: countNo,
-          type: 'line',
-          areaStyle: {
-            normal: {
-              color: "#60d8a3"
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
             }
           }
-        }]
+        },
+
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            data: termid
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: name+"竞赛奖项",
+            type: 'line',
+            stack: '总量',
+            areaStyle: {              normal: {
+                color: "#93dfe0"
+              }            },
+            itemStyle: {
+              normal: {
+                color: '#8cd5c2', //改变折线点的颜色
+                lineStyle: {
+                  color: '#17c6c3' //改变折线颜色
+                }
+              }
+            },
+            data: countNo
+          }
+        ]
       })
     },
 
@@ -277,7 +271,8 @@ export default {
             countNo.push(data.data[i].countNo);
             this.totalcountNo += parseInt(data.data[i].countNo)
           }
-          this.situtationEchart(termid, countNo);
+         let name =  this.baseInfo.username;
+          this.situtationEchart(termid, countNo,name);
         }
       })
     }

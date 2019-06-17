@@ -23,7 +23,6 @@
         <div class="form-item1">
           <label>人才关键字：</label>
           <select>
-            <option>全部</option>
             <option>学习课程</option>
             <option>实训经验</option>
             <option>实战运营</option>
@@ -49,17 +48,18 @@
             <option>完美型/服从者</option>
           </select>
         </div>
-        <div class="form-item">
-          <button
-            class="searchBtnTwo"
-            @click="reset"
-          >重置搜索数据</button>
-        </div>
+     
         <div class="form-item3">
           <button
             class="searchBtn"
             @click="search"
           >搜索</button>
+        </div>
+           <div class="form-item">
+          <button
+            class="searchBtnTwo"
+            @click="reset"
+          >重置搜索数据</button>
         </div>
       </div>
     </div>
@@ -118,7 +118,6 @@
             v-model="searchData.talentSelect"
             @change="getTalent"
           >
-            <option>全部</option>
             <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
@@ -149,17 +148,18 @@
             <option>完美型/服从者</option>
           </select>
         </div>
-        <div class="form-item">
-          <button
-            class="searchBtnTwo"
-            @click="reset"
-          >重置搜索数据</button>
-        </div>
+     
         <div class="form-item3">
           <button
             class="searchBtn"
             @click="search"
           >搜索</button>
+        </div>
+           <div class="form-item">
+          <button
+            class="searchBtnTwo"
+            @click="reset"
+          >重置搜索数据</button>
         </div>
       </div>
     </div><!-- v-if="userTypeId == 8"-->
@@ -253,7 +253,6 @@
             v-model="searchData.talentSelect"
             @change="getTalent"
           >
-            <option>全部</option>
             <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
@@ -281,17 +280,18 @@
             <option>完美型/服从者</option>
           </select>
         </div>
-        <div class="form-item">
-          <button
-            class="searchBtnTwo"
-            @click="reset"
-          >重置搜索数据</button>
-        </div>
+   
         <div class="form-item3">
           <button
             class="searchBtn"
             @click="search"
           >搜索</button>
+        </div>
+             <div class="form-item">
+          <button
+            class="searchBtnTwo"
+            @click="reset"
+          >重置搜索数据</button>
         </div>
       </div>
     </div><!-- v-if="userTypeId == 3"-->
@@ -382,6 +382,8 @@ export default {
     return {
       // 人才数量
       talents: 0,
+      // 是否需要显示具有
+      have:'',
       // 8,9
       // 全部班级当前选中的id
       ProductActive: "",
@@ -581,7 +583,7 @@ export default {
       this.xuejie = event.target.value;
     },
     reset () {
-      this.searchData.talentSelect = "全部";
+      this.searchData.talentSelect = "学习课程";
     this.search();
     }
 

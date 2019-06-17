@@ -49,6 +49,7 @@
             src="../assets/images/ma.png"
             alt=""
           >
+          <div style="text-align: center;">无数据可扫码进行测试</div>
         </div>
         <div class="interest">
           <p>职业兴趣</p>
@@ -426,10 +427,10 @@ export default {
 }
 .module .evaluatMain .ma {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   top: 10px;
-  right: 116px;
+  right: 30px;
 }
 .module .evaluatMain .interest {
   display: flex;

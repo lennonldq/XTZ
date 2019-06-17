@@ -1,7 +1,7 @@
 <template>
   <el-header class="header">
     <div class="headerMain">
-      <p class="logo"><img src="../assets/images/logo.png" alt=""> </p>
+      <p class="logo"><img src="../assets/images/logo.jpg" alt=""> </p>
       <ul class="navList">
         <router-link
           v-for="(item,index) in navList"
@@ -117,8 +117,8 @@ export default {
   float: left;
 }
 .header .headerMain .logo img{
- position: absolute;
-    top: -10px;
+width: 82px;
+    height: 82px;
 }
 .header .headerMain .navList {
   display: flex;

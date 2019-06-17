@@ -21,22 +21,24 @@
     <div class="scoreBoxsm">
       <div class="module">
         <p class="title">创业知识跟踪</p>
-        <div class="follow">
+        <div class="follow" v-if="pioneerGeneral !==null && pioneerPlan !==null">
           <p>创业通识<br /><span>{{pioneerGeneral}}%</span></p>
           <p>创业计划书<br /><span>{{ pioneerPlan }}%</span></p>
           <div ref="follow1"></div>
           <div ref="follow2"></div>
         </div>
+        <div class="wei" v-else>未有具体数据</div>
       </div>
       <div class="module">
         <p class="title">项目参与</p>
-        <div class="join">
+        <div class="join" v-if="pioneerRelease !==null && pioneerParticipate !==null">
           <p>创业计划书</p>
           <p>创业参与项目</p>
           <span>创业项目发布数为{{pioneerRelease}}个，参与数为{{pioneerParticipate}}个</span>
           <div ref="join1">1</div>
           <div ref="join2">2</div>
         </div>
+        <div class="wei" v-else>未有具体数据</div>
       </div>
     </div>
 
@@ -315,6 +317,9 @@ export default {
   right: 0;
   color: #7edfb4;
 }
+.scoreBoxsm .module .wei{
+  text-align: center;line-height: 329px;
+}
 .scoreBoxsm .module {
   position: relative;
 }
@@ -354,4 +359,5 @@ export default {
   left: 100px;
   color: #444;
 }
+
 </style>

@@ -18,6 +18,39 @@
       </router-link>
     </div>
     <div class="module">
+      <p class="title">岗位分析</p>
+      <p
+        class="scoreResult"
+        v-if="postAnalysis.length > 0"
+      >根据岗位分析的计算方式，以每个岗位的百分制计算，适合岗位的分值线以60分为达标值。
+        </br>本平台根据岗位分析得出，适合岗位为：<span>{{`${fit}`}}</span>
+      </p>
+      <div
+        class="postAnalysis"
+        ref="postAnalysis"
+      >
+
+      </div>
+      <p
+        class="noData"
+        v-if="postAnalysis.length == 0&& !loading"
+      > 暂无数据！ </p>
+    </div>
+    <div class="module">
+      <p class="title">软技能得分</p>
+      <p class="scoreResult">本平台根据逻辑思维能力、人际交流能力、领导组织能力、适应调整能力、解决问题能力、创新想象能力、学习总结能力、信息收集能力等八项软
+        能力对在学徒制过程进行软能力诊断，达标率为：<span>{{poss}}</span><br />
+      </p>
+      <div
+        class="scoreChart"
+        ref="scoreChart"
+      ></div>
+      <div
+        class="abilityChart"
+        ref="abilityChart"
+      ></div>
+    </div>
+    <div class="module">
       <p class="title">任务得分</p>
       <div class="taskShow">
         <div class="grade">
@@ -73,32 +106,6 @@
         </div>
       </div>
     </div>
-    <div class="module">
-      <p class="title">软技能得分</p>
-      <p class="scoreResult">本平台根据逻辑思维能力、人际交流能力、领导组织能力、适应调整能力、解决问题能力、创新想象能力、学习总结能力、信息收集能力等八项软
-        能力对在学徒制过程进行软能力诊断，达标率为：<span>{{poss}}</span><br />
-      </p>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
-      <div
-        class="abilityChart"
-        ref="abilityChart"
-      ></div>
-    </div>
-
-    <div class="module">
-      <p class="title">岗位分析</p>
-      <p class="scoreResult">本平台根据岗位分析得出，适合岗位为：<span>{{fit}}</span><br />
-      </p>
-      <div
-        class="postAnalysis"
-        ref="postAnalysis"
-      >
-
-      </div>
-    </div>
 
     <div
       class="module"
@@ -108,7 +115,8 @@
         课程得分
         <div class="tab">
           <p
-            v-for="(item,index) in tab" :key="index"
+            v-for="(item,index) in tab"
+            :key="index"
             :class="{'active':inx === index}"
             @click="tabChange(index,item.termnum)"
           >{{ item.title }}</p>
@@ -127,7 +135,8 @@
           >
             <div
               class="echatWarp"
-              v-for="(item,index) in courseData" :key="index"
+              v-for="(item,index) in courseData"
+              :key="index"
             >
               <div class="chartTiT">
                 <span>{{ item.coursename }}</span>
@@ -172,6 +181,8 @@ export default {
   props: ["baseInfo"],
   data () {
     return {
+      // 岗位分析的数据
+      postAnalysis: [],
       inx: 0,
       excellent_rate: "",//成绩优秀的比例
       good_rate: "",//成绩良好的比例
@@ -199,7 +210,7 @@ export default {
       courseData: [],
       courseid: "",
       loading: true,
-      fit: '',//适合岗位
+      fit: [],//适合岗位
       poss: ''//达标率
 
     }
@@ -400,6 +411,8 @@ export default {
       })
     },
     kcldtEchart (taskName, pf, allPf, courseid) { //课程雷达图
+      // console.log(taskName, pf, allPf, courseid);
+
       let kcldtChart = this.$echart.init(document.getElementById("kcldtChart" + courseid));
       kcldtChart.setOption({
         tooltip: {
@@ -461,7 +474,9 @@ export default {
         ]
       });
     },
-    kczxtEchart (pf, courseid) { // 课程得分折现图
+    kczxtEchart (pf, courseid, taskName) { // 课程得分折现图
+      // console.log(pf, courseid,taskName);
+
       let kczxtChart = this.$echart.init(document.getElementById("kczxtChart" + courseid));
       kczxtChart.setOption({
         xAxis: {
@@ -476,9 +491,15 @@ export default {
         },
         tooltip: {
           trigger: "item",
+          confine: true,
           formatter: (params) => {
-            return `平均分：${params.value}`
+            return `${params.name}平均分：${params.value}`
           }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: taskName
         },
         yAxis: {
           type: 'value',
@@ -491,6 +512,7 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#444444',//坐标值得具体的颜色
+              
             }
           },
           splitLine: {
@@ -591,8 +613,8 @@ export default {
             }
           }
           this.poss = nuber / 8 * 100 + "%"
-          this.scoreEchart(pfArr, percentage);
-          this.abilityEChart(pfArr, percentage)
+          this.scoreEchart(percentage, percentage);
+          this.abilityEChart(percentage, percentage)
         }
       })
     },
@@ -636,13 +658,16 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          let taskName = [], pf = [], allPf = [];
+          let taskName = [], pf = [], allPf = []; let arrName = [];
           for (let i = 0; i < data.data.length; i++) {
-            taskName.push({ text: data.data[i].taskName, max: 100 })
+            taskName.push({ text: data.data[i].taskName, max: 100 });
+            arrName.push(data.data[i].taskName)
             pf.push(data.data[i].pf);
             allPf.push(data.data[i].allPf)
           }
-          this.kczxtEchart(pf, courseid);
+          console.log(arrName);
+
+          this.kczxtEchart(pf, courseid, arrName);
           this.kcldtEchart(taskName, pf, allPf, courseid)
 
         }
@@ -657,22 +682,19 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
+          this.postAnalysis = data.data;
           let dataName = [], pf = [], many = data.data[0].pf;
 
           for (let i = 0; i < data.data.length; i++) {
 
             dataName.push(data.data[i].positionName)
             pf.push(data.data[i].pf);
-          }
-
-          for (let k = 1; k < data.data.length; k++) {
-            if (data.data[k].pf > many) {
-              many = data.data[k].pf;
-              this.fit = data.data[k].positionName
-            } else {
-              this.fit = data.data[0].positionName
+            if (data.data[i].pf > 60) {
+              this.fit.push(data.data[i].positionName)
             }
           }
+
+
           this.gangwei(dataName, pf)
         }
       })
@@ -877,6 +899,10 @@ export default {
 }
 .module .scoreResult span {
   color: #10859d;
+  font-weight: bold;
+}
+.module .scoreResult .yanse {
+  color: #000000;
   font-weight: bold;
 }
 .module .scoreChart {
