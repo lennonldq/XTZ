@@ -23,6 +23,7 @@
         <div class="form-item1">
           <label>人才关键字：</label>
           <select>
+            <option>全部</option>
             <option>学习课程</option>
             <option>实训经验</option>
             <option>实战运营</option>
@@ -48,14 +49,14 @@
             <option>完美型/服从者</option>
           </select>
         </div>
-     
+
         <div class="form-item3">
           <button
             class="searchBtn"
             @click="search"
           >搜索</button>
         </div>
-           <div class="form-item">
+        <div class="form-item">
           <button
             class="searchBtnTwo"
             @click="reset"
@@ -76,6 +77,15 @@
             @change="changexuejie($event)"
           >
             <option value="">全部学届</option>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
             <option value="2018">2018</option>
             <option value="2019">2019</option>
           </select>
@@ -118,6 +128,7 @@
             v-model="searchData.talentSelect"
             @change="getTalent"
           >
+            <option>全部</option>
             <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
@@ -148,14 +159,14 @@
             <option>完美型/服从者</option>
           </select>
         </div>
-     
+
         <div class="form-item3">
           <button
             class="searchBtn"
             @click="search"
           >搜索</button>
         </div>
-           <div class="form-item">
+        <div class="form-item">
           <button
             class="searchBtnTwo"
             @click="reset"
@@ -253,6 +264,7 @@
             v-model="searchData.talentSelect"
             @change="getTalent"
           >
+            <option>全部</option>
             <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
@@ -280,14 +292,14 @@
             <option>完美型/服从者</option>
           </select>
         </div>
-   
+
         <div class="form-item3">
           <button
             class="searchBtn"
             @click="search"
           >搜索</button>
         </div>
-             <div class="form-item">
+        <div class="form-item">
           <button
             class="searchBtnTwo"
             @click="reset"
@@ -383,7 +395,7 @@ export default {
       // 人才数量
       talents: 0,
       // 是否需要显示具有
-      have:'',
+      have: '',
       // 8,9
       // 全部班级当前选中的id
       ProductActive: "",
@@ -584,7 +596,7 @@ export default {
     },
     reset () {
       this.searchData.talentSelect = "学习课程";
-    this.search();
+      this.search();
     }
 
   }

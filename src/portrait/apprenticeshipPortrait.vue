@@ -310,7 +310,7 @@ export default {
             }
           }
         ],
-        color: "#a7e2ef",
+        color: "#85c4ed",
         series: [
           {
             type: 'radar',
@@ -318,7 +318,7 @@ export default {
               trigger: 'item'
             },
 
-            itemStyle: { normal: { areaStyle: { type: 'default' } } },
+            itemStyle: { normal: { areaStyle: { type: 'default', color: '#85c4ed' } } },
             data: [
               {
                 value: pf,
@@ -512,7 +512,7 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#444444',//坐标值得具体的颜色
-              
+
             }
           },
           splitLine: {
@@ -725,17 +725,17 @@ export default {
         yAxis: {
           name: '得分',
           splitLine: {
-            nameTextStyle: {
-              color: 'black',
-              fontWeight: 800,
-              fontSize: 18
-            },
             axisLine: {
               lineStyle: {
                 color: '#ff7f27',
                 width: 1,//这里是为了突出显示加上的  
               }
             }
+          },
+          nameTextStyle: {
+            color: 'black',
+            fontWeight: 800,
+            fontSize: 18
           },
           type: "value",
           max: 100

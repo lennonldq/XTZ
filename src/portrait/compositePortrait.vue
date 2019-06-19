@@ -24,7 +24,12 @@
     </div>
     <div class="module">
       <p class="title">综合能力</p>
-      <p class="resultDetail">根据益达积分系统9个指标进行换算，计算出该名同学的综合积分为：<span>{{ agvIntegralValue }}</span></p>
+      <p class="resultDetail">根据益达积分系统9个指标进行换算，计算出{{baseInfo.username}}同学的综合积分为：<span>{{ agvIntegralValue }}</span></p>
+      <p class="resultDetail"> 
+        <span v-if="highScore.length>0">{{`其中在${highScore}这${highScorenuber}个方面表现突出`}}</span>
+        <span v-if="secondary.length>0">{{`在${secondary}这${secondarynuber}个方面表现良好`}}</span>
+          <span v-if="lowGrade.length>0">{{`在${lowGrade}这${lowGradenuber}个方面表现稍有不足`}}</span>
+      </p>
       <div class="moduleShow">
         <div
           class="skillChart"
@@ -34,7 +39,7 @@
           <ul>
             <li v-for="item,index in resultData">
               {{ item.moduleName }}：
-              <span>{{ item.integralValue?item.integralValue:0 }}</span>分
+              <span>{{ item.integralValue?item.integralValue:0 }}/100</span>分
             </li>
           </ul>
         </div>
@@ -127,6 +132,19 @@ export default {
     return {
       resultData: [],
       talentLabelNameArr: [],
+      // 综合能力分数比较高于80的
+      highScore:[],
+      // 高于80的数量
+      highScorenuber:0,
+
+      // 综合能力分数比较60-80的
+      secondary:[],
+      secondarynuber:0,
+
+        // 综合能力分数比较低于60的
+        lowGrade:[],
+        lowGradenuber:0,
+
       professionalInterest: '',
       emotionalIntelligenceRemark: '',
       personalCharacterRemark: "",
@@ -271,8 +289,19 @@ export default {
           for (let i = 0; i < this.resultData.length; i++) {
             moduleName.push(this.resultData[i].moduleName);
             // integralValue.push(this.resultData[i].integralValue);
-            arr.push({ value: this.gitdata(this.resultData[i].integralValue) , name: this.resultData[i].moduleName })
+            arr.push({ value: this.gitdata(this.resultData[i].integralValue) , name: this.resultData[i].moduleName });
+            if(this.resultData[i].integralValue>80){
+              this.highScore.push(this.resultData[i].moduleName);
+              this.highScorenuber++
+            }else if(this.resultData[i].integralValue<80&&this.resultData[i].integralValue>60){
+              this.secondary.push(this.resultData[i].moduleName)
+              this.secondarynuber++
+            }else{
+               this.lowGrade.push(this.resultData[i].moduleName);
+             this.lowGradenuber++
+            }
           }
+          
           console.log(arr);
           
           this.mixedAbilityEchart(arr);
@@ -448,7 +477,7 @@ export default {
   line-height: 30px;
 }
 .module .evaluatMain .interest .one {
-  width: 400px;
+  width: 390px;
   display: block;
   line-height: 30px;
   padding-left: 1em;
