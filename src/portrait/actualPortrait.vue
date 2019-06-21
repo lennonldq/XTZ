@@ -20,16 +20,51 @@
 
     <div class="module">
       <p class="title">运营得分</p>
-      <p
+      <div
         v-if="nuber > 0"
         class="ExperimentalResult"
-      >{{`${baseInfo.username}实战运营过程中，共参与：${operateName}等${nuber}个系统的实训实训,达标率为:`}}<span style="color:#0088a0">{{rate}}</span><br>
-        <span v-if="skilled.length > 0">{{`其中在${skilled}中能熟悉掌握实战运营的相关步骤；`}}</span>
+      >
+        <span>{{`${baseInfo.username}实训中涉及：`}}</span>
+        <div class="touRed">
+          <span
+            v-for="item of operateName"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>{{`等${nuber}个系统的实训实训,达标率为:`}}</span>
+          <span style="color: #0088a0">{{rate}}</span>
+        </div>
+        <div v-if="skilled.length > 0" class="touRed">
+          在
+          <span
+            v-for="item of skilled"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>等系统中能熟悉掌握系统的相关步骤；</span>
 
-        <span v-if="secondary.length > 0">{{ `在${secondary}系统中能掌握基本的步骤，有待提高；`}}</span>
-        <span v-if="unfamiliar.length > 0">{{ `在${unfamiliar}系统中未能完成实战运营大部分操作，掌握较差，需进一步加强；`}}</span>
+        </div>
+           <div v-if="secondary.length > 0" class="touRed">
+          在
+          <span
+            v-for="item of secondary"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>等系统中能掌握基本的步骤，有待提高；</span>
 
-      </p>
+        </div>
+          <div v-if="unfamiliar.length > 0" class="touRed">
+          在
+          <span
+            v-for="item of unfamiliar"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>等系统中未能完成系统大部分操作，系统操作生疏，需进一步加强；</span>
+
+        </div>
+      </div>
       <p
         v-else
         class="wu"
@@ -43,17 +78,51 @@
 
     <div class="module">
       <p class="title">岗位得分</p>
-      <p
+      <div
         v-if="jobScoreList.length > 0"
         class="ExperimentalResult"
       >
-        {{`
-        ${baseInfo.username}同学实战运营过程中，共参与${postName}等${participate}个系统技能训练，按岗位进行计分，达标率：
-        `}}<span style="color: #0088a0">{{rateScore}}%</span>
-        <span v-if="postSkilled.length > 0"> {{`其中在${postSkilled}能够熟悉掌握相关岗位技能，`}}</span>
-        <span v-if="postSecondary.length > 0">{{`在${postSecondary}中能掌握基本的岗位技能`}}</span>
-        <span v-if="postUnfamiliar.length > 0"> {{ `而在${postUnfamiliar}岗位及鞥呢训练中掌握较差，需进一步加强`}}</span>
-      </p>
+        <span>{{`${baseInfo.username}同学实训过程中,共参与`}}</span>
+        <div class="touRed">
+          <span
+            v-for="item of postName"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>{{`等${participate}个系统技能训练，按岗位进行计分，达标率：`}}</span>
+          <span style="color: #0088a0">{{rateScore}}%</span>
+        </div>
+        <div v-if="postSkilled.length > 0" class="touRed">
+          其中在
+          <span
+            v-for="item of postSkilled"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>能够熟悉掌握相关岗位技能；</span>
+
+        </div>
+           <div v-if="postSecondary.length > 0" class="touRed">
+          在
+          <span
+            v-for="item of postSecondary"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>中能掌握基本的岗位技能</span>
+
+        </div>
+          <div v-if="postUnfamiliar.length > 0" class="touRed">
+          而在
+          <span
+            v-for="item of postUnfamiliar"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>岗位及鞥呢训练中掌握较差，需进一步加强</span>
+
+        </div>
+      </div>
       <p
         v-else
         class="wu"
@@ -383,8 +452,6 @@ export default {
           axisLabel: {
             interval: 0,
             formatter: function (value) {
-              console.log(value.length);
-
               var result = "";//拼接加\n返回的类目项
               var maxLength = 3;//每项显示文字个数
               var valLength = value.length;//X轴类目项的文字个数
@@ -438,7 +505,7 @@ export default {
       })
     },
     postHistogramEchart (type_nameArr, scoreArr) {   //岗位得分
-      console.log(type_nameArr, scoreArr);
+      // console.log(type_nameArr, scoreArr);
       let postHistogramChart = this.$echart.init(this.$refs.postHistogramChart);
       postHistogramChart.setOption({
         tooltip: {
@@ -611,15 +678,13 @@ export default {
       })
     },
     listdata () {
-      let quanbu = 0;
+     let quanbu = this.dataList.length;
       let dadao = 0;
       let dataoname = [];
       for (let j = 0; j < this.dataList.length; j++) {
-        quanbu += this.dataList[j].score;
         this.nuber++;
         if (this.dataList[j].score >= 60) {
-
-          dadao += this.dataList[j].score;
+          dadao ++
           dataoname.push(this.dataList[j])
         }
       }
@@ -840,5 +905,12 @@ export default {
 }
 .el-popper .tableBox {
   padding: 0px 34px;
+}
+.module .touRed .btRed{
+   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23F30' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E") repeat-x 0 100%; 
+    background-size: 20px auto;
+    display: inline-block;
+    padding-bottom: 4px;
+    margin-right: 4px;
 }
 </style>

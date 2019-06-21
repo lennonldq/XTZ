@@ -262,24 +262,24 @@ export default {
       scoreChart.setOption({
         tooltip: {
           trigger: 'axis',
-          formatter: (params) => {
+          // formatter: (params) => {
 
-            let str = "";
-            let arr = [
-              '逻辑思维',
-              '人际交流',
-              '领导组织',
-              '适应调整',
-              '解决问题',
-              '创新想象',
-              '学习总结',
-              '信息收集',
-            ];
-            for (let i = 0; i < percentage.length; i++) {
-              str += `${arr[i]}占班级平均分:${percentage[i]}%<br/>`;
-            }
-            return str;
-          },
+          //   let str = "";
+          //   let arr = [
+          //     '逻辑思维',
+          //     '人际交流',
+          //     '领导组织',
+          //     '适应调整',
+          //     '解决问题',
+          //     '创新想象',
+          //     '学习总结',
+          //     '信息收集',
+          //   ];
+          //   for (let i = 0; i < percentage.length; i++) {
+          //     str += `${arr[i]}占班级平均分:${percentage[i]}<br/>`;
+          //   }
+          //   return str;
+          // },
         },
         textStyle: {
           color: '#444444'
@@ -322,7 +322,7 @@ export default {
             data: [
               {
                 value: pf,
-                name: '实验实训'
+                name: '软技能得分：'
               }
             ]
           }
@@ -337,11 +337,11 @@ export default {
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           },
-          formatter: (params) => {
-            let str = "";
-            str += `${[params[0].name]}:${percentage[params[0].dataIndex]}%<br/>`;
-            return str;
-          }
+          // formatter: (params) => {
+          //   let str = "";
+          //   str += `${[params[0].name]}:${percentage[params[0].dataIndex]}%<br/>`;
+          //   return str;
+          // }
         },
         grid: {
           top: 20,
@@ -612,9 +612,11 @@ export default {
               nuber++
             }
           }
+          console.log(nuber);
+          
           this.poss = nuber / 8 * 100 + "%"
-          this.scoreEchart(percentage, percentage);
-          this.abilityEChart(percentage, percentage)
+          this.scoreEchart(pfArr, pfArr);
+          this.abilityEChart(pfArr, pfArr)
         }
       })
     },

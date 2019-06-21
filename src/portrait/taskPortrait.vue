@@ -37,8 +37,24 @@
             <p :style="{width: project_count2_present}">{{ project_count2 }}个</p>
           </div>
           <div class="presentItem">
-            <p style="width: 20%">个人参与</p>
-            <p style="width: 80%">团队参与</p>
+            <div style="width: 50%">
+              <div
+                class="LEF"
+                style="width: 40px;
+                  height: 20px;
+                    background-color: #7384f4;
+                    margin: 20px 10px 20px 30px;"
+              ></div>
+              个人参与
+            </div>
+            <div style="width: 50%">
+              <div class="RIT"
+              style="width: 40px;
+                  height: 20px;
+                    background-color: #5ac1e9;
+                   margin: 20px 10px 20px 30px;"></div>
+              团队参与
+            </div>
           </div>
         </div>
         <div
@@ -68,7 +84,7 @@
         ref="scoreChart"
       ></div>
     </div>
-       <el-popover
+    <el-popover
       ref="popover4"
       placement="right"
       width="800"
@@ -156,19 +172,19 @@ import {
 export default {
   props: ['baseInfo'],
   name: 'TaskPortrait',
-   components: {
+  components: {
     Pagination
   },
   data () {
     return {
-       // 弹框数据
+      // 弹框数据
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
         courseid: '',//课程选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId:6
+        assessModuleId: 6
       },
       // 获取的学期
       semesterList: [],
@@ -196,7 +212,7 @@ export default {
     }
   },
   mounted () {
-      this.getsemester();
+    this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
     this.getTaskOutsourcingData();
@@ -294,8 +310,7 @@ export default {
       })
     },
     taskEchart (begin_date, project_count, sum_project_count) { //任务外包积分柱状图
-    console.log(begin_date, project_count, sum_project_count);
-    
+  console.log(begin_date, project_count, sum_project_count);
       let taskChart = this.$echart.init(this.$refs.taskChart);
       taskChart.setOption({
         title: {
@@ -402,8 +417,8 @@ export default {
         }
       }).then(res => {
         let data = JSON.parse(res.data);
-      
-        
+
+
         if (data.code == 200) {
           console.log(data.data, 'sdsd');
           for (let i = 0; i < data.data.length; i++) {
@@ -418,7 +433,7 @@ export default {
         params: { userId }
       }).then(res => {
         let data = JSON.parse(res.data);
-          console.log(data);
+        console.log(data);
         if (data.code == 200) {
           let begin_date = [], project_count = [];
           for (let i = 0; i < data.data.length; i++) {
@@ -545,7 +560,7 @@ export default {
   width: 50%;
 }
 .module .echartBox .type > p {
-  text-indent: 188px;
+  text-indent: 130px;
   line-height: 80px;
 }
 .module .echartBox .type .present {
@@ -571,11 +586,13 @@ export default {
 }
 .module .echartBox .type .presentItem {
   width: 345px;
+  display: flex;
 }
-.module .echartBox .type .presentItem p {
-  display: inline-block;
-  float: left;
+.module .echartBox .type .presentItem > div {
+  /* /* display: inline-block;
+  float: left; */
   line-height: 60px;
+  display: flex;
 }
 .module .echartBox .type .presentItem p:nth-child(1) {
   text-align: center;

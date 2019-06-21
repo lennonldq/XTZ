@@ -23,7 +23,7 @@
         <div class="form-item1">
           <label>人才关键字：</label>
           <select>
-            <option>全部</option>
+            <option>请选择关键字</option>
             <option>学习课程</option>
             <option>实训经验</option>
             <option>实战运营</option>
@@ -128,7 +128,7 @@
             v-model="searchData.talentSelect"
             @change="getTalent"
           >
-            <option>全部</option>
+            <option>请选择关键字</option>
             <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
@@ -264,7 +264,7 @@
             v-model="searchData.talentSelect"
             @change="getTalent"
           >
-            <option>全部</option>
+            <option>请选择关键字</option>
             <option>学习课程</option>
             <option>实验实训</option>
             <option>实战运营</option>
@@ -285,7 +285,7 @@
         <div class="form-item2">
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
-            <option>全部</option>
+            <option>请选择</option>
             <option>活泼型/社交者</option>
             <option>支配型/控制者</option>
             <option>稳定型/支持者</option>
@@ -308,7 +308,7 @@
       </div>
     </div><!-- v-if="userTypeId == 3"-->
     <div class="table">
-      <p class="tableTit">人才数量:<span class="blue">{{talents}}</span>位</p>
+      <p class="tableTit">具备{{}}:<span class="blue">{{talents}}</span>位</p>
       <el-table
         v-loading="loading"
         element-loading-text="拼命加载中"
@@ -392,6 +392,7 @@ export default {
   },
   data () {
     return {
+      
       // 人才数量
       talents: 0,
       // 是否需要显示具有
@@ -424,7 +425,7 @@ export default {
         className: "",
         professionalName: '',
         personalCharacter: '全部',
-        talentSelect: '学习课程',
+        talentSelect: '请选择关键字',
         talentName: "",
         // // 学届
         // editorial:"全部",
@@ -478,7 +479,7 @@ export default {
       })
     },
     search () {
-      if (this.searchData.talentSelect == '全部') {
+      if (this.searchData.talentSelect == '请选择关键字') {
         this.selectTalent = false;
         this.selectTalentName = '';
       } else {
@@ -501,7 +502,7 @@ export default {
     },
     getTalent () {
       switch (this.searchData.talentSelect) {
-        case '全部':
+        case '请选择关键字':
           this.talentSelect = '';
           break
         case '学习课程':
@@ -595,7 +596,7 @@ export default {
       this.xuejie = event.target.value;
     },
     reset () {
-      this.searchData.talentSelect = "学习课程";
+      this.searchData.talentSelect = "请选择关键字";
       this.search();
     }
 

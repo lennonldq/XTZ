@@ -27,11 +27,41 @@
     <div class="module">
       <p class="title">课程学习情况</p>
       <!-- <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p> -->
-      <p class='schoolYear'>
+      <!-- <p class='schoolYear'>
         <span>{{`${baseInfo.username}在本${schools}的课程学习过程中；`}}</span>
         <span v-if="large.length >0">{{`${large}等${largenuber}门课程掌握较好，高于或等于平均水平,`}}</span>
         <span v-if="small.length > 0">{{`${small}等${smallnuber}门课程掌握较为一般，低于平均水平，有待加强提高`}}</span>
-      </p>
+      </p> -->
+      <div
+        class="ExperimentalResult"
+        v-if="large.length>0&& small.length > 0"
+      >
+        <span>{{`${baseInfo.username}在本${schools}的课程学习过程中：`}}</span>
+        <div
+          class="touRed"
+          v-if="large.length>0"
+        >
+          <span
+            v-for="item of large"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>{{`等${largenuber}门课程掌握较好，高于或等于平均水平,`}}</span>
+        </div>
+        <div
+          v-if="small.length > 0"
+          class="touRed"
+        >
+          在
+          <span
+            v-for="item of small"
+            :key="item"
+            class="btRed"
+          >{{item}}、 </span>
+          <span>{{`等${smallnuber}门课程掌握较为一般，低于平均水平，有待加强提高；`}}</span>
+        </div>
+
+      </div>
       <div class="course">
       </div>
 
@@ -168,7 +198,7 @@ export default {
         termid: '',//学期选择
         courseid: '',//课程选择
         pageNum: 1,
-        pageSize: 10,assessModuleId:1
+        pageSize: 10, assessModuleId: 1
       },
       // 获取的学期
       semesterList: [],
@@ -570,7 +600,7 @@ export default {
 
               integralValue[i].push(this.situationData[i][k].integralValue);
               sumIntegralValue[i].push(this.situationData[i][k].sumIntegralValue);
-              schollyear[i].push('第' + this.situationData[i][k].termid + '学年')
+              schollyear[i].push('第' + this.situationData[i][k].termid + '学期')
             }
           }
           for (let i = 0; i < this.situationData.length; i++) {
@@ -791,6 +821,14 @@ export default {
   text-align: center;
   line-height: 30px;
 }
+.module .ExperimentalResult{
+      padding-top: 46px;
+    padding-bottom: 30px;
+    width: 912px;
+    color: #444;
+    margin: 0 auto;
+    line-height: 24px;
+}
 .module .evaluatMain .interest span {
   display: block;
   flex: 1;
@@ -925,5 +963,13 @@ export default {
 }
 .el-popper .tableBox {
   padding: 0px 34px;
+}
+.module .touRed .btRed {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23F30' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E")
+    repeat-x 0 100%;
+  background-size: 20px auto;
+  display: inline-block;
+  padding-bottom: 4px;
+  margin-right: 4px;
 }
 </style>
