@@ -189,6 +189,7 @@
                let data = JSON.parse(res.data);
                if(data.code == 200){
                  this.dataPortrait = data.data;
+                 
                }
             })
         },

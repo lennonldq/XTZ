@@ -285,7 +285,7 @@
         <div class="form-item2">
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
-            <option>请选择</option>
+            <option>全部</option>
             <option>活泼型/社交者</option>
             <option>支配型/控制者</option>
             <option>稳定型/支持者</option>
@@ -308,7 +308,7 @@
       </div>
     </div><!-- v-if="userTypeId == 3"-->
     <div class="table">
-      <p class="tableTit">具备{{}}:<span class="blue">{{talents}}</span>位</p>
+      <p class="tableTit">人才数量:<span class="blue">{{talents}}</span>位</p>
       <el-table
         v-loading="loading"
         element-loading-text="拼命加载中"
@@ -597,6 +597,12 @@ export default {
     },
     reset () {
       this.searchData.talentSelect = "请选择关键字";
+      this.searchData.personalCharacter = "全部";
+      this.searchData.className = "";
+      this.searchData.professionalName = "";
+      this.searchData.schoolName = "";
+      this.searchData.talentName = "";
+      this.searchData.userName = "";
       this.search();
     }
 

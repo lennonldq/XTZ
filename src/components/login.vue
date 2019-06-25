@@ -19,7 +19,6 @@
         <div class="contentIpt">
           <span>用户名</span>
           <el-input
-            placeholder="请输入内容"
             v-model="formLabelAlign.username"
             clearable
           >
@@ -35,7 +34,7 @@
           ></el-input>
         </div>
         <div class="dl" style="    padding-left: 76px;">
-          <el-button type="primary" @click="login">登录</el-button>
+          <el-button   type="primary" @click="login">登录</el-button>
         </div>
       </div>
     </div>
