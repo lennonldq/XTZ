@@ -16,6 +16,16 @@
       >
         返回上页
       </router-link>
+      <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
     <div class="module">
       <p class="title">认证情况</p>
@@ -119,7 +129,9 @@
 import Pagination from "../views/pagination";
 import { certification, certificationSituation,semester,
   curriculum,
-  integralStatistics } from "../js/url"
+  integralStatistics,
+  updateData,
+  selectSynchroLog } from "../js/url"
 export default {
   props: ['baseInfo'],
    components: {
@@ -153,7 +165,9 @@ export default {
       tableData: [],
       totalPage: 1,
 
-      totalcountNo: 0
+      totalcountNo: 0,
+      //更新数据时间
+      gtime: ''
     }
   },
   mounted () {
@@ -162,6 +176,7 @@ export default {
     this.getIntegralStatistics();
     this.getCertificationData();
     this.getCertificationSituationData();
+      this.Updatetime();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 认证积分情况
@@ -459,7 +474,40 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 8 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 8,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
+
   }
 }
 </script>

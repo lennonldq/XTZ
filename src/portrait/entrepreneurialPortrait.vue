@@ -16,12 +16,19 @@
       >
         返回上页
       </router-link>
+               <!-- <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+      </div> -->
     </div>
 
     <div class="scoreBoxsm">
       <div class="module">
         <p class="title">创业知识跟踪</p>
-        <div class="follow" v-if="pioneerGeneral !==null && pioneerPlan !==null">
+        <div class="follow" v-if="pioneerGeneral!==null  || pioneerPlan!==null ">
           <p>创业通识<br /><span>{{pioneerGeneral}}%</span></p>
           <p>创业计划书<br /><span>{{ pioneerPlan }}%</span></p>
           <div ref="follow1"></div>
@@ -31,12 +38,12 @@
       </div>
       <div class="module">
         <p class="title">项目参与</p>
-        <div class="join" v-if="pioneerRelease !==null && pioneerParticipate !==null">
+        <div class="join" v-if="pioneerRelease!==null  && pioneerParticipate!==null">
           <p>创业计划书</p>
           <p>创业参与项目</p>
           <span>创业项目发布数为{{pioneerRelease}}个，参与数为{{pioneerParticipate}}个</span>
-          <div ref="join1">1</div>
-          <div ref="join2">2</div>
+          <div  ref="join1"></div>
+          <div ref="join2"></div>
         </div>
         <div class="wei" v-else>未有具体数据</div>
       </div>
@@ -133,7 +140,9 @@
 import Pagination from "../views/pagination";
 import { entrepreneurPortrait, pioneerInfo,semester,
   curriculum,
-  integralStatistics } from "../js/url";
+  integralStatistics,
+  updateData,
+  selectSynchroLog } from "../js/url";
 export default {
   props: ["baseInfo"],
   name: "EntrepreneurialPortrait",
@@ -167,21 +176,22 @@ export default {
       // 列表数据
       tableData: [],
       totalPage: 1,
-      pioneerGeneral: "",
+      pioneerGeneral: '',
       pioneerPlan: '',
 
       pioneerRelease: "",//创业项目发布数
-      pioneerParticipate: "" //pioneerParticipate
+      pioneerParticipate: "",
+      //更新数据时间
+      gtime: ''
     }
   },
   mounted () {
  this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
-
-
     this.getEntrepreneurPortraitData();
-    this.getPioneerInfo()
+    this.getPioneerInfo(),
+     this.Updatetime();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 综合能力
@@ -362,8 +372,7 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          console.log(data.data);
-          this.pioneerGeneral = data.data[0].pioneerGeneral; //创业通识学习完成度
+            this.pioneerGeneral = data.data[0].pioneerGeneral; //创业通识学习完成度
           this.pioneerPlan = data.data[0].pioneerPlan;//创业计划书完成度
           this.pioneerRelease = data.data[0].pioneerRelease;//创业项目发布数
           this.pioneerParticipate = data.data[0].pioneerParticipate //pioneerParticipate
@@ -381,8 +390,11 @@ export default {
             ["#7edfb4", '#dadada'],
             [{ value: this.pioneerPlan, name: '直接访问' }, { value: 100 - this.pioneerPlan, name: '' }]
           );
+        
+          
           this.joinEchart(this.$refs.join2, "#7edfb4", this.pioneerParticipate, "创业项目参与数");
           this.joinEchart(this.$refs.join1, " #7384f4", this.pioneerRelease, "创业项目发布数");
+       
         }
       })
     },
@@ -454,7 +466,39 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 5 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 5,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
   }
 }
 </script>

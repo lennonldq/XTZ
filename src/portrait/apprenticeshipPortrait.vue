@@ -16,6 +16,13 @@
       >
         返回上页
       </router-link>
+           <!-- <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+      </div> -->
     </div>
     <div class="module">
       <p class="title">岗位分析</p>
@@ -173,7 +180,9 @@ import {
   userPortrait,
   courseList,
   jbsStatistics,
-  skillsPortrait
+  skillsPortrait,
+  updateData,
+  selectSynchroLog
 }
   from "../js/url"
 import { log } from 'util';
@@ -211,7 +220,9 @@ export default {
       courseid: "",
       loading: true,
       fit: [],//适合岗位
-      poss: ''//达标率
+      poss: '',//达标率 
+         //更新数据时间
+      gtime: ''
 
     }
   },
@@ -219,7 +230,7 @@ export default {
     this.getuserPortraitData();
     this.getCourseListData(null);
     this.getJbsStatistics();
-
+    this.Updatetime();
   },
   methods: {
     tackEchart (excellent_rate, good_rate, medium_rate) { //任务得分
@@ -758,7 +769,39 @@ export default {
           }
         }]
       })
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 4 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 4,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
   }
 }
 </script>

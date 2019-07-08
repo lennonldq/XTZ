@@ -308,7 +308,9 @@
       </div>
     </div><!-- v-if="userTypeId == 3"-->
     <div class="table">
-      <p class="tableTit">人才数量:<span class="blue">{{talents}}</span>位</p>
+        <p class="tableTit" v-if="INP ==''">人才数量:<span class="blue">{{talents}}</span>位</p>
+        <p class="tableTit" v-else>具备‘{{INP}}’标签人才数为:<span class="blue">{{talents}}</span>位</p>
+      
       <el-table
         v-loading="loading"
         element-loading-text="拼命加载中"
@@ -392,7 +394,8 @@ export default {
   },
   data () {
     return {
-      
+      // 人才数
+      INP:'人才数量',
       // 人才数量
       talents: 0,
       // 是否需要显示具有
@@ -554,10 +557,12 @@ export default {
         }
       }).then((res) => {
         this.loading = false;
+    
         if (res.status == 200) {
           let data = JSON.parse(res.data).data;
           this.totalPage = JSON.parse(res.data).totalPages;
           this.talents = JSON.parse(res.data).totals;
+              this.INP = this.searchData.talentName
           data.forEach(item => {
             if (item.integralValue) {
               item.integralValue = parseInt(item.integralValue)

@@ -9,11 +9,13 @@ import echarts from 'echarts'
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 import commonJs from "./js/common"
+import gTime from "./js/gtime"
 Vue.config.productionTip = false;
 Vue.prototype.baseUrl = global.baseUrl;
 Vue.prototype.$ajax = sevice;
 Vue.prototype.$echart = echarts;
 Vue.prototype.commonJs = commonJs;
+Vue.filter('gTime',gTime);
 // Vue.use(ElementUI);
 /* eslint-disable no-new */
 new Vue({

@@ -16,6 +16,13 @@
       >
         返回上页
       </router-link>
+         <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
 
     <div class="module">
@@ -141,7 +148,9 @@
 import Pagination from "../views/pagination";
 import { practicePortrait, practiceInfoD, getPracticeInfo,semester,
   curriculum,
-  integralStatistics } from "../js/url"
+  integralStatistics,
+  updateData,
+  selectSynchroLog } from "../js/url"
 export default {
   props: ['baseInfo'],
   name: "EmploymentPortrait",
@@ -178,6 +187,9 @@ export default {
       // 列表数据
       tableData: [],
       totalPage: 1,
+      //更新数据时间
+      gtime: ''
+
     }
   },
   mounted () {
@@ -187,6 +199,7 @@ export default {
     this.getPracticePortraitData();
     this.getPracticeInfoData();
     this.PracticeInfoData();
+     this.Updatetime();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 实习积分
@@ -394,7 +407,39 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 7 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 7,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
   }
 }
 </script>

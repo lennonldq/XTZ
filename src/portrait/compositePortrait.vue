@@ -17,10 +17,10 @@
       >
         返回上页
       </router-link>
-       <!-- <div class="synchronization" @click="synchronization()">
+       <div class="synchronization" @click="synchronization()">
         <div class="one">同步数据</div>
         <div class="two">上次同步:<span>2019.4.1 10:00</span> </div>
-      </div> -->
+      </div>
     </div>
     <div class="module">
       <p class="title">综合能力</p>

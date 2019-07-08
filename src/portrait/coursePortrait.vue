@@ -16,12 +16,19 @@
       >
         返回上页
       </router-link>
-      <div
+      <!-- <div
         class="synchronization"
         @click="synchronization()"
         style="line-height: 80px;"
       >
         学校人才培养方案
+      </div> -->
+      <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
     <div class="module">
@@ -182,7 +189,9 @@ import {
   learningSituation,
   semester,
   curriculum,
-  integralStatistics
+  integralStatistics,
+  updateData,
+  selectSynchroLog
 } from "../js/url"
 export default {
   props: ['baseInfo'],
@@ -250,7 +259,9 @@ export default {
       // 低于文字
       smallnuber: 0,
       //学期？学年
-      schools: ''
+      schools: '',
+      //更新数据时间
+      gtime: ''
     }
   },
   mounted () {
@@ -260,6 +271,7 @@ export default {
     this.getLearningTrajectoryTrackingData();
     this.getLearningSituationData();
     this.getIntegralStatistics();
+    this.Updatetime();
   },
   methods: {
     getIntegralData () { //获取课程画像数据
@@ -698,9 +710,42 @@ export default {
     },
 
     // 点击跳转静态表格
+    // synchronization () {
+    //   let routeData = this.$router.resolve({ path: '/company' });
+    //   window.open(routeData.href, '_blank');
+    // },
+
+    // 点击更新同步数据
     synchronization () {
-      let routeData = this.$router.resolve({ path: '/company' });
-      window.open(routeData.href, '_blank');
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 1 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 1,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
     },
 
 
@@ -717,6 +762,7 @@ export default {
       })
     },
 
+
     //获取课程名称接口
     getcurriculum () {
       let { userId } = this.$route.query;
@@ -729,8 +775,6 @@ export default {
         }
       }).then(res => {
         let data = JSON.parse(res.data);
-        console.log(data);
-
         if (data.code == 200) {
           this.courseNameList = data.data;
         }
@@ -821,13 +865,13 @@ export default {
   text-align: center;
   line-height: 30px;
 }
-.module .ExperimentalResult{
-      padding-top: 46px;
-    padding-bottom: 30px;
-    width: 912px;
-    color: #444;
-    margin: 0 auto;
-    line-height: 24px;
+.module .ExperimentalResult {
+  padding-top: 46px;
+  padding-bottom: 30px;
+  width: 912px;
+  color: #444;
+  margin: 0 auto;
+  line-height: 24px;
 }
 .module .evaluatMain .interest span {
   display: block;

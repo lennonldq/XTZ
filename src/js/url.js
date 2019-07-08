@@ -49,3 +49,5 @@ export const semester = "portrait/getTerm"  //获取学期
 export const curriculum = "portrait/getCourse"; //获取课程名称
 
 export const updateData = "synchronous/updateData";//同步数据
+export const selectSynchroLog = "synchronous/selectSynchroLog";//获取同步数据时间
+

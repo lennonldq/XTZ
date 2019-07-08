@@ -16,6 +16,16 @@
       >
         返回上页
       </router-link>
+      <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
 
     <div class="module">
@@ -34,7 +44,10 @@
           <span>{{`等${nuber}个系统的实训实训,达标率为:`}}</span>
           <span style="color: #0088a0">{{rate}}</span>
         </div>
-        <div v-if="skilled.length > 0" class="touRed">
+        <div
+          v-if="skilled.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of skilled"
@@ -44,7 +57,10 @@
           <span>等系统中能熟悉掌握系统的相关步骤；</span>
 
         </div>
-           <div v-if="secondary.length > 0" class="touRed">
+        <div
+          v-if="secondary.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of secondary"
@@ -54,7 +70,10 @@
           <span>等系统中能掌握基本的步骤，有待提高；</span>
 
         </div>
-          <div v-if="unfamiliar.length > 0" class="touRed">
+        <div
+          v-if="unfamiliar.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of unfamiliar"
@@ -92,7 +111,10 @@
           <span>{{`等${participate}个系统技能训练，按岗位进行计分，达标率：`}}</span>
           <span style="color: #0088a0">{{rateScore}}%</span>
         </div>
-        <div v-if="postSkilled.length > 0" class="touRed">
+        <div
+          v-if="postSkilled.length > 0"
+          class="touRed"
+        >
           其中在
           <span
             v-for="item of postSkilled"
@@ -102,7 +124,10 @@
           <span>能够熟悉掌握相关岗位技能；</span>
 
         </div>
-           <div v-if="postSecondary.length > 0" class="touRed">
+        <div
+          v-if="postSecondary.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of postSecondary"
@@ -112,7 +137,10 @@
           <span>中能掌握基本的岗位技能</span>
 
         </div>
-          <div v-if="postUnfamiliar.length > 0" class="touRed">
+        <div
+          v-if="postUnfamiliar.length > 0"
+          class="touRed"
+        >
           而在
           <span
             v-for="item of postUnfamiliar"
@@ -226,7 +254,9 @@ import {
   getJobScore,
   semester,
   curriculum,
-  integralStatistics
+  integralStatistics,
+  updateData,
+  selectSynchroLog
 } from "../js/url"
 
 export default {
@@ -244,7 +274,7 @@ export default {
         courseid: '',//课程选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId:3
+        assessModuleId: 3
       },
       // 获取的学期
       semesterList: [],
@@ -298,7 +328,9 @@ export default {
       // 掌握较差
       difference: [],
       // 分数占比
-      score_rateArr: []
+      score_rateArr: [],
+      //更新数据时间
+      gtime: ''
     }
   },
   mounted () {
@@ -308,6 +340,7 @@ export default {
     this.getExperimentalTrainingPortraitData();
     this.getExperimentalTrainingData();
     this.getjobScore();
+    this.Updatetime();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 综合能力
@@ -678,13 +711,13 @@ export default {
       })
     },
     listdata () {
-     let quanbu = this.dataList.length;
+      let quanbu = this.dataList.length;
       let dadao = 0;
       let dataoname = [];
       for (let j = 0; j < this.dataList.length; j++) {
         this.nuber++;
         if (this.dataList[j].score >= 60) {
-          dadao ++
+          dadao++
           dataoname.push(this.dataList[j])
         }
       }
@@ -777,7 +810,39 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 3 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 3,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
   }
 }
 </script>
@@ -906,11 +971,12 @@ export default {
 .el-popper .tableBox {
   padding: 0px 34px;
 }
-.module .touRed .btRed{
-   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23F30' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E") repeat-x 0 100%; 
-    background-size: 20px auto;
-    display: inline-block;
-    padding-bottom: 4px;
-    margin-right: 4px;
+.module .touRed .btRed {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23F30' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E")
+    repeat-x 0 100%;
+  background-size: 20px auto;
+  display: inline-block;
+  padding-bottom: 4px;
+  margin-right: 4px;
 }
 </style>

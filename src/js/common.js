@@ -3,4 +3,5 @@ let publishJs = {
     return (Math.round(num1 / num2 * 10000) / 100.00 + "%");
   }
 }
+
 export default publishJs

@@ -130,14 +130,13 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title + '-'+JSON.parse(sessionStorage.getItem("info")).username
     }
   // console.log(to,from,next);
+
   if (to.matched.some(record => record.meta.auth)){  // 判断该路由是否需要登录权限
     if (localStorage.getItem("userTypeId")) {  // 判断当前的userTypeId是否存在
-      // console.log( next());
       next();
     }
     else {
       console.log( next());
-      
       next({
         path: '/login',
       })

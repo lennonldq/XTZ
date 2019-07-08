@@ -16,6 +16,13 @@
       >
         返回上页
       </router-link>
+            <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
 
     <div class="module">
@@ -167,7 +174,9 @@ import {
   taskJoinInfo,
   semester,
   curriculum,
-  integralStatistics
+  integralStatistics,
+  updateData,
+  selectSynchroLog
 } from "../js/url"
 export default {
   props: ['baseInfo'],
@@ -208,10 +217,14 @@ export default {
       project_count1_present: "",
       project_count2_present: "",
       project_count1: "",
-      project_count2: ""
+      project_count2: "",
+      //更新数据时间
+      gtime: ''
     }
   },
   mounted () {
+    // 强制刷新一遍
+    // this.shua();
     this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
@@ -219,8 +232,13 @@ export default {
     this.getEnterpriseOutsourcingData();
     this.getTaskJoinNumberData();
     this.getTaskJoinInfoData();
+    this.Updatetime();
   },
   methods: {
+    shua(){
+location. reload()
+this.$router.go(0)
+    },
     scoreEchart (termid, integralValue, sumIntegralValue) { // 任务外包积分
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
@@ -464,6 +482,7 @@ export default {
     },
     //获取学期接口
     getsemester () {
+      // this.shua();
       let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + semester, {
         params: { userId }
@@ -534,7 +553,40 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 6 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+
+        }
+      })
+
+    },
+
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 6,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
+
   }
 }
 </script>
