@@ -33,14 +33,21 @@
             auto-complete="off"
           ></el-input>
         </div>
-        <div class="dl" style="    padding-left: 76px;">
-          <el-button   type="primary" @click="login">登录</el-button>
+        <div
+          class="dl"
+          style="    padding-left: 76px;"
+        >
+          <el-button
+            type="primary"
+            @click="login"
+          >登录</el-button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { talentPortrait } from "../js/url"
 export default {
   name: "login",
   data () {
@@ -59,7 +66,30 @@ export default {
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("userTypeId", data.userTypeId);
           localStorage.setItem("schoolId", data.schoolId);
-          this.$router.push("/talentSearch");
+          localStorage.setItem("classId", data.classId);
+          localStorage.setItem("userId", data.userId);
+          console.log(data);
+
+          if (data.userTypeId == 0) {
+            let userId = localStorage.getItem("userId");
+                let classId = localStorage.getItem("classId");
+            this.$ajax(this.baseUrl + talentPortrait, {
+              headers: {
+                accessToken: localStorage.getItem("accessToken")
+              },
+              params: {
+                userId: userId
+              }
+            }).then(res=>{
+              let data = JSON.parse(res.data)
+             sessionStorage.setItem("info", JSON.stringify(data.data[0]));
+             let routeData = this.$router.resolve({path: "/integralPortrait",query:{classId: classId, userId: userId }});
+             window.open(routeData.href, '_blank');
+            })
+          } else {
+            this.$router.push("/talentSearch");
+          }
+
         } else {
           alert('账号或密码不对')
         }
@@ -115,7 +145,7 @@ export default {
   display: block;
   line-height: 40px;
   color: #606266;
-      padding-left: 20px;
-      font-size: 14px;
+  padding-left: 20px;
+  font-size: 14px;
 }
 </style>

@@ -584,6 +584,8 @@ export default {
       this.getTableData();
     },
     toLookDetail (row) {
+      console.log(row);
+      
       sessionStorage.setItem("info", JSON.stringify(row));
       let routeData = this.$router.resolve({ path: '/integralPortrait', query: { classId: row.classid, userId: row.id } });
       window.open(routeData.href, '_blank');

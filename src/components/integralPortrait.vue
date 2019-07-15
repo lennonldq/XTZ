@@ -185,6 +185,7 @@
             this.baseInfo.classname = info.classname
         },
         getPortrait(){ //获取人才积分
+
             this.$ajax.get(this.baseUrl + assessModules,{params:this.$route.query}).then(res=>{
                let data = JSON.parse(res.data);
                if(data.code == 200){

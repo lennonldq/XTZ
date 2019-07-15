@@ -2,12 +2,14 @@
   <el-header class="header">
     <div class="headerMain">
       <p class="logo"><img src="../assets/images/logo.jpg" alt=""> </p>
-      <ul class="navList">
+      <ul class="navList" >
         <router-link
+        v-show="usertypeid != 0 "
           v-for="(item,index) in navList"
           tag="li"
           :key="index"
           :to="item.path"
+          
         >
           {{ item.title }}
         </router-link>
@@ -42,6 +44,7 @@ export default {
   name: "Header",
   data () {
     return {
+      usertypeid:0,
       navList: [
         { title: "返回首页", path: "/talentSearch" },
         // { title: "企业服务", path: "/company" },
@@ -52,7 +55,17 @@ export default {
       ]
     }
   },
+  created(){
+    this.init()
+  },
   methods:{
+    init(){
+         this.usertypeid =  localStorage.getItem("userTypeId");
+           if(this.usertypeid == null){
+              this.usertypeid=0
+           }
+           
+    },
      handleCommand() {
           localStorage.clear();
           sessionStorage.clear(); 
@@ -155,5 +168,8 @@ width: 82px;
   padding: 0 40px;
   cursor: pointer;
   line-height: 82px;
+}
+.navList{
+  width: 12%;
 }
 </style>
