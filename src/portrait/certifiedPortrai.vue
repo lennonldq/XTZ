@@ -39,10 +39,10 @@
     </div>
 
     <div class="module">
-          <div class="title integral">
+      <div class="title integral">
         <div class="LEF">认证积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:</span>
+          <span>当前课程积分:&nbsp;{{current}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
@@ -51,7 +51,7 @@
         ref="scoreChart"
       ></div>
     </div>
- <el-popover
+    <el-popover
       ref="popover4"
       placement="right"
       width="800"
@@ -127,14 +127,14 @@
 
 <script>
 import Pagination from "../views/pagination";
-import { certification, certificationSituation,semester,
+import {  certification, certificationSituation, semester,
   curriculum,
   integralStatistics,
   updateData,
-  selectSynchroLog } from "../js/url"
+  selectSynchroLog, assessModules} from "../js/url"
 export default {
   props: ['baseInfo'],
-   components: {
+  components: {
     Pagination
   },
   data () {
@@ -146,7 +146,7 @@ export default {
         courseid: '',//课程选择
         pageNum: 1,
         pageSize: 10,
-         assessModuleId:8
+        assessModuleId: 8
       },
       // 获取的学期
       semesterList: [],
@@ -167,16 +167,21 @@ export default {
 
       totalcountNo: 0,
       //更新数据时间
-      gtime: ''
+      gtime: '',
+      // 当前积分
+      current: ''
+
     }
   },
   mounted () {
-     this.getsemester();
+    this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
     this.getCertificationData();
     this.getCertificationSituationData();
-      this.Updatetime();
+    this.Updatetime();
+    this.getPortrait();
+
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 认证积分情况
@@ -189,7 +194,13 @@ export default {
           bottom: 50,
           containLabel: true
         },
-        //图标头
+        tooltip: {
+          trigger: 'axis'
+        },
+
+        toolbox: {
+          show: true,
+        },
         legend: {
           data: ['个人积分', '班级平均积分'],
           icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
@@ -201,41 +212,48 @@ export default {
           itemGap: 40,
           textStyle: { fontSize: 16 }
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
-        },
-
+        calculable: true,
         xAxis: [
           {
             type: 'category',
             boundaryGap: false,
-            data: termid
+            data: termid,
+             axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+             axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+             axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+             axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         series: [
           {
             name: '个人积分',
             type: 'line',
-            stack: '总量',
-            areaStyle: {              normal: {
-                color: "#93dfe0"
-              }            },
+            smooth: true,
             itemStyle: {
               normal: {
-                color: '#8cd5c2', //改变折线点的颜色
+                areaStyle: { type: 'default' },
+                color: '#90dcdd',
                 lineStyle: {
-                  color: '#17c6c3' //改变折线颜色
+                  color: "#3bc7cb"
                 }
               }
             },
@@ -244,30 +262,19 @@ export default {
           {
             name: '班级平均积分',
             type: 'line',
-            stack: '总量',
-            label: {
-              normal: {
-                show: false,
-                position: 'top'
-              }
-            },
-            areaStyle: {              normal: {
-                color: "#d4cae8"
-              }            },
-            itemStyle: {
-              normal: {
-                color: '#b29fdd', //改变折线点的颜色
-                lineStyle: {
-                  color: '#b29fdd' //改变折线颜色
-                }
-              }
-            },
+            smooth: true,
+            itemStyle: {              normal: {                areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
+                  color: "#b6a2de"
+                }              }            },
             data: sumIntegralValue
-          }
+          },
+
         ]
       })
+
     },
-    situtationEchart (termid, countNo,name) { //认证情况
+    situtationEchart (termid, countNo, name) { //认证情况
+      console.log(termid, countNo, name);
       let situtationChart = this.$echart.init(this.$refs.situtationChart);
       situtationChart.setOption({
         grid: {
@@ -277,8 +284,15 @@ export default {
           bottom: 50,
           containLabel: true
         },
-        //图标头
+        tooltip: {
+          trigger: 'axis'
+        },
+
+        toolbox: {
+          show: true,
+        },
         legend: {
+          data: [name + '竞赛奖项'],
           icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
           y: "30",
           itemWidth: 20,
@@ -288,46 +302,56 @@ export default {
           itemGap: 40,
           textStyle: { fontSize: 16 }
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
-        },
-
+        calculable: true,
         xAxis: [
           {
             type: 'category',
             boundaryGap: false,
-            data: termid
+            data: termid,
+            axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+             axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         yAxis: [
           {
-            type: 'value'
-          }
+            type: 'value',
+            axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              },
+
+            },
+            axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
+          },
+
         ],
         series: [
           {
-            name: name+"竞赛奖项",
+            name: name + '竞赛奖项',
             type: 'line',
-            stack: '总量',
-            areaStyle: {              normal: {
-                color: "#93dfe0"
-              }            },
+            smooth: true,
             itemStyle: {
               normal: {
-                color: '#8cd5c2', //改变折线点的颜色
+                areaStyle: { type: 'default' },
+                color: '#f8d5b8',
                 lineStyle: {
-                  color: '#17c6c3' //改变折线颜色
+                  color: "#ffb880"
                 }
               }
             },
             data: countNo
-          }
+          },
+
         ]
       })
     },
@@ -381,6 +405,16 @@ export default {
         }
       })
     },
+    getPortrait () { //获取当前积分
+
+      this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.current = data.data[7].integralValue;
+
+        }
+      })
+    },
     getCertificationSituationData () { //获取认证情况数据
       let { userId, classId } = this.$route.query;
       this.$ajax.get(this.baseUrl + certificationSituation, {
@@ -397,8 +431,8 @@ export default {
             countNo.push(data.data[i].countNo);
             this.totalcountNo += parseInt(data.data[i].countNo)
           }
-         let name =  this.baseInfo.username;
-          this.situtationEchart(termid, countNo,name);
+          let name = this.baseInfo.username;
+          this.situtationEchart(termid, countNo, name);
         }
       })
     },
@@ -487,6 +521,8 @@ export default {
           this.$router.go(0)
 
         }
+      }).catch(err => {
+        this.$message.error('同步失败请联系管理员');
       })
 
     },

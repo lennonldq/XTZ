@@ -16,12 +16,15 @@
       >
         返回上页
       </router-link>
-           <div
+      <div
         class="synchronization"
         @click="synchronization()"
       >
         <div class="one">同步数据</div>
-        <div class="two"  v-if="gtime">上次同步:{{gtime | gTime}} </div>
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
 
@@ -41,7 +44,10 @@
           <span>{{`等${nuber}个系统的实训实训,达标率为:`}}</span>
           <span style="color: #0088a0">{{rate}}</span>
         </div>
-        <div v-if="skilled.length > 0" class="touRed">
+        <div
+          v-if="skilled.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of skilled"
@@ -51,7 +57,10 @@
           <span>等系统中能熟悉掌握系统的相关步骤；</span>
 
         </div>
-           <div v-if="secondary.length > 0" class="touRed">
+        <div
+          v-if="secondary.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of secondary"
@@ -61,7 +70,10 @@
           <span>等系统中能掌握基本的步骤，有待提高；</span>
 
         </div>
-          <div v-if="unfamiliar.length > 0" class="touRed">
+        <div
+          v-if="unfamiliar.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of unfamiliar"
@@ -97,7 +109,7 @@
         <span v-if="postSecondary.length > 0">{{`在${postSecondary}中能掌握基本的岗位技能`}}</span>
         <span v-if="postUnfamiliar.length > 0"> {{ `而在${postUnfamiliar}岗位及鞥呢训练中掌握较差，需进一步加强`}}</span>
       </p> -->
-       <div
+      <div
         v-if="jobScoreList.length > 0"
         class="ExperimentalResult"
       >
@@ -111,7 +123,10 @@
           <span>{{`等${participate}个系统技能训练，按岗位进行计分，达标率：`}}</span>
           <span style="color: #0088a0">{{rateScore}}%</span>
         </div>
-        <div v-if="postSkilled.length > 0" class="touRed">
+        <div
+          v-if="postSkilled.length > 0"
+          class="touRed"
+        >
           其中在
           <span
             v-for="item of postSkilled"
@@ -121,7 +136,10 @@
           <span>能够熟悉掌握相关岗位技能；</span>
 
         </div>
-           <div v-if="postSecondary.length > 0" class="touRed">
+        <div
+          v-if="postSecondary.length > 0"
+          class="touRed"
+        >
           在
           <span
             v-for="item of postSecondary"
@@ -131,7 +149,10 @@
           <span>中能掌握基本的岗位技能</span>
 
         </div>
-          <div v-if="postUnfamiliar.length > 0" class="touRed">
+        <div
+          v-if="postUnfamiliar.length > 0"
+          class="touRed"
+        >
           而在
           <span
             v-for="item of postUnfamiliar"
@@ -153,9 +174,9 @@
     </div>
     <div class="module">
       <div class="title integral">
-        <div class="LEF">课程积分情况</div>
+        <div class="LEF">实训积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:</span>
+          <span>当前实训积分:&nbsp;{{current}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
@@ -246,8 +267,9 @@ import {
   semester,
   curriculum,
   integralStatistics,
-    updateData,
-  selectSynchroLog
+  updateData,
+  selectSynchroLog,
+  assessModules
 } from "../js/url"
 
 export default {
@@ -320,8 +342,9 @@ export default {
       difference: [],
       // 实训分数占比
       score_rateArr: [],
-        //更新数据时间
-      gtime: ''
+      //更新数据时间
+      gtime: '',
+      current: ''
     }
   },
   mounted () {
@@ -331,7 +354,8 @@ export default {
     this.getExperimentalTrainingPortraitData();
     this.getExperimentalTrainingData();
     this.getjobScore();
-    this.Updatetime()
+    this.Updatetime();
+    this.getPortrait();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 综合能力
@@ -344,7 +368,13 @@ export default {
           bottom: 50,
           containLabel: true
         },
-        //图标头
+        tooltip: {
+          trigger: 'axis'
+        },
+
+        toolbox: {
+          show: true,
+        },
         legend: {
           data: ['个人积分', '班级平均积分'],
           icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
@@ -356,41 +386,48 @@ export default {
           itemGap: 40,
           textStyle: { fontSize: 16 }
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
-        },
-
+        calculable: true,
         xAxis: [
           {
             type: 'category',
             boundaryGap: false,
-            data: termid
+            data: termid,
+            axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+            axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+            axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         series: [
           {
             name: '个人积分',
             type: 'line',
-            stack: '总量',
-            areaStyle: {              normal: {
-                color: "#93dfe0"
-              }            },
+            smooth: true,
             itemStyle: {
               normal: {
-                color: '#8cd5c2', //改变折线点的颜色
+                areaStyle: { type: 'default' },
+                color: '#90dcdd',
                 lineStyle: {
-                  color: '#17c6c3' //改变折线颜色
+                  color: "#3bc7cb"
                 }
               }
             },
@@ -399,26 +436,13 @@ export default {
           {
             name: '班级平均积分',
             type: 'line',
-            stack: '总量',
-            label: {
-              normal: {
-                show: false,
-                position: 'top'
-              }
-            },
-            areaStyle: {              normal: {
-                color: "#d4cae8"
-              }            },
-            itemStyle: {
-              normal: {
-                color: '#b29fdd', //改变折线点的颜色
-                lineStyle: {
-                  color: '#b29fdd' //改变折线颜色
-                }
-              }
-            },
+            smooth: true,
+            itemStyle: {              normal: {                areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
+                  color: "#bfaee2"
+                }              }            },
             data: sumIntegralValue
-          }
+          },
+
         ]
       })
     },
@@ -480,7 +504,9 @@ export default {
             name: '分数占比',
             type: 'bar',
             stack: '总量',
-            // barWidth: 35,
+            barWidth: 60,
+            
+barMaxWidth: 60, 
             label: {
               normal: {
                 show: true,
@@ -503,7 +529,6 @@ export default {
     },
 
     postHistogramEchart (type_nameArr, scoreArr) {   //岗位得分
-      console.log(type_nameArr, scoreArr);
       let postHistogramChart = this.$echart.init(this.$refs.postHistogramChart);
       postHistogramChart.setOption({
         tooltip: {
@@ -522,9 +547,8 @@ export default {
         // },
         grid: {
           top: 0,
-          left: '3%',
           right: '4%',
-          bottom: '3%',
+          left: '20',
           containLabel: true
         },
         xAxis: {
@@ -535,6 +559,12 @@ export default {
               color: '#008acd'
             }
           },
+          splitLine: {
+            lineStyle: {
+              type: "dashed",
+              width: 2,
+            }
+          },
           axisLabel: {
             textStyle: {
               color: '#444444'
@@ -542,26 +572,48 @@ export default {
           },
         },
         yAxis: {
-          type: 'category',
+          ype: 'category',
           axisLine: {
             lineStyle: {
               width: 2,
-              color: '#008acd'
+              color: '#408829'
             }
           },
           axisLabel: {
+            interval: 0,
+            formatter: function (value) {
+              var result = "";//拼接加\n返回的类目项
+              var maxLength = 3;//每项显示文字个数
+              var valLength = value.length;//X轴类目项的文字个数
+              var rowNumber = Math.ceil(valLength / maxLength); //类目项需要换行的行数
+              if (rowNumber > 3)//如果文字大于5,
+              {
+                for (var i = 0; i < rowNumber; i++) {
+                  var temp = "";//每次截取的字符串
+                  var start = i * maxLength;//开始截取的位置
+                  var end = start + maxLength;//结束截取的位置
+                  temp = value.substring(start, end) + "\n";
+                  result += temp; //拼接生成最终的字符串
+                }
+                return result;
+              }
+              else {
+                return value;
+              }
+            },
             textStyle: {
-              color: '#444444'
+              color: '#444444',//坐标值得具体的颜色
             }
           },
           data: type_nameArr
         },
         series: [
           {
-            // name: '直接访问',
+            name: '分数占比',
             type: 'bar',
+            barMaxWidth: 60,
             stack: '总量',
-            // barWidth: 40,
+            barWidth: 60,
             label: {
               normal: {
                 show: true,
@@ -582,7 +634,15 @@ export default {
       })
     },
 
+    getPortrait () { //获取当前积分
 
+      this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.current = data.data[1].integralValue;
+        }
+      })
+    },
     getExperimentalTrainingPortraitData () { // 获取实验实训积分数据
       let { userId, classId } = this.$route.query;
       this.$ajax.get(this.baseUrl + experimentalTrainingPortrait, {
@@ -623,8 +683,6 @@ export default {
 
             scoreArr.push(parseInt(data.data[i].score));
 
-            console.log(scoreArr);
-
             sum_scoreArr.push(parseInt(data.data[i].sum_score));
             if (this.operateName.length < 5) {
               this.operateName.push(this.dataList[i].type_name)
@@ -645,7 +703,7 @@ export default {
     },
 
     getjobScore () {             //获取岗位分数
-  let { userId } = this.$route.query;
+      let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + getJobScore, {
         params: { userId }
       }).then(res => {
@@ -691,13 +749,13 @@ export default {
       for (let j = 0; j < this.dataList.length; j++) {
         this.nuber++;
         if (this.dataList[j].score >= 60) {
-          dadao ++
+          dadao++
           dataoname.push(this.dataList[j])
         }
       }
-  
- 
-  
+
+
+
       this.rate = Math.round(dadao / quanbu * 100) + "%";
 
       var max;
@@ -759,9 +817,11 @@ export default {
         if (data.code == 200) {
           location.reload()
           this.$router.go(0)
-
         }
+      }).catch(err => {
+        this.$message.error('同步失败请联系管理员');
       })
+
 
     },
 
@@ -950,12 +1010,12 @@ export default {
 .el-popper .tableBox {
   padding: 0px 34px;
 }
-.module .touRed .btRed{
-   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23F30' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E") repeat-x 0 100%; 
-    background-size: 20px auto;
-    display: inline-block;
-    padding-bottom: 4px;
-    margin-right: 4px;
+.module .touRed .btRed {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23F30' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E")
+    repeat-x 0 100%;
+  background-size: 20px auto;
+  display: inline-block;
+  padding-bottom: 4px;
+  margin-right: 4px;
 }
-
 </style>

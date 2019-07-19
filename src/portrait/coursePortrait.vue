@@ -28,17 +28,14 @@
         @click="synchronization()"
       >
         <div class="one">同步数据</div>
-        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
     <div class="module">
       <p class="title">课程学习情况</p>
-      <!-- <p class='schoolYear'>{{`${baseInfo.username}的${large}${largeWord}，${small}${smallWord}；`}}</p> -->
-      <!-- <p class='schoolYear'>
-        <span>{{`${baseInfo.username}在本${schools}的课程学习过程中；`}}</span>
-        <span v-if="large.length >0">{{`${large}等${largenuber}门课程掌握较好，高于或等于平均水平,`}}</span>
-        <span v-if="small.length > 0">{{`${small}等${smallnuber}门课程掌握较为一般，低于平均水平，有待加强提高`}}</span>
-      </p> -->
       <div
         class="ExperimentalResult"
         v-if="large.length>0&& small.length > 0"
@@ -94,7 +91,7 @@
       <div class="title integral">
         <div class="LEF">课程积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:</span>
+          <span>当前课程积分:&nbsp;{{current}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
@@ -191,7 +188,8 @@ import {
   curriculum,
   integralStatistics,
   updateData,
-  selectSynchroLog
+  selectSynchroLog,
+  assessModules
 } from "../js/url"
 export default {
   props: ['baseInfo'],
@@ -261,7 +259,9 @@ export default {
       //学期？学年
       schools: '',
       //更新数据时间
-      gtime: ''
+      gtime: '',
+      // 当前积分
+      current: ''
     }
   },
   mounted () {
@@ -272,6 +272,7 @@ export default {
     this.getLearningSituationData();
     this.getIntegralStatistics();
     this.Updatetime();
+    this.getPortrait()
   },
   methods: {
     getIntegralData () { //获取课程画像数据
@@ -299,7 +300,7 @@ export default {
     },
 
     courseIntegralEchart (termid, integralValue, sumIntegralValue) { // 课程积分情况
-      // console.log(termid, integralValue, sumIntegralValue);
+      console.log(termid, integralValue, sumIntegralValue);
 
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
@@ -310,7 +311,13 @@ export default {
           bottom: 50,
           containLabel: true
         },
-        //图标头
+        tooltip: {
+          trigger: 'axis'
+        },
+
+        toolbox: {
+          show: true,
+        },
         legend: {
           data: ['个人积分', '班级平均积分'],
           icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
@@ -322,42 +329,49 @@ export default {
           itemGap: 40,
           textStyle: { fontSize: 16 }
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
-        },
-
+        calculable: true,
         xAxis: [
           {
             type: 'category',
             boundaryGap: false,
-            data: termid
+            data: termid,
+             axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+             axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+             axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+             axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
           }
         ],
         series: [
           {
             name: '个人积分',
             type: 'line',
-            stack: '总量',
-            areaStyle: {              normal: {
-                color: "#93dfe0"
-              }            },
+            smooth: true,
             itemStyle: {
               normal: {
-                color: '#8cd5c2', //改变折线点的颜色
-                lineStyle: {
-                  color: '#17c6c3' //改变折线颜色
-                }
+                areaStyle: { type: 'default' }, 
+                color: '#90dcdd',
+                  lineStyle: {
+                color: "#3bc7cb"
+            }
               }
             },
             data: integralValue
@@ -365,26 +379,13 @@ export default {
           {
             name: '班级平均积分',
             type: 'line',
-            stack: '总量',
-            label: {
-              normal: {
-                show: false,
-                position: 'top'
-              }
-            },
-            areaStyle: {              normal: {
-                color: "#d4cae8"
-              }            },
-            itemStyle: {
-              normal: {
-                color: '#b29fdd', //改变折线点的颜色
-                lineStyle: {
-                  color: '#b29fdd' //改变折线颜色
-                }
-              }
-            },
+            smooth: true,
+            itemStyle: { normal: { areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
+                color: "#b6a2de"
+            } } },
             data: sumIntegralValue
-          }
+          },
+
         ]
       })
     },
@@ -725,8 +726,9 @@ export default {
         if (data.code == 200) {
           location.reload()
           this.$router.go(0)
-
         }
+      }).catch(err => {
+        this.$message.error('同步失败请联系管理员');
       })
 
     },
@@ -781,6 +783,16 @@ export default {
 
       })
     },
+    getPortrait () { //获取当前积分
+
+      this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.current = data.data[0].integralValue;
+
+        }
+      })
+    },
 
     //  获取积分明细列表
     getIntegralStatistics () { //获取积分统计
@@ -811,6 +823,7 @@ export default {
         }
       })
     },
+
     seachData () { // 点击搜索查询
       this.getIntegralStatistics()
 

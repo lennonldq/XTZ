@@ -60,9 +60,9 @@
             </el-date-picker>
           </div>
           <div class="integral">
-            <label>积分：</label>
+            <label>积分类型：</label>
             <select v-model="type" @change="getType">
-                <option>全部</option>
+                <option>全部类型</option>
                 <option>积分增加</option>
                 <option>积分减少</option>
             </select>
@@ -105,7 +105,7 @@
           current:1,
           everyShowNum:10,
           emptyText:"暂无数据",
-          type:"全部",
+          type:"全部类型",
           headerStyle:{
             height:'60px',
             backgroundColor:'#10859d',
