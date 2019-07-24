@@ -16,13 +16,13 @@
       >
         返回上页
       </router-link>
-           <!-- <div
+           <div
         class="synchronization"
         @click="synchronization()"
       >
         <div class="one">同步数据</div>
         <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
-      </div> -->
+      </div>
     </div>
     <div class="module">
       <p class="title">岗位分析</p>

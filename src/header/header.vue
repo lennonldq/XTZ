@@ -3,16 +3,16 @@
     <div class="headerMain">
       <p class="logo"><img src="../assets/images/logo.jpg" alt=""> </p>
       <ul class="navList" >
-        <router-link
+        <li
         v-show="usertypeid != 0 "
-          v-for="(item,index) in navList"
-          tag="li"
-          :key="index"
-          :to="item.path"
-          
         >
-          {{ item.title }}
-        </router-link>
+          <a href="https://etech-edu.com/edu/cloudTeacher/">返回首页</a>
+        </li>
+         <li
+        v-show="usertypeid != 0 "
+        >
+          <a href="https://etech-edu.com/enterprise/index">返回首页</a>
+        </li>
       </ul>
       
       <ul class="fotRit">
@@ -143,10 +143,14 @@ width: 82px;
 }
 
 .header .navList li {
-  color: #000;
+  color: #000000;
   padding: 0 40px;
   cursor: pointer;
   line-height: 82px;
+}
+.header .navList li a{
+  text-decoration: none;
+  color: #000000;
 }
 .header .navList li:nth-child(1) {
   background: url('../assets/images/home_act.png') 12px 30px no-repeat;
@@ -158,7 +162,7 @@ width: 82px;
   display: flex;
   /* padding-right: 38px; */
   /* float: right; */
-  padding-left: 300px;
+  padding-left: 42px;
 }
 .header .headerMain .fotRit .is-active {
   color: #0187a2;
@@ -170,6 +174,6 @@ width: 82px;
   line-height: 82px;
 }
 .navList{
-  width: 12%;
+  width: 36%;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="titleBox">
         <div><img
-            src="../assets/images/pho.png"
+            :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
           ></div>
         <p>{{ baseInfo.username }}</p>
@@ -35,10 +35,10 @@
       </p>
       <div
         class="echartBox"
-        v-if="joinItem.length >0"
+        v-if="joinItem"
       >
         <div class="type">
-          <p>任务参与类型</p>
+          <p>报名/任务参与类型</p>
           <div class="present">
             <p :style="{width: project_count1_present}">{{ project_count1 }}个</p>
             <p :style="{width: project_count2_present}">{{ project_count2 }}个</p>
@@ -97,11 +97,13 @@
       width="800"
       trigger="click"
       class="tan"
+ v-model="shu"
     >
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select v-model="sendIntegralData.termid">
+          <select v-model="sendIntegralData.termid" 
+@change="getcurriculum()">
             <option
               :value="item.termid"
               v-for="(item,index) in semesterList"
@@ -124,6 +126,7 @@
           class="tanBtn"
           @click="seachData"
         >搜索</button>
+        <div class="x" @click="shu = false">X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -177,7 +180,6 @@ import {
   integralStatistics,
   updateData,
   selectSynchroLog,
-  
 assessModules
 } from "../js/url"
 export default {
@@ -189,6 +191,7 @@ export default {
   data () {
     return {
       // 弹框数据
+        shu:false,
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
@@ -198,10 +201,14 @@ export default {
         assessModuleId: 6
       },
       // 获取的学期
-      semesterList: [],
+      semesterList: [
+        {termName:"全部学期",termid:""}
+      ],
 
       // 获取课程名称
-      courseNameList: [],
+      courseNameList: [
+         {coursename:"全部课程",courseid:""}
+      ],
       loading: true,
       emptyText: "暂无数据",
       current: 1,
@@ -230,12 +237,12 @@ export default {
   mounted () {
     // 强制刷新一遍
     // this.shua();
+    this.getTaskJoinNumberData();
     this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
     this.getTaskOutsourcingData();
     this.getEnterpriseOutsourcingData();
-    this.getTaskJoinNumberData();
     this.getTaskJoinInfoData();
     this.Updatetime();
      this.getPortrait();
@@ -335,11 +342,10 @@ this.$router.go(0)
       })
     },
     taskEchart (begin_date, project_count, sum_project_count) { //任务外包积分柱状图
-  console.log(begin_date, project_count, sum_project_count);
       let taskChart = this.$echart.init(this.$refs.taskChart);
       taskChart.setOption({
         title: {
-          text: `参与项目数：${sum_project_count}个`,
+          text: `报名/参与项目数：${sum_project_count}个`,
           x: "center",
           y: 32,
           textStyle: {
@@ -445,7 +451,6 @@ this.$router.go(0)
 
 
         if (data.code == 200) {
-          console.log(data.data, 'sdsd');
           for (let i = 0; i < data.data.length; i++) {
             this.joinItem.push(data.data[i] + '、')
           }
@@ -458,7 +463,6 @@ this.$router.go(0)
         params: { userId }
       }).then(res => {
         let data = JSON.parse(res.data);
-        console.log(data);
         if (data.code == 200) {
           let begin_date = [], project_count = [];
           for (let i = 0; i < data.data.length; i++) {
@@ -477,7 +481,6 @@ this.$router.go(0)
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          console.log(data.data);
           let [project_count1, project_count2] = [parseInt(data.data.project_count1), parseInt(data.data.project_count2)];
           let total = project_count1 + project_count2;
           this.project_count1_present = this.commonJs.percentNum(project_count1, total);
@@ -496,30 +499,36 @@ this.$router.go(0)
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.semesterList = data.data;
+        for (let i = 0; i < data.data.length; i++) {
+             this.semesterList.push(data.data[i]);
+         }
         }
       })
     },
 
     //获取课程名称接口
     getcurriculum () {
-      let { userId } = this.$route.query;
-      console.log();
+    if (this.sendIntegralData.termid == "") {
+        this.courseNameList = [
+          { coursename: "全部课程", courseid: "" }
+        ]
+      } else {
+        let { userId } = this.$route.query;
+        this.$ajax.get(this.baseUrl + curriculum, {
+          params: {
+            userId,
+            termid: this.sendIntegralData.termid
+          }
+        }).then(res => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.courseNameList.push(data.data[i]);
+            }
+          }
 
-      this.$ajax.get(this.baseUrl + curriculum, {
-        params: {
-          userId,
-          termid: this.sendIntegralData.termid
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        console.log(data);
-
-        if (data.code == 200) {
-          this.courseNameList = data.data;
-        }
-
-      })
+        })
+      }
     },
 
     //  获取积分明细列表
@@ -690,6 +699,7 @@ getPortrait () { //获取当前积分
   line-height: 45px;
   border-bottom: #dcdcdc solid 2px;
   display: flex;
+  position: relative;
 }
 .el-popper .statistics_title .titleName {
   text-indent: 36px;
@@ -770,5 +780,11 @@ getPortrait () { //获取当前积分
 }
 .el-popper .tableBox {
   padding: 0px 34px;
+}
+.x{
+      position: absolute;
+    right: 32px;
+    font-size: 20px;
+    cursor: pointer;
 }
 </style>

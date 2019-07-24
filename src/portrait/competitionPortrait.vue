@@ -3,7 +3,7 @@
     <div class="header">
       <div class="titleBox">
         <div><img
-            src="../assets/images/pho.png"
+            :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
           ></div>
         <p>{{ baseInfo.username }}</p>
@@ -16,6 +16,16 @@
       >
         返回上页
       </router-link>
+      <div
+        class="synchronization"
+        @click="synchronization()"
+      >
+        <div class="one">同步数据</div>
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
     <div class="module">
       <p class="title">竞赛情况</p>
@@ -48,6 +58,7 @@
       width="800"
       trigger="click"
       class="tan"
+      v-model="shu"
     >
       <div class="statistics_title">
         <div class="integral">
@@ -62,7 +73,10 @@
         </div>
         <div class="integral">
           <label>课程名称</label>
-          <select v-model="sendIntegralData.courseid">
+          <select
+            v-model="sendIntegralData.courseid"
+            @change="getcurriculum()"
+          >
             <option
               :value="item.courseid"
               v-for="(item,index) in courseNameList"
@@ -75,6 +89,10 @@
           class="tanBtn"
           @click="seachData"
         >搜索</button>
+        <div
+          class="x"
+          @click="shu = false"
+        >X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -120,7 +138,7 @@
 import Pagination from "../views/pagination";
 import {  competition, competitionSituation, semester,
   curriculum,
-  integralStatistics,assessModules} from "../js/url"
+  integralStatistics, assessModules, selectSynchroLog, updateData,} from "../js/url"
 export default {
   props: ['baseInfo'],
   components: {
@@ -129,6 +147,7 @@ export default {
   data () {
     return {
       // 弹框数据
+      shu: false,
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
@@ -138,10 +157,14 @@ export default {
         assessModuleId: 9
       },
       // 获取的学期
-      semesterList: [],
+      semesterList: [
+        { termName: "全部学期", termid: "" }
+      ],
 
       // 获取课程名称
-      courseNameList: [],
+      courseNameList: [
+        { coursename: "全部课程", courseid: "" }
+      ],
       loading: true,
       emptyText: "暂无数据",
       current: 1,
@@ -156,8 +179,10 @@ export default {
 
       totalcountNo: 0,
       dataList: [],
-       // 当前积分
-      current: ''
+      // 当前积分
+      current: '',
+      //更新数据时间
+      gtime: '',
     }
   },
   mounted () {
@@ -167,12 +192,13 @@ export default {
 
     this.getCertificationData();
     this.getCertificationSituationData();
-     this.getPortrait();
+    this.getPortrait();
+    this.Updatetime();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 认证积分情况
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
-    scoreChart.setOption({
+      scoreChart.setOption({
         grid: {
           left: 80,
           right: 80,
@@ -204,13 +230,13 @@ export default {
             type: 'category',
             boundaryGap: false,
             data: termid,
-             axisLine: {
+            axisLine: {
               lineStyle: {
                 color: '#008acd',
                 width: 2,//这里是为了突出显示加上的
               }
             },
-             axisLabel: {
+            axisLabel: {
               color: "#333333" //刻度线标签颜色
             }
           }
@@ -218,13 +244,13 @@ export default {
         yAxis: [
           {
             type: 'value',
-             axisLine: {
+            axisLine: {
               lineStyle: {
                 color: '#008acd',
                 width: 2,//这里是为了突出显示加上的
               }
             },
-             axisLabel: {
+            axisLabel: {
               color: "#333333" //刻度线标签颜色
             }
           }
@@ -236,11 +262,11 @@ export default {
             smooth: true,
             itemStyle: {
               normal: {
-                areaStyle: { type: 'default' }, 
+                areaStyle: { type: 'default' },
                 color: '#90dcdd',
-                  lineStyle: {
-                color: "#3bc7cb"
-            }
+                lineStyle: {
+                  color: "#3bc7cb"
+                }
               }
             },
             data: integralValue
@@ -249,9 +275,9 @@ export default {
             name: '班级平均积分',
             type: 'line',
             smooth: true,
-            itemStyle: { normal: { areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
-                color: "#b6a2de"
-            } } },
+            itemStyle: {              normal: {                areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
+                  color: "#b6a2de"
+                }              }            },
             data: sumIntegralValue
           },
 
@@ -262,70 +288,61 @@ export default {
       let situtationChart = this.$echart.init(this.$refs.situtationChart);
       situtationChart.setOption({
         tooltip: {
-          trigger: 'axis',
-          formatter: (params) => {
-            let str = "";
-            for (let i = 0; i < params.length; i++) {
-              str += `${this.baseInfo.username}获奖个数:${params[i].value}个`
-            }
-            return str;
-          },
+          trigger: 'axis'
         },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ['#fff'],
-              width: 2,
-              type: 'solid'
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-              align: 'center'
-            }
-          },
-          data: termid
+
+        toolbox: {
+          show: true,
         },
-        yAxis: {
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ["#cbe7f2", "#fff"]
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 4,
-              color: '#5ac1e9'
-            }
-          },
-          axisLabel: {
-            textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-            }
-          },
-          type: 'value'
-        },
-        color: "#82a7da",
-        series: [{
-          data: countNo,
-          type: 'line',
-          areaStyle: {
-            normal: {
-              color: "#60d8a3"
+        calculable: true,
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            data: termid,
+            axisLine: {
+              lineStyle: {
+                color: '#008acd',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+            axisLabel: {
+              color: "#333333" //刻度线标签颜色
             }
           }
-        }]
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            axisLine: {
+              lineStyle: {
+                color: '#5da6c5',
+                width: 2,//这里是为了突出显示加上的
+              }
+            },
+            axisLabel: {
+              color: "#333333" //刻度线标签颜色
+            }
+          }
+        ],
+        series: [
+          {
+            name: `${this.baseInfo.username}竞赛奖项`,
+            type: 'line',
+            smooth: true,
+            itemStyle: {
+              normal: {
+                areaStyle: { type: 'default' },
+                color: '#f8d5b8',
+                lineStyle: {
+                  color: "#ffb981"
+                }
+              }
+            },
+            data: countNo
+          },
+
+        ]
       })
     },
 
@@ -390,7 +407,6 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data)
         if (data.code == 200) {
-          console.log(data.data);
           let countNo = [], termid = [];
           for (let i = 0; i < data.data.length; i++) {
             termid.push(this.formatTerm(data.data[i].termid))
@@ -410,32 +426,38 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.semesterList = data.data;
+          for (let i = 0; i < data.data.length; i++) {
+            this.semesterList.push(data.data[i]);
+          }
         }
       })
     },
 
     //获取课程名称接口
     getcurriculum () {
-      let { userId } = this.$route.query;
-      console.log();
+      if (this.sendIntegralData.termid == "") {
+        this.courseNameList = [
+          { coursename: "全部课程", courseid: "" }
+        ]
+      } else {
+        let { userId } = this.$route.query;
+        this.$ajax.get(this.baseUrl + curriculum, {
+          params: {
+            userId,
+            termid: this.sendIntegralData.termid
+          }
+        }).then(res => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.courseNameList.push(data.data[i]);
+            }
+          }
 
-      this.$ajax.get(this.baseUrl + curriculum, {
-        params: {
-          userId,
-          termid: this.sendIntegralData.termid
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        console.log(data);
-
-        if (data.code == 200) {
-          this.courseNameList = data.data;
-        }
-
-      })
+        })
+      }
     },
- getPortrait () { //获取当前积分
+    getPortrait () { //获取当前积分
 
       this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
         let data = JSON.parse(res.data);
@@ -483,7 +505,38 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
+    // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 9 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+        }
+      }).catch(err => {
+        this.$message.error('同步失败请联系管理员');
+      })
+    },
+    // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 9,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
   }
 }
 </script>
@@ -524,6 +577,7 @@ export default {
   line-height: 45px;
   border-bottom: #dcdcdc solid 2px;
   display: flex;
+  position: relative;
 }
 .el-popper .statistics_title .titleName {
   text-indent: 36px;
@@ -604,5 +658,11 @@ export default {
 }
 .el-popper .tableBox {
   padding: 0px 34px;
+}
+.x {
+  position: absolute;
+  right: 32px;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="titleBox">
         <div><img
-            src="../assets/images/pho.png"
+             :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
           ></div>
         <p>{{ baseInfo.username }}</p>
@@ -57,11 +57,12 @@
       width="800"
       trigger="click"
       class="tan"
+       v-model="shu"
     >
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select v-model="sendIntegralData.termid">
+          <select v-model="sendIntegralData.termid" @change="getcurriculum()">
             <option
               :value="item.termid"
               v-for="(item,index) in semesterList"
@@ -84,6 +85,7 @@
           class="tanBtn"
           @click="seachData"
         >搜索</button>
+          <div class="x" @click="shu = false">X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -140,6 +142,7 @@ export default {
   data () {
     return {
       // 弹框数据
+  shu:false,
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
@@ -149,10 +152,14 @@ export default {
         assessModuleId: 8
       },
       // 获取的学期
-      semesterList: [],
+      semesterList: [
+        {termName:"全部学期",termid:""}
+      ],
 
       // 获取课程名称
-      courseNameList: [],
+      courseNameList: [
+        {coursename:"全部课程",courseid:""}
+      ],
       loading: true,
       emptyText: "暂无数据",
       current: 1,
@@ -291,17 +298,7 @@ export default {
         toolbox: {
           show: true,
         },
-        legend: {
-          data: [name + '竞赛奖项'],
-          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
-          y: "30",
-          itemWidth: 20,
-
-          itemHeight: 10,
-
-          itemGap: 40,
-          textStyle: { fontSize: 16 }
-        },
+     
         calculable: true,
         xAxis: [
           {
@@ -444,30 +441,37 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.semesterList = data.data;
+           for (let i = 0; i < data.data.length; i++) {
+             this.semesterList.push(data.data[i]);
+         }
+
         }
       })
     },
 
     //获取课程名称接口
     getcurriculum () {
-      let { userId } = this.$route.query;
-      console.log();
+    if (this.sendIntegralData.termid == "") {
+        this.courseNameList = [
+          { coursename: "全部课程", courseid: "" }
+        ]
+      } else {
+        let { userId } = this.$route.query;
+        this.$ajax.get(this.baseUrl + curriculum, {
+          params: {
+            userId,
+            termid: this.sendIntegralData.termid
+          }
+        }).then(res => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.courseNameList.push(data.data[i]);
+            }
+          }
 
-      this.$ajax.get(this.baseUrl + curriculum, {
-        params: {
-          userId,
-          termid: this.sendIntegralData.termid
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        console.log(data);
-
-        if (data.code == 200) {
-          this.courseNameList = data.data;
-        }
-
-      })
+        })
+      }
     },
 
     //  获取积分明细列表
@@ -584,6 +588,7 @@ export default {
   line-height: 45px;
   border-bottom: #dcdcdc solid 2px;
   display: flex;
+  position: relative;
 }
 .el-popper .statistics_title .titleName {
   text-indent: 36px;
@@ -664,5 +669,11 @@ export default {
 }
 .el-popper .tableBox {
   padding: 0px 34px;
+}
+.x{
+      position: absolute;
+    right: 32px;
+    font-size: 20px;
+    cursor: pointer;
 }
 </style>

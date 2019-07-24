@@ -33,7 +33,8 @@
           let info = JSON.parse(sessionStorage.getItem("info"));
           this.baseInfo.username = info.username + '同学';
           this.baseInfo.schoolname = info.schoolname;
-          this.baseInfo.classname = info.classname
+          this.baseInfo.classname = info.classname;
+          this.baseInfo.photo = info.photo;
         },
       },
        components:{

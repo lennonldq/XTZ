@@ -3,7 +3,7 @@
     <div class="header">
       <div class="titleBox">
         <div><img
-            src="../assets/images/pho.png"
+             :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
           ></div>
         <p>{{ baseInfo.username }}</p>
@@ -16,41 +16,56 @@
       >
         返回上页
       </router-link>
-               <!-- <div
+      <div
         class="synchronization"
         @click="synchronization()"
       >
         <div class="one">同步数据</div>
-        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
-      </div> -->
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
 
     <div class="scoreBoxsm">
       <div class="module">
         <p class="title">创业知识跟踪</p>
-        <div class="follow" v-if="pioneerGeneral!==null  || pioneerPlan!==null ">
+        <div
+          class="follow"
+          v-if="pioneerGeneral!==null  || pioneerPlan!==null "
+        >
           <p>创业通识<br /><span>{{pioneerGeneral}}%</span></p>
           <p>创业计划书<br /><span>{{ pioneerPlan }}%</span></p>
           <div ref="follow1"></div>
           <div ref="follow2"></div>
         </div>
-        <div class="wei" v-else>未有具体数据</div>
+        <div
+          class="wei"
+          v-else
+        >未有具体数据</div>
       </div>
       <div class="module">
         <p class="title">项目参与</p>
-        <div class="join" v-if="pioneerRelease!==null  && pioneerParticipate!==null">
+        <div
+          class="join"
+          v-if="pioneerRelease!==null  && pioneerParticipate!==null"
+        >
           <p>创业计划书</p>
           <p>创业参与项目</p>
           <span>创业项目发布数为{{pioneerRelease}}个，参与数为{{pioneerParticipate}}个</span>
-          <div  ref="join1"></div>
+          <div ref="join1"></div>
           <div ref="join2"></div>
         </div>
-        <div class="wei" v-else>未有具体数据</div>
+        <div
+          class="wei"
+          v-else
+        >未有具体数据</div>
       </div>
     </div>
 
     <div class="module">
-       <div class="title integral">
+      <div class="title integral">
         <div class="LEF">竞赛积分情况</div>
         <div class="RIT">
           <span>当前课程积分:&nbsp;{{current}}分</span>
@@ -68,11 +83,15 @@
       width="800"
       trigger="click"
       class="tan"
+      v-model="shu"
     >
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select v-model="sendIntegralData.termid">
+          <select
+            v-model="sendIntegralData.termid"
+            @change="getcurriculum()"
+          >
             <option
               :value="item.termid"
               v-for="(item,index) in semesterList"
@@ -95,6 +114,10 @@
           class="tanBtn"
           @click="seachData"
         >搜索</button>
+        <div
+          class="x"
+          @click="shu = false"
+        >X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -138,20 +161,21 @@
 
 <script>
 import Pagination from "../views/pagination";
-import { entrepreneurPortrait, pioneerInfo,semester,
+import {  entrepreneurPortrait, pioneerInfo, semester,
   curriculum,
   integralStatistics,
   updateData,
-  selectSynchroLog,assessModules } from "../js/url";
+  selectSynchroLog, assessModules} from "../js/url";
 export default {
   props: ["baseInfo"],
   name: "EntrepreneurialPortrait",
-   components: {
+  components: {
     Pagination
   },
   data () {
     return {
-       // 弹框数据
+      // 弹框数据
+      shu: false,
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
@@ -161,10 +185,14 @@ export default {
         assessModuleId: 5
       },
       // 获取的学期
-      semesterList: [],
+      semesterList: [
+        { termName: "全部学期", termid: "" }
+      ],
 
       // 获取课程名称
-      courseNameList: [],
+      courseNameList: [
+        { coursename: "全部课程", courseid: "" }
+      ],
       loading: true,
       emptyText: "暂无数据",
       current: 1,
@@ -183,23 +211,23 @@ export default {
       pioneerParticipate: "",
       //更新数据时间
       gtime: '',
-       // 当前积分
+      // 当前积分
       current: ''
     }
   },
   mounted () {
- this.getsemester();
+    this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
     this.getEntrepreneurPortraitData();
     this.getPioneerInfo(),
-     this.Updatetime();
-       this.getPortrait();
+      this.Updatetime();
+    this.getPortrait();
   },
   methods: {
     scoreEchart (termid, integralValue, sumIntegralValue) { // 综合能力
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
-        scoreChart.setOption({
+      scoreChart.setOption({
         grid: {
           left: 80,
           right: 80,
@@ -231,13 +259,13 @@ export default {
             type: 'category',
             boundaryGap: false,
             data: termid,
-             axisLine: {
+            axisLine: {
               lineStyle: {
                 color: '#008acd',
                 width: 2,//这里是为了突出显示加上的
               }
             },
-             axisLabel: {
+            axisLabel: {
               color: "#333333" //刻度线标签颜色
             }
           }
@@ -245,13 +273,13 @@ export default {
         yAxis: [
           {
             type: 'value',
-             axisLine: {
+            axisLine: {
               lineStyle: {
                 color: '#008acd',
                 width: 2,//这里是为了突出显示加上的
               }
             },
-             axisLabel: {
+            axisLabel: {
               color: "#333333" //刻度线标签颜色
             }
           }
@@ -263,11 +291,11 @@ export default {
             smooth: true,
             itemStyle: {
               normal: {
-                areaStyle: { type: 'default' }, 
+                areaStyle: { type: 'default' },
                 color: '#90dcdd',
-                  lineStyle: {
-                color: "#3bc7cb"
-            }
+                lineStyle: {
+                  color: "#3bc7cb"
+                }
               }
             },
             data: integralValue
@@ -276,9 +304,9 @@ export default {
             name: '班级平均积分',
             type: 'line',
             smooth: true,
-            itemStyle: { normal: { areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
-                color: "#b6a2de"
-            } } },
+            itemStyle: {              normal: {                areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
+                  color: "#b6a2de"
+                }              }            },
             data: sumIntegralValue
           },
 
@@ -323,14 +351,14 @@ export default {
     },
     joinEchart (el, color, value, item) {
       console.log(el, color, value, item);
-      
+
       let joinChart = this.$echart.init(el);
       joinChart.setOption({
-       
+
         tooltip: {
           trigger: 'item'
         },
-        color:color,
+        color: color,
         series: [
           {
             type: 'pie',
@@ -342,7 +370,7 @@ export default {
             },
             center: ['50%', '60%'],
             data: [
-              { value: value, name: item,itemStyle:{normal:{color:color}} },
+              { value: value, name: item, itemStyle: { normal: { color: color } } },
             ],
           }
         ]
@@ -375,7 +403,7 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-            this.pioneerGeneral = data.data[0].pioneerGeneral; //创业通识学习完成度
+          this.pioneerGeneral = data.data[0].pioneerGeneral; //创业通识学习完成度
           this.pioneerPlan = data.data[0].pioneerPlan;//创业计划书完成度
           this.pioneerRelease = data.data[0].pioneerRelease;//创业项目发布数
           this.pioneerParticipate = data.data[0].pioneerParticipate //pioneerParticipate
@@ -393,15 +421,15 @@ export default {
             ["#7edfb4", '#dadada'],
             [{ value: this.pioneerPlan, name: '直接访问' }, { value: 100 - this.pioneerPlan, name: '' }]
           );
-        
-          
+
+
           this.joinEchart(this.$refs.join2, "#7edfb4", this.pioneerParticipate, "创业项目参与数");
           this.joinEchart(this.$refs.join1, " #7384f4", this.pioneerRelease, "创业项目发布数");
-       
+
         }
       })
     },
-getPortrait () { //获取当前积分
+    getPortrait () { //获取当前积分
 
       this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
         let data = JSON.parse(res.data);
@@ -420,26 +448,36 @@ getPortrait () { //获取当前积分
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.semesterList = data.data;
+          for (let i = 0; i < data.data.length; i++) {
+            this.semesterList.push(data.data[i]);
+          }
         }
       })
     },
 
     //获取课程名称接口
     getcurriculum () {
-      let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + curriculum, {
-        params: {
-          userId,
-          termid: this.sendIntegralData.termid
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          this.courseNameList = data.data;
-        }
+       if (this.sendIntegralData.termid == "") {
+        this.courseNameList = [
+          { coursename: "全部课程", courseid: "" }
+        ]
+      } else {
+        let { userId } = this.$route.query;
+        this.$ajax.get(this.baseUrl + curriculum, {
+          params: {
+            userId,
+            termid: this.sendIntegralData.termid
+          }
+        }).then(res => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.courseNameList.push(data.data[i]);
+            }
+          }
 
-      })
+        })
+      }
     },
 
     //  获取积分明细列表
@@ -491,7 +529,6 @@ getPortrait () { //获取当前积分
         if (data.code == 200) {
           location.reload()
           this.$router.go(0)
-
         }
       })
 
@@ -558,8 +595,9 @@ getPortrait () { //获取当前积分
   right: 0;
   color: #7edfb4;
 }
-.scoreBoxsm .module .wei{
-  text-align: center;line-height: 329px;
+.scoreBoxsm .module .wei {
+  text-align: center;
+  line-height: 329px;
 }
 .scoreBoxsm .module {
   position: relative;
@@ -601,7 +639,6 @@ getPortrait () { //获取当前积分
   color: #444;
 }
 
-
 .module .integral {
   display: flex;
   justify-content: space-between;
@@ -620,6 +657,7 @@ getPortrait () { //获取当前积分
   line-height: 45px;
   border-bottom: #dcdcdc solid 2px;
   display: flex;
+  position: relative;
 }
 .el-popper .statistics_title .titleName {
   text-indent: 36px;
@@ -701,5 +739,10 @@ getPortrait () { //获取当前积分
 .el-popper .tableBox {
   padding: 0px 34px;
 }
-
+.x {
+  position: absolute;
+  right: 32px;
+  font-size: 20px;
+  cursor: pointer;
+}
 </style>

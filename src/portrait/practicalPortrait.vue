@@ -3,7 +3,7 @@
     <div class="header">
       <div class="titleBox">
         <div><img
-            src="../assets/images/pho.png"
+           :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
           ></div>
         <p>{{ baseInfo.username }}</p>
@@ -191,11 +191,12 @@
       width="800"
       trigger="click"
       class="tan"
+       v-model="shu"
     >
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select v-model="sendIntegralData.termid">
+          <select v-model="sendIntegralData.termid" @change="getcurriculum()">
             <option
               :value="item.termid"
               v-for="(item,index) in semesterList"
@@ -218,6 +219,7 @@
           class="tanBtn"
           @click="seachData"
         >搜索</button>
+          <div class="x" @click="shu = false">X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -281,6 +283,7 @@ export default {
   data () {
     return {
       // 弹框数据
+        shu:false,
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
@@ -290,10 +293,14 @@ export default {
         assessModuleId: 2
       },
       // 获取的学期
-      semesterList: [],
+      semesterList: [
+        {termName:"全部学期",termid:""}
+      ],
 
       // 获取课程名称
-      courseNameList: [],
+      courseNameList: [
+        {coursename:"全部课程",courseid:""}
+      ],
       loading: true,
       emptyText: "暂无数据",
       current: 1,
@@ -574,13 +581,6 @@ barMaxWidth: 60,
         yAxis: {
           ype: 'category',
           axisLine: {
-            lineStyle: {
-              width: 2,
-              color: '#408829'
-            }
-          },
-          axisLabel: {
-            interval: 0,
             formatter: function (value) {
               var result = "";//拼接加\n返回的类目项
               var maxLength = 3;//每项显示文字个数
@@ -705,7 +705,7 @@ barMaxWidth: 60,
     getjobScore () {             //获取岗位分数
       let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + getJobScore, {
-        params: { userId }
+        params: { userId,assessModuleId:2 }
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
@@ -782,30 +782,35 @@ barMaxWidth: 60,
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.semesterList = data.data;
+         for (let i = 0; i < data.data.length; i++) {
+             this.semesterList.push(data.data[i]);
+         }
         }
       })
     },
 
     //获取课程名称接口
     getcurriculum () {
-      let { userId } = this.$route.query;
-      console.log();
-
-      this.$ajax.get(this.baseUrl + curriculum, {
-        params: {
-          userId,
-          termid: this.sendIntegralData.termid
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        console.log(data);
-
-        if (data.code == 200) {
-          this.courseNameList = data.data;
-        }
-
-      })
+    if (this.sendIntegralData.termid == "") {
+        this.courseNameList = [
+          { coursename: "全部课程", courseid: "" }
+        ]
+      } else {
+        let { userId } = this.$route.query;
+        this.$ajax.get(this.baseUrl + curriculum, {
+          params: {
+            userId,
+            termid: this.sendIntegralData.termid
+          }
+        }).then(res => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.courseNameList.push(data.data[i]);
+            }
+          }
+        })
+      }
     },
     // 点击更新同步数据
     synchronization () {
@@ -821,8 +826,6 @@ barMaxWidth: 60,
       }).catch(err => {
         this.$message.error('同步失败请联系管理员');
       })
-
-
     },
 
     // 同步数据时间获取
@@ -929,6 +932,7 @@ barMaxWidth: 60,
   line-height: 45px;
   border-bottom: #dcdcdc solid 2px;
   display: flex;
+position: relative;
 }
 .el-popper .statistics_title .titleName {
   text-indent: 36px;
@@ -1017,5 +1021,11 @@ barMaxWidth: 60,
   display: inline-block;
   padding-bottom: 4px;
   margin-right: 4px;
+}
+.x{
+      position: absolute;
+    right: 32px;
+    font-size: 20px;
+    cursor: pointer;
 }
 </style>

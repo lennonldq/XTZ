@@ -68,8 +68,6 @@ export default {
           localStorage.setItem("schoolId", data.schoolId);
           localStorage.setItem("classId", data.classId);
           localStorage.setItem("userId", data.userId);
-          console.log(data);
-
           if (data.userTypeId == 0) {
             let userId = localStorage.getItem("userId");
                 let classId = localStorage.getItem("classId");

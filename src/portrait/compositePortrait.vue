@@ -3,7 +3,7 @@
     <div class="header">
       <div class="titleBox">
         <div><img
-            src="../assets/images/pho.png"
+             :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
           ></div>
         <p>{{ baseInfo.username }}</p>
@@ -17,10 +17,10 @@
       >
         返回上页
       </router-link>
-       <!-- <div class="synchronization" @click="synchronization()">
+       <div class="synchronization" @click="synchronization()">
         <div class="one">同步数据</div>
-        <div class="two">上次同步:<span>2019.4.1 10:00</span> </div>
-      </div> -->
+        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+      </div>
     </div>
     <div class="module">
       <p class="title">综合能力</p>
@@ -37,7 +37,7 @@
         ></div>
         <div class="dataShow">
           <ul>
-            <li v-for="item,index in resultData">
+            <li v-for="(item,index) in resultData" :key="index">
               {{ item.moduleName }}：
               <span>{{ item.integralValue?item.integralValue:0 }}/100</span>分
             </li>
@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { talentLabels, comprehensiveAbility, potentialEvaluation } from "../js/url"
+import { talentLabels, comprehensiveAbility, potentialEvaluation, updateData,  selectSynchroLog } from "../js/url"
 export default {
   props: ["baseInfo"],
   name: "CompositePortrait",
@@ -154,13 +154,16 @@ export default {
       professionalCharacter: "",
       personalCharacter: "",
       mentalAgeRemark: "",
-      emotionalIntelligence: ""
+      emotionalIntelligence: "",
+       //更新数据时间
+      gtime: '',
     }
   },
   mounted () {
     this.getTalentLabels();
     this.getComprehensiveAbilityData();
     this.getPotentialEvaluationData();
+       this.Updatetime();
   },
   methods: {
     addClass (value) {
@@ -403,7 +406,39 @@ export default {
         }
       })
     },
-  },
+     // 点击更新同步数据
+    synchronization () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + updateData, {
+        params: { userId, assessModuleId: 0 }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          location.reload()
+          this.$router.go(0)
+        }
+      }).catch(err=>{
+           this.$message.error('同步失败请联系管理员');
+      })
+    },
+
+       // 同步数据时间获取
+    Updatetime () {
+      let { userId } = this.$route.query;
+      this.$ajax.get(this.baseUrl + selectSynchroLog, {
+        params: {
+          assessModuleId: 0,
+          userId
+        }
+      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.gtime = data.data.createtime
+
+        }
+      })
+    },
+  }
 
 }
 </script>

@@ -39,10 +39,14 @@
   flex: 1;
   text-align: center;
   border-right: 2px solid #f6f6f6;
+  overflow: hidden;
 }
 .titleBox div img{
     display: block;
-margin: 14px auto;
+margin: 0 auto;
+width: 100%;
+height: 100%;
+border-radius: 50px;
 }
 .header .titleBox p:nth-child(2),.titleBox p:nth-child(3){
   flex: 2;

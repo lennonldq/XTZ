@@ -8,7 +8,7 @@
       <div class="form_top">
         <div>
           <label>搜索学校：</label>
-          <input placeholder="请输入学校关键字" />
+          <input placeholder="请输入学校关键字"/>
         </div>
         <div>
           <label>搜索专业：</label>
