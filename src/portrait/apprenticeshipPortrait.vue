@@ -522,7 +522,6 @@ export default {
           type: 'category',
           boundaryGap: false,
           data: taskName,
-
           axisLabel: {
             show: true,
             interval: 0,
@@ -549,9 +548,6 @@ export default {
               }
               return newParamsName
             },
-            textStyle: {
-              color: '#6861a6' //文字颜色
-            }
           }
 
 
