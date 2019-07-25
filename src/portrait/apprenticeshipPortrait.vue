@@ -1033,7 +1033,7 @@ export default {
   font-weight: bold;
   color: #10859d;
   padding-left: 26px;
-  line-height: 60px;
+  line-height: 34px;
   width: 100px;
 }
 .tabWarp .echartBox .echartCon .echatWarp .chartTiT p {

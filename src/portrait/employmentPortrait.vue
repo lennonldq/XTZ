@@ -62,9 +62,9 @@
 
     <div class="module">
       <div class="title integral">
-        <div class="LEF">创业积分情况</div>
+        <div class="LEF">实习就业积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:&nbsp;{{jicurrent}}分</span>
+          <span>当前实习就业积分:&nbsp;{{jicurrent}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>

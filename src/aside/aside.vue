@@ -42,7 +42,7 @@
                 title:"实习就业画像"
               },{
                 path:"/portrait/taskPortrait",
-                title:"企业任务画像"
+                title:"任务外包画像"
               },{
                 path:"/portrait/certifiedPortrai",
                 title:"认证画像"

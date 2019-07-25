@@ -296,8 +296,8 @@
    .title div img{
         display: block;
     margin: 8px auto;
-    width: 70%;
-    height: 80%;
+    width: 60px;
+    height: 60px;
     border-radius: 50px;
   }
   .title p:nth-child(2),.title p:nth-child(3){

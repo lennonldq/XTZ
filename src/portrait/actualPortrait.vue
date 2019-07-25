@@ -162,9 +162,9 @@
     </div>
     <div class="module">
       <div class="title integral">
-        <div class="LEF">课程积分情况</div>
+        <div class="LEF">实战运营积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:&nbsp;{{jicurrent}}分</span>
+          <span>当前实战运营积分:&nbsp;{{jicurrent}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>

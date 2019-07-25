@@ -82,7 +82,7 @@
       <div class="title integral">
         <div class="LEF">任务外包积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:&nbsp;{{jicurrent}}分</span>
+          <span>当前任务外包积分:&nbsp;{{jicurrent}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>

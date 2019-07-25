@@ -44,8 +44,8 @@
 .titleBox div img{
     display: block;
 margin: 10px auto;
-width: 80%;
-height: 80%;
+width: 60px;
+height: 60px;
 border-radius: 50px;
 }
 .header .titleBox p:nth-child(2),.titleBox p:nth-child(3){
