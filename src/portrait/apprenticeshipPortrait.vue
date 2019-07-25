@@ -3,8 +3,16 @@
     <div class="header">
       <div class="titleBox">
         <div>
-            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
-           <img v-else src="../assets/images/pho.png" alt="">
+          <img
+            v-if="baseInfo.photo"
+            :src="`https://etech-edu.com/${baseInfo.photo}`"
+            alt=""
+          >
+          <img
+            v-else
+            src="../assets/images/pho.png"
+            alt=""
+          >
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
@@ -16,12 +24,15 @@
       >
         返回上页
       </router-link>
-           <div
+      <div
         class="synchronization"
         @click="synchronization()"
       >
         <div class="one">同步数据</div>
-        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+        <div
+          class="two"
+          v-if="gtime"
+        >上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
     <div class="module">
@@ -221,7 +232,7 @@ export default {
       loading: true,
       fit: [],//适合岗位
       poss: '',//达标率 
-         //更新数据时间
+      //更新数据时间
       gtime: ''
 
     }
@@ -486,7 +497,7 @@ export default {
       });
     },
     kczxtEchart (pf, courseid, taskName) { // 课程得分折现图
-      // console.log(pf, courseid,taskName);
+      console.log(pf, courseid, taskName);
 
       let kczxtChart = this.$echart.init(document.getElementById("kczxtChart" + courseid));
       kczxtChart.setOption({
@@ -510,7 +521,40 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: taskName
+          data: taskName,
+
+          axisLabel: {
+            show: true,
+            interval: 0,
+            formatter: function (params) {
+              var newParamsName = "";
+              var paramsNameNumber = params.length;
+              var provideNumber = 3;  //一行显示几个字
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+              if (paramsNameNumber > provideNumber) {
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = "";
+                  var start = p * provideNumber;
+                  var end = start + provideNumber;
+                  if (p == rowNumber - 1) {
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr;
+                }
+
+              } else {
+                newParamsName = params;
+              }
+              return newParamsName
+            },
+            textStyle: {
+              color: '#6861a6' //文字颜色
+            }
+          }
+
+
         },
         yAxis: {
           type: 'value',
@@ -581,9 +625,9 @@ export default {
           this.excellentPre = this.commonJs.percentNum(this.excellent_count, total);
           this.goodPre = this.commonJs.percentNum(this.good_count, total);
           this.mediumPre = this.commonJs.percentNum(this.medium_count, total);
-          this.cypf = data.data.cypf;
-          this.pf = this.gitnull(data.data.pf);
-          this.counti = this.gitnull(data.data.counti);
+          this.cypf = data.data.cypf; // 超越百分之多少的人
+          this.pf = this.gitnull(data.data.pf); //任务平均分
+          this.counti = this.gitnull(data.data.counti);//参与任务数量
           this.tackEchart(excellent_rate, good_rate, medium_rate)
           let pfArr = [
             data.data.pf31,
@@ -623,8 +667,6 @@ export default {
               nuber++
             }
           }
-          console.log(nuber);
-          
           this.poss = nuber / 8 * 100 + "%"
           this.scoreEchart(pfArr, pfArr);
           this.abilityEChart(pfArr, pfArr)
@@ -632,7 +674,6 @@ export default {
       })
     },
     // 让数据为null时转为0
-
     gitnull (data) {
       if (data == null) {
         data = 0
@@ -678,7 +719,7 @@ export default {
             pf.push(data.data[i].pf);
             allPf.push(data.data[i].allPf)
           }
-          console.log(arrName);
+          // console.log(arrName);
 
           this.kczxtEchart(pf, courseid, arrName);
           this.kcldtEchart(taskName, pf, allPf, courseid)

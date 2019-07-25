@@ -82,7 +82,7 @@
       <div class="title integral">
         <div class="LEF">任务外包积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:&nbsp;{{current}}分</span>
+          <span>当前课程积分:&nbsp;{{jicurrent}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
@@ -230,7 +230,7 @@ export default {
       //更新数据时间
       gtime: '',
        // 当前积分
-      current: ''
+      jicurrent: ''
 
     }
   },
@@ -591,8 +591,13 @@ getPortrait () { //获取当前积分
       this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.current = data.data[6].integralValue;
-
+          
+            for (let i = 0; i < data.data.length; i++) {
+            if(data.data[i].assessModuleId == 6){
+               this.jicurrent = data.data[i].integralValue;
+            }
+            
+          }
         }
       })
     },

@@ -189,7 +189,6 @@
              this.baseInfo.photo = info.photo
         },
         getPortrait(){ //获取人才积分
-
             this.$ajax.get(this.baseUrl + assessModules,{params:this.$route.query}).then(res=>{
                let data = JSON.parse(res.data);
                if(data.code == 200){
@@ -257,11 +256,15 @@
              })
         },
         seachData(){ // 点击搜索查询
-         // if(this.timeArrange.length){
+         if(this.timeArrange !=null){
             this.sendIntegralData.beginDate = this.timeArrange[0];
             this.sendIntegralData.endDate = this.timeArrange[1];
             this.getIntegralStatistics()
-        //  }
+         }else{
+           this.sendIntegralData.beginDate ='';
+            this.sendIntegralData.endDate = '';
+            this.getIntegralStatistics()
+         }
         },
         changePage(current,everyShowNum){
           this.current = current;

@@ -4,14 +4,12 @@
       <p class="logo"><img src="../assets/images/logo.jpg" alt=""> </p>
       <ul class="navList" >
         <li
-        v-show="usertypeid != 0 "
         >
           <a href="https://etech-edu.com/edu/cloudTeacher/">返回首页</a>
         </li>
          <li
-        v-show="usertypeid != 0 "
         >
-          <a href="https://etech-edu.com/enterprise/index">返回首页</a>
+          <a href="https://etech-edu.com/enterprise/index">企业服务</a>
         </li>
       </ul>
       
@@ -125,17 +123,17 @@ export default {
   background: url('../assets/images/pho.png') center no-repeat;
 }
 .header .headerMain .logo {
-  width: 174px;
+  width: 180px;
   height: 82px;
   float: left;
+  padding-top: 12px;
 }
 .header .headerMain .logo img{
-width: 82px;
-    height: 82px;
+width: 100%;
 }
 .header .headerMain .navList {
   display: flex;
-  padding-left: 38px;
+  padding-left: 32px;
   float: left;
 }
 .header .headerMain .navList .is-active {

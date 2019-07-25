@@ -176,7 +176,7 @@
       <div class="title integral">
         <div class="LEF">实训积分情况</div>
         <div class="RIT">
-          <span>当前实训积分:&nbsp;{{current}}分</span>
+          <span>当前实训积分:&nbsp;{{jicurrent}}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
@@ -351,7 +351,7 @@ export default {
       score_rateArr: [],
       //更新数据时间
       gtime: '',
-      current: ''
+      jicurrent: ''
     }
   },
   mounted () {
@@ -639,7 +639,11 @@ barMaxWidth: 60,
       this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.current = data.data[1].integralValue;
+          for (let i = 0; i < data.data.length; i++) {
+            if(data.data[i].assessModuleId == 2){
+               this.jicurrent = data.data[i].integralValue;
+            }
+          }
         }
       })
     },

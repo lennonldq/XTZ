@@ -2,7 +2,7 @@
   <div  class="pagination">
     <ul class="pageList">
       <button class="firstPage" :disabled="currentPage == 1" @click="changePage(1,everyShowNum)">首页</button>
-      <button class="prevBtn" :disabled="currentPage == 1" @click="changePage(currentPage - 1,everyShowNum)"><</button>
+      <button class="prevBtn" :disabled="currentPage == 1" @click="changePage(currentPage - 1,everyShowNum)"> < </button>
       <li v-for="p in grouplist" :class="{'active':currentPage == p.val}" @click="changePage(p.val,everyShowNum)">
         {{ p.text }}
       </li>
