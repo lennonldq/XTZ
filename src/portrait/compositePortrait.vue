@@ -2,10 +2,10 @@
   <div class="main">
     <div class="header">
       <div class="titleBox">
-        <div><img
-             :src="`https://etech-edu.com/${baseInfo.photo}`"
-            alt=""
-          ></div>
+        <div>
+            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
+           <img v-else src="../assets/images/pho.png" alt="">
+        </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>

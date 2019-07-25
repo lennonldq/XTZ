@@ -2,10 +2,10 @@
   <div class="main">
     <div class="header">
       <div class="titleBox">
-        <div><img
-            src="../assets/images/pho.png"
-            alt=""
-          ></div>
+        <div>
+            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
+           <img v-else src="../assets/images/pho.png" alt="">
+        </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
@@ -697,17 +697,13 @@ export default {
         if (data.code == 200) {
           this.postAnalysis = data.data;
           let dataName = [], pf = [], many = data.data[0].pf;
-
           for (let i = 0; i < data.data.length; i++) {
-
             dataName.push(data.data[i].positionName)
             pf.push(data.data[i].pf);
             if (data.data[i].pf > 60) {
               this.fit.push(data.data[i].positionName)
             }
           }
-
-
           this.gangwei(dataName, pf)
         }
       })

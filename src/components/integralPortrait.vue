@@ -1,7 +1,10 @@
 <template>
   <el-main class="integralWarp">
      <div class="title">
-        <div><img src="../assets/images/pho.png" alt=""></div>
+        <div>
+          <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
+           <img v-else src="../assets/images/pho.png" alt="">
+        </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
@@ -179,10 +182,11 @@
           })
         },
         getBaseInfo(){ // 基本信息
-            let info = JSON.parse(sessionStorage.getItem("info"))
+            let info = JSON.parse(sessionStorage.getItem("info"));
             this.baseInfo.username = info.username;
             this.baseInfo.schoolname = info.schoolname;
-            this.baseInfo.classname = info.classname
+            this.baseInfo.classname = info.classname;
+             this.baseInfo.photo = info.photo
         },
         getPortrait(){ //获取人才积分
 
@@ -288,15 +292,18 @@
   }
    .title div img{
         display: block;
-    margin: 14px auto;
+    margin: 8px auto;
+    width: 70%;
+    height: 80%;
+    border-radius: 50px;
   }
   .title p:nth-child(2),.title p:nth-child(3){
-    flex: 2;
+    flex: 3;
     text-align: center;
     border-right: 2px solid #f6f6f6;
   }
   .title p:nth-child(4){
-    flex: 3;
+    flex: 4;
     text-indent: 30px;
   }
   .middleWarp{

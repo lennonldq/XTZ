@@ -2,10 +2,10 @@
   <div class="main">
     <div class="header">
       <div class="titleBox">
-        <div><img
-           :src="`https://etech-edu.com/${baseInfo.photo}`"
-            alt=""
-          ></div>
+        <div>
+            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
+           <img v-else src="../assets/images/pho.png" alt="">
+        </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
@@ -680,9 +680,7 @@ barMaxWidth: 60,
             if (type_nameArr.length < 10) {
               type_nameArr.push(data.data[i].type_name);
             }
-
             scoreArr.push(parseInt(data.data[i].score));
-
             sum_scoreArr.push(parseInt(data.data[i].sum_score));
             if (this.operateName.length < 5) {
               this.operateName.push(this.dataList[i].type_name)
@@ -883,7 +881,7 @@ barMaxWidth: 60,
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
+    },
   }
 }
 </script>
