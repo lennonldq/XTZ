@@ -222,7 +222,7 @@
                break;
              case '认证':
                this.$router.push({path:'/portrait/certifiedPortrai',query:this.$route.query});
-               break;competitionPortrait
+               break;
              default:
                this.$router.push({path:'/portrait/competitionPortrait',query:this.$route.query});
            }

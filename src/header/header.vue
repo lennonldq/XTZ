@@ -23,7 +23,10 @@
         </p>
         <el-dropdown class="but" @command="handleCommand">
           <span class="el-dropdown-link">
-            <i class="pho"></i>
+            <i class="pho">
+              <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
+           <img v-else src="../assets/images/pho.png" alt="">
+            </i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <!-- <el-dropdown-item>个人资料</el-dropdown-item>
@@ -50,11 +53,17 @@ export default {
       jingList:[
         {  title: "学校人才培养方案", path: "/company" },
        {  title: "积分制规则说明", path: "/home" }
-      ]
+      ],
+         baseInfo:{
+            classname:"",
+            username:"",
+            schoolname:""
+          },
     }
   },
   created(){
-    this.init()
+    this.init();
+     this.getBaseInfo();
   },
   methods:{
     init(){
@@ -72,7 +81,14 @@ export default {
       tojing(path){
       let routeData = this.$router.resolve({ path });
       window.open(routeData.href, '_blank');
-      }
+      },
+          getBaseInfo(){ // 基本信息
+            let info = JSON.parse(sessionStorage.getItem("info"));
+            this.baseInfo.username = info.username;
+            this.baseInfo.schoolname = info.schoolname;
+            this.baseInfo.classname = info.classname;
+             this.baseInfo.photo = info.photo
+        },
   }
 }
 </script>
@@ -119,8 +135,12 @@ export default {
 .header .headerMain .phoBox .but .el-dropdown-link .pho {
   display: block;
   height: 50px;
-  width: 49px;
-  background: url('../assets/images/pho.png') center no-repeat;
+  width: 50px;
+}
+.header .headerMain .phoBox .but .el-dropdown-link .pho img {
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
 }
 .header .headerMain .logo {
   width: 180px;
