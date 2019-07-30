@@ -95,17 +95,7 @@
             >{{item.termName}}</option>
           </select>
         </div>
-        <div class="integral">
-          <label>课程名称</label>
-          <select v-model="sendIntegralData.courseid">
-            <option
-              :value="item.courseid"
-              v-for="(item,index) in courseNameList"
-              :key="index"
-            >{{item.coursename}}</option>
-
-          </select>
-        </div>
+       
         <button
           class="tanBtn"
           @click="seachData"

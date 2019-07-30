@@ -62,7 +62,7 @@
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select v-model="sendIntegralData.termid" @change="getcurriculum()">
+          <select v-model="sendIntegralData.termid">
             <option
               :value="item.termid"
               v-for="(item,index) in semesterList"
@@ -70,17 +70,7 @@
             >{{item.termName}}</option>
           </select>
         </div>
-        <div class="integral">
-          <label>课程名称</label>
-          <select v-model="sendIntegralData.courseid">
-            <option
-              :value="item.courseid"
-              v-for="(item,index) in courseNameList"
-              :key="index"
-            >{{item.coursename}}</option>
-
-          </select>
-        </div>
+       
         <button
           class="tanBtn"
           @click="seachData"
@@ -146,7 +136,6 @@ export default {
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
-        courseid: '',//课程选择
         pageNum: 1,
         pageSize: 10,
         assessModuleId: 8
@@ -156,10 +145,7 @@ export default {
         {termName:"全部学期",termid:""}
       ],
 
-      // 获取课程名称
-      courseNameList: [
-        {coursename:"全部课程",courseid:""}
-      ],
+      
       loading: true,
       emptyText: "暂无数据",
       current: 1,
@@ -182,7 +168,6 @@ export default {
   },
   mounted () {
     this.getsemester();
-    this.getcurriculum();
     this.getIntegralStatistics();
     this.getCertificationData();
     this.getCertificationSituationData();
@@ -403,7 +388,6 @@ export default {
       })
     },
     getPortrait () { //获取当前积分
-
       this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
@@ -454,31 +438,7 @@ export default {
       })
     },
 
-    //获取课程名称接口
-    getcurriculum () {
-    if (this.sendIntegralData.termid == "") {
-        this.courseNameList = [
-          { coursename: "全部课程", courseid: "" }
-        ]
-      } else {
-        let { userId } = this.$route.query;
-        this.$ajax.get(this.baseUrl + curriculum, {
-          params: {
-            userId,
-            termid: this.sendIntegralData.termid
-          }
-        }).then(res => {
-          let data = JSON.parse(res.data);
-          if (data.code == 200) {
-            for (let i = 0; i < data.data.length; i++) {
-              this.courseNameList.push(data.data[i]);
-            }
-          }
-
-        })
-      }
-    },
-
+    
     //  获取积分明细列表
     getIntegralStatistics () { //获取积分统计
       this.sendIntegralData.userId = this.$route.query.userId;

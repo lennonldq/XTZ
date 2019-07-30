@@ -161,7 +161,7 @@
                 <p>平均得分<br>{{item.pf}}</p>
                 <p>单元数<br>{{ item.courseUnitCount }}</p>
                 <p>任务数<br>{{ item.taskCount }}</p>
-                <p style="border: none">任务数<br>{{ item.standardRate }}%</p>
+                <p style="border: none">百分比<br>{{ item.standardRate }}%</p>
                 <button @click="clickHandler(item.courseid)">技能画像</button>
               </div>
               <div
@@ -624,16 +624,17 @@ export default {
           this.cypf = data.data.cypf; // 超越百分之多少的人
           this.pf = this.gitnull(data.data.pf); //任务平均分
           this.counti = this.gitnull(data.data.counti);//参与任务数量
+          this.poss = this.gitnullenen(data.data.taskPf) + '%';//达标率
           this.tackEchart(excellent_rate, good_rate, medium_rate)
           let pfArr = [
-            data.data.pf31,
-            data.data.pf32,
-            data.data.pf33,
-            data.data.pf34,
-            data.data.pf35,
-            data.data.pf36,
-            data.data.pf37,
-            data.data.pf38
+            this.gitnull(data.data.pf31),
+            this.gitnull(data.data.pf32),
+            this.gitnull(data.data.pf33),
+            this.gitnull(data.data.pf34),
+            this.gitnull(data.data.pf35),
+            this.gitnull(data.data.pf36),
+            this.gitnull(data.data.pf37),
+            this.gitnull(data.data.pf38)
           ];
           let pfbzArr = [
             data.data.pfbz31,
@@ -645,7 +646,7 @@ export default {
             data.data.pfbz37,
             data.data.pfbz38
           ];
-          // 百分比
+          // 
           let percentage = [
             data.data.pfrate31,
             data.data.pfrate32,
@@ -656,25 +657,27 @@ export default {
             data.data.pfrate37,
             data.data.pfrate38
           ];
-          // 得出评分超过600的
-          let nuber = 0;
-          for (let i = 0; i < pfArr.length; i++) {
-            if (pfArr[i] > 60) {
-              nuber++
-            }
-          }
-          this.poss = nuber / 8 * 100 + "%"
+
+
           this.scoreEchart(pfArr, pfArr);
           this.abilityEChart(pfArr, pfArr)
         }
       })
     },
-    // 让数据为null时转为0
+    // 让数据为null时转为0 否则取整
     gitnull (data) {
       if (data == null) {
         data = 0
       } else {
         data = parseInt(data)
+      }
+      return data
+    },
+    gitnullenen (data) {
+      if (data == null) {
+        data = 0
+      } else {
+        data = data
       }
       return data
     },

@@ -3,8 +3,16 @@
     <div class="header">
       <div class="titleBox">
         <div>
-            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
-           <img v-else src="../assets/images/pho.png" alt="">
+          <img
+            v-if="baseInfo.photo"
+            :src="`https://etech-edu.com/${baseInfo.photo}`"
+            alt=""
+          >
+          <img
+            v-else
+            src="../assets/images/pho.png"
+            alt=""
+          >
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
@@ -191,12 +199,15 @@
       width="800"
       trigger="click"
       class="tan"
-       v-model="shu"
+      v-model="shu"
     >
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select v-model="sendIntegralData.termid" @change="getcurriculum()">
+          <select
+            v-model="sendIntegralData.termid"
+            @change="getcurriculum()"
+          >
             <option
               :value="item.termid"
               v-for="(item,index) in semesterList"
@@ -219,7 +230,10 @@
           class="tanBtn"
           @click="seachData"
         >搜索</button>
-          <div class="x" @click="shu = false">X</div>
+        <div
+          class="x"
+          @click="shu = false"
+        >X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -283,7 +297,7 @@ export default {
   data () {
     return {
       // 弹框数据
-        shu:false,
+      shu: false,
       sendIntegralData: {
         userId: "",
         termid: '',//学期选择
@@ -294,12 +308,12 @@ export default {
       },
       // 获取的学期
       semesterList: [
-        {termName:"全部学期",termid:""}
+        { termName: "全部学期", termid: "" }
       ],
 
       // 获取课程名称
       courseNameList: [
-        {coursename:"全部课程",courseid:""}
+        { coursename: "全部课程", courseid: "" }
       ],
       loading: true,
       emptyText: "暂无数据",
@@ -512,8 +526,8 @@ export default {
             type: 'bar',
             stack: '总量',
             barWidth: 60,
-            
-barMaxWidth: 60, 
+
+            barMaxWidth: 60,
             label: {
               normal: {
                 show: true,
@@ -578,31 +592,17 @@ barMaxWidth: 60,
             }
           },
         },
-        yAxis: {
-          ype: 'category',
+         yAxis: {
+          type: 'category',
           axisLine: {
-            formatter: function (value) {
-              var result = "";//拼接加\n返回的类目项
-              var maxLength = 3;//每项显示文字个数
-              var valLength = value.length;//X轴类目项的文字个数
-              var rowNumber = Math.ceil(valLength / maxLength); //类目项需要换行的行数
-              if (rowNumber > 3)//如果文字大于5,
-              {
-                for (var i = 0; i < rowNumber; i++) {
-                  var temp = "";//每次截取的字符串
-                  var start = i * maxLength;//开始截取的位置
-                  var end = start + maxLength;//结束截取的位置
-                  temp = value.substring(start, end) + "\n";
-                  result += temp; //拼接生成最终的字符串
-                }
-                return result;
-              }
-              else {
-                return value;
-              }
-            },
+            lineStyle: {
+              width: 2,
+              color: '#008acd'
+            }
+          },
+          axisLabel: {
             textStyle: {
-              color: '#444444',//坐标值得具体的颜色
+              color: '#444444'
             }
           },
           data: type_nameArr
@@ -640,8 +640,8 @@ barMaxWidth: 60,
         let data = JSON.parse(res.data);
         if (data.code == 200) {
           for (let i = 0; i < data.data.length; i++) {
-            if(data.data[i].assessModuleId == 2){
-               this.jicurrent = data.data[i].integralValue;
+            if (data.data[i].assessModuleId == 2) {
+              this.jicurrent = data.data[i].integralValue;
             }
           }
         }
@@ -707,7 +707,7 @@ barMaxWidth: 60,
     getjobScore () {             //获取岗位分数
       let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + getJobScore, {
-        params: { userId,assessModuleId:2 }
+        params: { userId, assessModuleId: 2 }
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
@@ -784,16 +784,16 @@ barMaxWidth: 60,
       }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-         for (let i = 0; i < data.data.length; i++) {
-             this.semesterList.push(data.data[i]);
-         }
+          for (let i = 0; i < data.data.length; i++) {
+            this.semesterList.push(data.data[i]);
+          }
         }
       })
     },
 
     //获取课程名称接口
     getcurriculum () {
-    if (this.sendIntegralData.termid == "") {
+      if (this.sendIntegralData.termid == "") {
         this.courseNameList = [
           { coursename: "全部课程", courseid: "" }
         ]
@@ -934,7 +934,7 @@ barMaxWidth: 60,
   line-height: 45px;
   border-bottom: #dcdcdc solid 2px;
   display: flex;
-position: relative;
+  position: relative;
 }
 .el-popper .statistics_title .titleName {
   text-indent: 36px;
@@ -1024,10 +1024,10 @@ position: relative;
   padding-bottom: 4px;
   margin-right: 4px;
 }
-.x{
-      position: absolute;
-    right: 32px;
-    font-size: 20px;
-    cursor: pointer;
+.x {
+  position: absolute;
+  right: 32px;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>

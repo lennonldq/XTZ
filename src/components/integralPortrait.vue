@@ -66,8 +66,15 @@
             <label>积分类型：</label>
             <select v-model="type" @change="getType">
                 <option>全部类型</option>
-                <option>积分增加</option>
-                <option>积分减少</option>
+                <option>课程</option>
+                <option>实验实训</option>
+                <option>实战运营</option>
+                <option>学徒制</option>
+                <option>创业</option>
+                <option>任务外包</option>
+                <option>实习就业</option>
+                <option>认证</option>
+                  <option>竞赛</option>
             </select>
           </div>
          <button class="searchBtn" @click="seachData">搜索</button>
@@ -118,7 +125,7 @@
             beginDate:"",
             endDate:"",
             userId:"",
-            type:'',
+            assessModuleId:'',
             pageNum:1,
             pageSize:10
           },
@@ -143,12 +150,24 @@
       },
       methods:{
         getType(){
-          if(this.type == '积分增加'){
-             this.sendIntegralData.type = 1;
-          }else if(this.type == '积分减少'){
-            this.sendIntegralData.type = 2;
-          }else{
-            this.sendIntegralData.type = ''
+          if(this.type == '课程'){
+             this.sendIntegralData.assessModuleId = 1;
+          }else if(this.type == '实验实训'){
+            this.sendIntegralData.assessModuleId = 2;
+          }else if(this.type == '实战运营'){
+            this.sendIntegralData.assessModuleId = 3;
+          }if(this.type == '学徒制'){
+            this.sendIntegralData.assessModuleId = 4;
+          }if(this.type == '创业'){
+            this.sendIntegralData.assessModuleId = 5;
+          }if(this.type == '任务外包'){
+            this.sendIntegralData.assessModuleId = 6;
+          }if(this.type == '实习就业'){
+            this.sendIntegralData.assessModuleId = 7;
+          }if(this.type == '认证'){
+            this.sendIntegralData.assessModuleId = 8;
+          }if(this.type == '竞赛'){
+            this.sendIntegralData.assessModuleId = 9;
           }
         },
         getintegralPortraitData(){
