@@ -90,7 +90,7 @@
             <option value="2019">2019</option>
           </select>
           <select
-            v-model="professional.proname"
+            v-model="searchData.pid"
             @change="changezhuanye($event)"
           >
             <option value="">全部专业</option>
@@ -150,7 +150,6 @@
           <label>搜索性格：</label>
           <select
             v-model="searchData.personalCharacter"
-            @change="character"
           >
             <option>全部</option>
             <option>活泼型/社交者</option>
@@ -431,9 +430,9 @@ export default {
         talentSelect: '请选择关键字',
         talentName: "",
         // // 学届
-        // editorial:"全部",
+        editorial:"全部",
         // // 专业
-        // pid:"全部",
+        pid:"全部",
         // // 班级
         // classid:"全部"
       },
@@ -461,6 +460,7 @@ export default {
       }
 
     },
+
     getProfessional () {
       this.$ajax.get(this.baseUrl + professional, {
         params: {
@@ -468,6 +468,8 @@ export default {
         }
       }).then(res => {
         let data = JSON.parse(res.data).data;
+        console.log(data);
+        
         this.professional = [...data]
       })
     },
@@ -569,14 +571,12 @@ export default {
             } else {
               item.integralValue = 0
             }          });
-          console.log(data)
           this.tableData = data
         }
 
       })
     },
     onSubmit () {
-      console.log('submit!');
     },
     changePage (current, everyShowNum) {
       this.current = current;
@@ -584,7 +584,6 @@ export default {
       this.getTableData();
     },
     toLookDetail (row) {
-      console.log(row);
       
       sessionStorage.setItem("info", JSON.stringify(row));
       let routeData = this.$router.resolve({ path: '/integralPortrait', query: { classId: row.classid, userId: row.id } });
@@ -596,10 +595,12 @@ export default {
     },
     // 当前选中的专业
     changezhuanye (event) {
+      console.log(couponSelected);
       this.couponSelected = event.target.value;
     },
     // 当前选中的学届
     changexuejie (event) {
+      
       this.xuejie = event.target.value;
     },
     reset () {
@@ -610,6 +611,10 @@ export default {
       this.searchData.schoolName = "";
       this.searchData.talentName = "";
       this.searchData.userName = "";
+       this.searchData.editorial = "全部学届";
+        this.ProductActive ='';
+        this.couponSelected='';
+        this.xuejie='';
       this.search();
     }
 
