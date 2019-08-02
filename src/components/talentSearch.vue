@@ -8,21 +8,33 @@
       <div class="form_top">
         <div>
           <label>搜索学校：</label>
-          <input placeholder="请输入学校关键字"/>
+          <input
+            placeholder="请输入学校关键字"
+            v-model="searchData.schoolName"
+          />
         </div>
         <div>
           <label>搜索专业：</label>
-          <input placeholder="请输入专业" />
+          <input
+            placeholder="请输入专业"
+            v-model="searchData.professionalName"
+          />
         </div>
         <div>
           <label>搜索姓名：</label>
-          <input placeholder="请输入学校关键字" />
+          <input
+            placeholder="请输入学生姓名"
+            v-model="searchData.userName"
+          />
         </div>
       </div>
       <div class="form_bottom">
         <div class="form-item1">
           <label>人才关键字：</label>
-          <select>
+          <select
+            v-model="searchData.talentSelect"
+            @change="getTalent"
+          >
             <option>请选择关键字</option>
             <option>学习课程</option>
             <option>实训经验</option>
@@ -37,11 +49,12 @@
           <input
             style="margin-left: 10px"
             placeholder="物流管理"
+            v-model="searchData.talentName"
           />
         </div>
         <div class="form-item2">
-          <label>搜索专业：</label>
-          <select>
+          <label>搜索性格：</label>
+          <select v-model="searchData.personalCharacter">
             <option>全部</option>
             <option>活泼型/社交者</option>
             <option>支配型/控制者</option>
@@ -77,17 +90,13 @@
             @change="changexuejie($event)"
           >
             <option value="">全部学届</option>
-            <option value="2009">2009</option>
-            <option value="2010">2010</option>
-            <option value="2011">2011</option>
-            <option value="2012">2012</option>
-            <option value="2013">2013</option>
-            <option value="2014">2014</option>
-            <option value="2015">2015</option>
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
-            <option value="2018">2018</option>
-            <option value="2019">2019</option>
+            <option value="2019">2019届</option>
+            <option value="2018">2018届</option>
+            <option value="2017">2017届</option>
+            <option value="2016">2016届</option>
+            <option value="2015">2015届</option>
+            <option value="2014">2014届</option>
+
           </select>
           <select
             v-model="searchData.pid"
@@ -116,7 +125,7 @@
         <div>
           <label>搜索姓名：</label>
           <input
-            placeholder="请输入姓名"
+            placeholder="请输入学生姓名"
             v-model=" searchData.userName"
           />
         </div>
@@ -148,9 +157,7 @@
         </div>
         <div class="form-item2">
           <label>搜索性格：</label>
-          <select
-            v-model="searchData.personalCharacter"
-          >
+          <select v-model="searchData.personalCharacter">
             <option>全部</option>
             <option>活泼型/社交者</option>
             <option>支配型/控制者</option>
@@ -172,63 +179,7 @@
           >重置搜索数据</button>
         </div>
       </div>
-    </div><!-- v-if="userTypeId == 8"-->
-    <!-- <div v-if="userTypeId == 9" class="formBox">
-        <div class="form_top">
-          <div class="class">
-            <label>选择班级：</label>
-            <select v-model="couponSelected">
-              <option>全部</option>
-              <option>2018届</option>
-              <option>2019届</option>
-            </select>
-            <select v-model="professional.proname">
-              <option selected = "selected">全部</option>
-              <option v-for="(item,index) in professional" :key="index">{{item.proname}}</option>
-            </select>
-            <select v-model="className.classname">
-              <option>全部</option>
-              <option v-for="(item,index) in className" :key="index">{{item.classname}}</option>
-            </select>
-          </div>
-          <div>
-            <label>搜索姓名：</label>
-            <input placeholder="请输入学生名称关键字" v-model="searchData.userName"/>
-          </div>
-        </div>
-        <div class="form_bottom">
-          <div class="form-item1">
-            <label>人才关键字：</label>
-            <select v-model="searchData.talentSelect" @change="getTalent">
-              <option>全部</option>
-              <option>课程</option>
-              <option>实验实训</option>
-              <option>实战实训</option>
-              <option>学徒制</option>
-              <option>创业</option>
-              <option>任务外包</option>
-              <option>实习就业</option>
-              <option>认证</option>
-              <option>竞赛</option>
-              <option>人才评测</option>
-            </select>
-            <input style="margin-left: 10px" placeholder="请输入人才关键字"  v-model="searchData.talentName" />
-          </div>
-          <div class="form-item2">
-            <label>搜索性格：</label>
-            <select v-model="searchData.personalCharacter" @change="character">
-              <option>全部</option>
-              <option>活泼型/社交者</option>
-              <option>支配型/控制者</option>
-              <option>稳定型/支持者</option>
-              <option>完美型/服从者</option>
-            </select>
-          </div>
-          <div class="form-item3">
-            <button class="searchBtn" @click="search">搜索</button>
-          </div>
-        </div>
-      </div>v-if="userTypeId == 9" -->
+    </div>
     <div
       v-if="userTypeId == 3"
       class="formBox"
@@ -251,7 +202,7 @@
         <div>
           <label>搜索姓名：</label>
           <input
-            placeholder="请输入学生名称关键字"
+            placeholder="请输入学生姓名"
             v-model="searchData.userName"
           />
         </div>
@@ -307,9 +258,15 @@
       </div>
     </div><!-- v-if="userTypeId == 3"-->
     <div class="table">
-        <p class="tableTit" v-if="INP ==''">人才数量:<span class="blue">{{talents}}</span>位</p>
-        <p class="tableTit" v-else>具备‘{{INP}}’标签人才数为:<span class="blue">{{talents}}</span>位</p>
-      
+      <p
+        class="tableTit"
+        v-if="INP ==''"
+      >人才数量:<span class="blue">{{talents}}</span>位</p>
+      <p
+        class="tableTit"
+        v-else
+      >具备‘{{INP}}’标签人才数为:<span class="blue">{{talents}}</span>位</p>
+
       <el-table
         v-loading="loading"
         element-loading-text="拼命加载中"
@@ -394,7 +351,7 @@ export default {
   data () {
     return {
       // 人才数
-      INP:'人才数量',
+      INP: '人才数量',
       // 人才数量
       talents: 0,
       // 是否需要显示具有
@@ -430,9 +387,9 @@ export default {
         talentSelect: '请选择关键字',
         talentName: "",
         // // 学届
-        editorial:"全部",
+        editorial: "全部学届",
         // // 专业
-        pid:"全部",
+        pid: "",
         // // 班级
         // classid:"全部"
       },
@@ -462,6 +419,7 @@ export default {
     },
 
     getProfessional () {
+       this.search();
       this.$ajax.get(this.baseUrl + professional, {
         params: {
           schoolid: localStorage.getItem("schoolId")
@@ -469,14 +427,15 @@ export default {
       }).then(res => {
         let data = JSON.parse(res.data).data;
         console.log(data);
-        
+
         this.professional = [...data]
       })
     },
     getClasses () {
       this.$ajax.get(this.baseUrl + classes, {
         params: {
-          schoolid: localStorage.getItem("schoolId")
+             schoolid: localStorage.getItem("schoolId"),
+          pid: this.searchData.pid
         }
       }).then(res => {
         let data = JSON.parse(res.data).data;
@@ -554,17 +513,16 @@ export default {
           ...this.searchData,
           talentSelect: this.talentSelect,
           editorial: this.xuejie,
-          pid: this.couponSelected,
           classid: this.ProductActive
         }
       }).then((res) => {
         this.loading = false;
-    
+
         if (res.status == 200) {
           let data = JSON.parse(res.data).data;
           this.totalPage = JSON.parse(res.data).totalPages;
           this.talents = JSON.parse(res.data).totals;
-              this.INP = this.searchData.talentName
+          this.INP = this.searchData.talentName
           data.forEach(item => {
             if (item.integralValue) {
               item.integralValue = parseInt(item.integralValue)
@@ -584,7 +542,7 @@ export default {
       this.getTableData();
     },
     toLookDetail (row) {
-      
+
       sessionStorage.setItem("info", JSON.stringify(row));
       let routeData = this.$router.resolve({ path: '/integralPortrait', query: { classId: row.classid, userId: row.id } });
       window.open(routeData.href, '_blank');
@@ -595,26 +553,27 @@ export default {
     },
     // 当前选中的专业
     changezhuanye (event) {
-      console.log(couponSelected);
-      this.couponSelected = event.target.value;
+      this.searchData.pid = event.target.value;
+       this.getClasses();
     },
     // 当前选中的学届
     changexuejie (event) {
-      
       this.xuejie = event.target.value;
     },
     reset () {
       this.searchData.talentSelect = "请选择关键字";
+      this.talentSelect = "";
       this.searchData.personalCharacter = "全部";
       this.searchData.className = "";
       this.searchData.professionalName = "";
       this.searchData.schoolName = "";
       this.searchData.talentName = "";
       this.searchData.userName = "";
-       this.searchData.editorial = "全部学届";
-        this.ProductActive ='';
-        this.couponSelected='';
-        this.xuejie='';
+      this.searchData.editorial = "全部学届";
+      this.ProductActive = '';
+      this.couponSelected = '';
+      this.xuejie = '';
+      this.searchData.pid = "";
       this.search();
     }
 

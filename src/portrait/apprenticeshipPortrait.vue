@@ -161,7 +161,7 @@
                 <p>平均得分<br>{{item.pf}}</p>
                 <p>单元数<br>{{ item.courseUnitCount }}</p>
                 <p>任务数<br>{{ item.taskCount }}</p>
-                <p style="border: none">百分比<br>{{ item.standardRate }}%</p>
+                <p style="border: none">达标率<br>{{ item.standardRate }}%</p>
                 <button @click="clickHandler(item.courseid)">技能画像</button>
               </div>
               <div
@@ -476,7 +476,7 @@ export default {
             data: [
               {
                 value: pf,
-                name: '实验实训'
+                name: '任务得分'
               }
             ]
           }, {

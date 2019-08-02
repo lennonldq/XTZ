@@ -37,7 +37,6 @@ export default {
       // }
       var token = localStorage.getItem("accessToken");
       if (this.theRequest.naughty == undefined && this.theRequest.veryStrong == undefined && token == null) {
-
         //未登录 跳转到登录 	
         //   window.location.href = "http://120.25.66.101:7777/auth/login"
       }
@@ -48,20 +47,17 @@ export default {
         if (this.theRequest.v == undefined) {
           //  window.location.href = "http://120.25.66.101:7777/auth/login"
         } else {
-          //  
-
           this.$ajax.get(`http://124.172.243.65:8092/new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res => {
             let data = JSON.parse(res.data);
             if (data.msg == "登录成功") {
-              console.log(data.data.userId);
-
-              //保存登录信息
-              // sessionStorage.setItem("token", data.data.accessToken);
+              console.log(data);
+              //登录成功 把登录信息存储 保存登录信息
               localStorage.setItem("accessToken", data.data.accessToken);
               localStorage.setItem("userTypeId", data.data.userTypeId);
               localStorage.setItem("schoolId", data.data.schoolId);
               localStorage.setItem("classId", data.data.classId);
               localStorage.setItem("userId", data.data.userId);
+              sessionStorage.setItem("photo", JSON.stringify(data.data.photo));
               if (data.data.userTypeId == 0) {
                 let userId = localStorage.getItem("userId");
                 let classId = localStorage.getItem("classId");
@@ -76,15 +72,10 @@ export default {
                   let data = JSON.parse(res.data)
                   sessionStorage.setItem("info", JSON.stringify(data.data[0]));
                   this.$router.push({ path: "/integralPortrait", query: { classId: classId, userId: userId } });
-
                 })
               } else {
                 this.$router.push("/talentSearch");
               }
-              // this.$router.push("/talentSearch");
-
-              //  console.log(data.accessToken);
-
               // //成功跳转到指定页
               // if (this.theRequest.toUrl != undefined) {
               //   // window.location.href = this.theRequest.toUrl
@@ -97,12 +88,9 @@ export default {
               //  window.location.href = "http://120.25.66.101:7777/auth/login"
               alert(data.msg)
             }
-
           })
         }
       }
-
-
       //跳转方和目标方 都登录  转到目标url
       if (this.theRequest.naughty != undefined && this.theRequest.veryStrong != undefined && token != null) {
         if (localStorage.getItem("userTypeId") == 0) {

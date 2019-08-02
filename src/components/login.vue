@@ -62,15 +62,19 @@ export default {
     login () {
       this.$ajax.get(`http://124.172.243.65:8092/xtz/account/login?username=${this.formLabelAlign.username}&password=${this.formLabelAlign.password}`).then(res => {
         let data = JSON.parse(res.data);
+        // 登录成功 把登录信息存储到localStorage
         if (data.code == 200) {
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("userTypeId", data.userTypeId);
           localStorage.setItem("schoolId", data.schoolId);
           localStorage.setItem("classId", data.classId);
           localStorage.setItem("userId", data.userId);
+            sessionStorage.setItem("photo", JSON.stringify(data.photo));
+          // 判断当账号是学生时
           if (data.userTypeId == 0) {
-            let userId = localStorage.getItem("userId");
+                 let userId = localStorage.getItem("userId");
                 let classId = localStorage.getItem("classId");
+                // 请求接口
             this.$ajax(this.baseUrl + talentPortrait, {
               headers: {
                 accessToken: localStorage.getItem("accessToken")

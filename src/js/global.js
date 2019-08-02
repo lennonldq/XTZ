@@ -1,4 +1,4 @@
 export default{
-    baseUrl:"http://124.172.243.65:8092/"
+    baseUrl:"http://124.172.220.170:8092/"
 }
      

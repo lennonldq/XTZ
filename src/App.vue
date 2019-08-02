@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container class="is-vertical" ref="warp">
-            <Header v-if="$route.path!='/login'"></Header>
+            <Header v-if="$route.path!='/login'&& $route.path!='/loginTwo'"></Header>
             <keep-alive>
               <router-view v-if="$route.meta.keepAlive" class="mainWarp"></router-view>
             </keep-alive>
