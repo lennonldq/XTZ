@@ -42,7 +42,7 @@ export default {
       }
 
       //跳转方登录   目标方未登录则异步登录
-      if (this.theRequest.naughty != undefined && this.theRequest.veryStrong != undefined && token == null) {
+   
         //没有时间戳跳转到
         if (this.theRequest.v == undefined) {
           //  window.location.href = "http://120.25.66.101:7777/auth/login"
@@ -90,54 +90,7 @@ export default {
             }
           })
         }
-      }
-      //跳转方和目标方 都登录  转到目标url
-      if (this.theRequest.naughty != undefined && this.theRequest.veryStrong != undefined && token != null) {
-        if (localStorage.getItem("userTypeId") == 0) {
-          let userId = localStorage.getItem("userId");
-          let classId = localStorage.getItem("classId");
-          this.$ajax(this.baseUrl + talentPortrait, {
-            headers: {
-              accessToken: localStorage.getItem("accessToken")
-            },
-            params: {
-              userId: userId
-            }
-          }).then(res => {
-            let data = JSON.parse(res.data)
-            sessionStorage.setItem("info", JSON.stringify(data.data[0]));
-            this.$router.push({ path: "/integralPortrait", query: { classId: classId, userId: userId } });
-
-          })
-        } else {
-          this.$router.push("/talentSearch");
-        }
-
-      }
-      //跳转方为登录 目标方 都登录  转到目标url
-      if (this.theRequest.naughty == undefined && this.theRequest.veryStrong == undefined && token != null) {
-        if (localStorage.getItem("userTypeId") == 0) {
-          let userId = localStorage.getItem("userId");
-          let classId = localStorage.getItem("classId");
-          this.$ajax(this.baseUrl + talentPortrait, {
-            headers: {
-              accessToken: localStorage.getItem("accessToken")
-            },
-            params: {
-              userId: userId
-            }
-          }).then(res => {
-            let data = JSON.parse(res.data)
-            sessionStorage.setItem("info", JSON.stringify(data.data[0]));
-            this.$router.push({ path: "/integralPortrait", query: { classId: classId, userId: userId } });
-
-          })
-        } else {
-          this.$router.push("/talentSearch");
-        }
-
-
-      }
+    
     }
   }
 }

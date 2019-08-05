@@ -112,7 +112,9 @@ export default {
     handleCommand () {
       localStorage.clear();
       sessionStorage.clear();
-      this.$router.push({ path: '/login' })
+      this.typeId==8
+             window.location.href="https://etech-edu.com/auth/login";
+   
     },
     tojing (path) {
       let routeData = this.$router.resolve({ path });
