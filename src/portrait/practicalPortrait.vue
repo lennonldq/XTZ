@@ -513,6 +513,31 @@ export default {
             }
           },
           axisLabel: {
+             show: true,
+            interval: 0,
+            formatter: function (params) {
+              var newParamsName = "";
+              var paramsNameNumber = params.length;
+              var provideNumber = 10;  //一行显示几个字
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+              if (paramsNameNumber > provideNumber) {
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = "";
+                  var start = p * provideNumber;
+                  var end = start + provideNumber;
+                  if (p == rowNumber - 1) {
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr;
+                }
+
+              } else {
+                newParamsName = params;
+              }
+              return newParamsName
+            },
             textStyle: {
               color: '#444444',//坐标值得具体的颜色
             }
@@ -595,6 +620,31 @@ export default {
          yAxis: {
           type: 'category',
           axisLine: {
+                   show: true,
+            interval: 0,
+            formatter: function (params) {
+              var newParamsName = "";
+              var paramsNameNumber = params.length;
+              var provideNumber = 10;  //一行显示几个字
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+              if (paramsNameNumber > provideNumber) {
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = "";
+                  var start = p * provideNumber;
+                  var end = start + provideNumber;
+                  if (p == rowNumber - 1) {
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr;
+                }
+
+              } else {
+                newParamsName = params;
+              }
+              return newParamsName
+            },
             lineStyle: {
               width: 2,
               color: '#008acd'

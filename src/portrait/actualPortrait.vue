@@ -504,26 +504,30 @@ export default {
             }
           },
           axisLabel: {
+          show: true,
             interval: 0,
-            formatter: function (value) {
-              var result = "";//拼接加\n返回的类目项
-              var maxLength = 3;//每项显示文字个数
-              var valLength = value.length;//X轴类目项的文字个数
-              var rowNumber = Math.ceil(valLength / maxLength); //类目项需要换行的行数
-              if (rowNumber > 3)//如果文字大于5,
-              {
-                for (var i = 0; i < rowNumber; i++) {
-                  var temp = "";//每次截取的字符串
-                  var start = i * maxLength;//开始截取的位置
-                  var end = start + maxLength;//结束截取的位置
-                  temp = value.substring(start, end) + "\n";
-                  result += temp; //拼接生成最终的字符串
+            formatter: function (params) {
+              var newParamsName = "";
+              var paramsNameNumber = params.length;
+              var provideNumber = 10;  //一行显示几个字
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+              if (paramsNameNumber > provideNumber) {
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = "";
+                  var start = p * provideNumber;
+                  var end = start + provideNumber;
+                  if (p == rowNumber - 1) {
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr;
                 }
-                return result;
+
+              } else {
+                newParamsName = params;
               }
-              else {
-                return value;
-              }
+              return newParamsName
             },
             textStyle: {
               color: '#444444',//坐标值得具体的颜色
@@ -605,6 +609,31 @@ export default {
             }
           },
           axisLabel: {
+             show: true,
+            interval: 0,
+            formatter: function (params) {
+              var newParamsName = "";
+              var paramsNameNumber = params.length;
+              var provideNumber = 10;  //一行显示几个字
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+              if (paramsNameNumber > provideNumber) {
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = "";
+                  var start = p * provideNumber;
+                  var end = start + provideNumber;
+                  if (p == rowNumber - 1) {
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr;
+                }
+
+              } else {
+                newParamsName = params;
+              }
+              return newParamsName
+            },
             textStyle: {
               color: '#444444'
             }
