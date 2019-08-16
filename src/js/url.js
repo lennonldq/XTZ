@@ -1,4 +1,5 @@
 export const talentPortrait = "portrait/talentPortrait"; //人才标签
+export const getPersonalCharacter = "portrait/getPersonalCharacter" //获取性格
 export const comprehensiveAbility = "apprentice/comprehensiveAbility";    //人才画像列表(积分画像)
 export const potentialEvaluation = "apprentice/potentialEvaluation";//人才画像列表(潜质评测)
 export const assessModules = "portrait/assessModules";           //与班级平均分对比(积分画像)

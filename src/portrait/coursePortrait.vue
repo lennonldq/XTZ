@@ -411,16 +411,16 @@ export default {
         if (data.code == 200) {
           let typeCount = [], typeArr = ["考试次数", "课堂练习次数", "作业次数"];
           let sumTypeScore = [], typeScore = [], numArr = [];
-          this.typeScore3 = this.gitdata(data.data.typeScore3);//个人作业成成绩
-          this.sumTypeScore3 = this.gitdata(data.data.sumTypeScore3);//班级作业成绩
+          this.typeScore3 = data.data.typeScore3;//个人作业成成绩
+          this.sumTypeScore3 = data.data.sumTypeScore3;//班级作业成绩
           this.compareScore3 = this.compare(this.typeScore3, this.sumTypeScore3); //个人与班级比较
 
-          this.typeScore2 = this.gitdata(data.data.typeScore2);//个人课堂练习成绩
-          this.sumTypeScore2 = this.gitdata(data.data.sumTypeScore2);//班级课堂练习成绩
+          this.typeScore2 = data.data.typeScore2;//个人课堂练习成绩
+          this.sumTypeScore2 = data.data.sumTypeScore2;//班级课堂练习成绩
           this.compareScore2 = this.compare(this.typeScore2, this.sumTypeScore2);//个人与班级比较
 
-          this.typeScore1 = this.gitdata(data.data.typeScore1);//个人考试成绩
-          this.sumTypeScore1 = this.gitdata(data.data.sumTypeScore1);//班级考试成绩
+          this.typeScore1 = data.data.typeScore1;//个人考试成绩
+          this.sumTypeScore1 = data.data.sumTypeScore1;//班级考试成绩
           this.compareScore1 = this.compare(this.typeScore1, this.typeScore1);//个人与班级比较
 
           this.contrast(this.typeScore3, this.sumTypeScore3, "平时表现(作业)");
@@ -435,10 +435,10 @@ export default {
             if (attr.indexOf("sumTypeScore") > -1) {
               // console.log(data.data[attr]);
 
-              sumTypeScore.push(this.gitdata(data.data[attr]))
+              sumTypeScore.push(data.data[attr])
             }
             if (attr.indexOf("typeScore") > -1) {
-              typeScore.push(this.gitdata(data.data[attr]))
+              typeScore.push(data.data[attr])
             }
           }
 
@@ -494,6 +494,8 @@ export default {
 
     //        班级分   , 个人分
     achievementEchart (sumTypeScore, typeScore) {//学习类型成绩
+    console.log(sumTypeScore, typeScore);
+    
       let achievementChart = this.$echart.init(this.$refs.achievementChart);
       achievementChart.setOption({
         legend: {

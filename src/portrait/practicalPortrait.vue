@@ -7,12 +7,8 @@
             v-if="baseInfo.photo"
             :src="`https://etech-edu.com/${baseInfo.photo}`"
             alt=""
-          >
-          <img
-            v-else
-            src="../assets/images/pho.png"
-            alt=""
-          >
+          />
+          <img v-else src="../assets/images/pho.png" alt="" />
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
@@ -20,88 +16,58 @@
       </div>
       <router-link
         tag="button"
-        :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
+        :to="{
+          path: '/integralPortrait',
+          query: { classId: $route.query.classId, userId: $route.query.userId }
+        }"
       >
         返回上页
       </router-link>
-      <div
-        class="synchronization"
-        @click="synchronization()"
-      >
+      <div class="synchronization" @click="synchronization()">
         <div class="one">同步数据</div>
-        <div
-          class="two"
-          v-if="gtime"
-        >上次同步:{{gtime | gTime}} </div>
+        <div class="two" v-if="gtime">上次同步:{{ gtime | gTime }}</div>
       </div>
     </div>
 
     <div class="module">
       <p class="title">实训得分</p>
-      <div
-        v-if="nuber > 0"
-        class="ExperimentalResult"
-      >
-        <span>{{`${baseInfo.username}实训中涉及：`}}</span>
+      <div v-if="nuber > 0" class="ExperimentalResult">
+        <span>{{ `${baseInfo.username}实训中涉及：` }}</span>
         <div class="touRed">
-          <span
-            v-for="item of operateName"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
-          <span>{{`等${nuber}个系统的实训实训,达标率为:`}}</span>
-          <span style="color: #0088a0">{{rate}}</span>
+          <span v-for="item of operateName" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
+          <span>{{ `等${nuber}个系统的实训实训,达标率为:` }}</span>
+          <span style="color: #0088a0">{{ rate }}</span>
         </div>
-        <div
-          v-if="skilled.length > 0"
-          class="touRed"
-        >
+        <div v-if="skilled.length > 0" class="touRed">
           在
-          <span
-            v-for="item of skilled"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
+          <span v-for="item of skilled" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
           <span>等系统中能熟悉掌握系统的相关步骤；</span>
-
         </div>
-        <div
-          v-if="secondary.length > 0"
-          class="touRed"
-        >
+        <div v-if="secondary.length > 0" class="touRed">
           在
-          <span
-            v-for="item of secondary"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
+          <span v-for="item of secondary" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
           <span>等系统中能掌握基本的步骤，有待提高；</span>
-
         </div>
-        <div
-          v-if="unfamiliar.length > 0"
-          class="touRed"
-        >
+        <div v-if="unfamiliar.length > 0" class="touRed">
           在
+          <span v-for="item of unfamiliar" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
           <span
-            v-for="item of unfamiliar"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
-          <span>等系统中未能完成系统大部分操作，系统操作生疏，需进一步加强；</span>
-
+            >等系统中未能完成系统大部分操作，系统操作生疏，需进一步加强；</span
+          >
         </div>
       </div>
 
-      <p
-        v-else
-        class="wu"
-      >暂无数据</p>
+      <p v-else class="wu">暂无数据</p>
 
-      <div
-        class="histogramChart"
-        ref="histogramChart"
-      ></div>
+      <div class="histogramChart" ref="histogramChart"></div>
     </div>
 
     <div class="module">
@@ -117,81 +83,51 @@
         <span v-if="postSecondary.length > 0">{{`在${postSecondary}中能掌握基本的岗位技能`}}</span>
         <span v-if="postUnfamiliar.length > 0"> {{ `而在${postUnfamiliar}岗位及鞥呢训练中掌握较差，需进一步加强`}}</span>
       </p> -->
-      <div
-        v-if="jobScoreList.length > 0"
-        class="ExperimentalResult"
-      >
-        <span>{{`${baseInfo.username}同学实训过程中,共参与`}}</span>
+      <div v-if="jobScoreList.length > 0" class="ExperimentalResult">
+        <span>{{ `${baseInfo.username}同学实训过程中,共参与` }}</span>
         <div class="touRed">
-          <span
-            v-for="item of postName"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
-          <span>{{`等${participate}个系统技能训练，按岗位进行计分，达标率：`}}</span>
-          <span style="color: #0088a0">{{rateScore}}%</span>
+          <span v-for="item of postName" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
+          <span>{{
+            `等${participate}个系统技能训练，按岗位进行计分，达标率：`
+          }}</span>
+          <span style="color: #0088a0">{{ rateScore }}%</span>
         </div>
-        <div
-          v-if="postSkilled.length > 0"
-          class="touRed"
-        >
+        <div v-if="postSkilled.length > 0" class="touRed">
           其中在
-          <span
-            v-for="item of postSkilled"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
+          <span v-for="item of postSkilled" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
           <span>能够熟悉掌握相关岗位技能；</span>
-
         </div>
-        <div
-          v-if="postSecondary.length > 0"
-          class="touRed"
-        >
+        <div v-if="postSecondary.length > 0" class="touRed">
           在
-          <span
-            v-for="item of postSecondary"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
+          <span v-for="item of postSecondary" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
           <span>中能掌握基本的岗位技能</span>
-
         </div>
-        <div
-          v-if="postUnfamiliar.length > 0"
-          class="touRed"
-        >
+        <div v-if="postUnfamiliar.length > 0" class="touRed">
           而在
-          <span
-            v-for="item of postUnfamiliar"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
-          <span>岗位及鞥呢训练中掌握较差，需进一步加强</span>
-
+          <span v-for="item of postUnfamiliar" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
+          <span>岗位技能训练中掌握较差，需进一步加强</span>
         </div>
       </div>
-      <p
-        v-else
-        class="wu"
-      >暂无数据</p>
-      <div
-        class="postHistogramChart"
-        ref="postHistogramChart"
-      ></div>
+      <p v-else class="wu">暂无数据</p>
+      <div class="postHistogramChart" ref="postHistogramChart"></div>
     </div>
     <div class="module">
       <div class="title integral">
         <div class="LEF">实训积分情况</div>
         <div class="RIT">
-          <span>当前实训积分:&nbsp;{{jicurrent}}分</span>
+          <span>当前实训积分:&nbsp;{{ jicurrent }}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
+      <div class="scoreChart" ref="scoreChart"></div>
     </div>
     <el-popover
       ref="popover4"
@@ -204,15 +140,13 @@
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select
-            v-model="sendIntegralData.termid"
-            @change="getcurriculum()"
-          >
+          <select v-model="sendIntegralData.termid" @change="getcurriculum()">
             <option
               :value="item.termid"
-              v-for="(item,index) in semesterList"
+              v-for="(item, index) in semesterList"
               :key="index"
-            >{{item.termName}}</option>
+              >{{ item.termName }}</option
+            >
           </select>
         </div>
         <div class="integral">
@@ -220,20 +154,14 @@
           <select v-model="sendIntegralData.courseid">
             <option
               :value="item.courseid"
-              v-for="(item,index) in courseNameList"
+              v-for="(item, index) in courseNameList"
               :key="index"
-            >{{item.coursename}}</option>
-
+              >{{ item.coursename }}</option
+            >
           </select>
         </div>
-        <button
-          class="tanBtn"
-          @click="seachData"
-        >搜索</button>
-        <div
-          class="x"
-          @click="shu = false"
-        >X</div>
+        <button class="tanBtn" @click="seachData">搜索</button>
+        <div class="x" @click="shu = false">X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -252,17 +180,17 @@
           ></el-table-column>
           <el-table-column label="积分">
             <template slot-scope="scope">
-              <p :style="{color:scope.row.integralValue>0?'#e64f15':'#10859d'}">
-                <span v-if="scope.row.integralValue>=0">+</span>
+              <p
+                :style="{
+                  color: scope.row.integralValue > 0 ? '#e64f15' : '#10859d'
+                }"
+              >
+                <span v-if="scope.row.integralValue >= 0">+</span>
                 {{ scope.row.integralValue }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="integralName"
-            label="来源"
-          ></el-table-column>
-
+          <el-table-column prop="integralName" label="来源"></el-table-column>
         </el-table>
         <Pagination
           v-show="tableData.length"
@@ -513,7 +441,7 @@ export default {
             }
           },
           axisLabel: {
-             show: true,
+            show: true,
             interval: 0,
             formatter: function (params) {
               var newParamsName = "";
@@ -544,7 +472,6 @@ export default {
           },
           data: type_nameArr
         },
-
         series: [
           {
             name: '分数占比',
@@ -617,10 +544,10 @@ export default {
             }
           },
         },
-         yAxis: {
+        yAxis: {
           type: 'category',
-          axisLine: {
-                   show: true,
+         axisLabel: {
+            show: true,
             interval: 0,
             formatter: function (params) {
               var newParamsName = "";
@@ -645,16 +572,11 @@ export default {
               }
               return newParamsName
             },
-            lineStyle: {
-              width: 2,
-              color: '#008acd'
-            }
-          },
-          axisLabel: {
             textStyle: {
-              color: '#444444'
+              color: '#444444',//坐标值得具体的颜色
             }
           },
+         
           data: type_nameArr
         },
         series: [

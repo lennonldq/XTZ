@@ -56,10 +56,8 @@
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
             <option>全部</option>
-            <option>活泼型/社交者</option>
-            <option>支配型/控制者</option>
-            <option>稳定型/支持者</option>
-            <option>完美型/服从者</option>
+            <option v-for="(item,index) in personalCharacterDate" :key="index" :value="item">{{item}}</option>
+          
           </select>
         </div>
 
@@ -159,10 +157,7 @@
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
             <option>全部</option>
-            <option>活泼型/社交者</option>
-            <option>支配型/控制者</option>
-            <option>稳定型/支持者</option>
-            <option>完美型/服从者</option>
+             <option v-for="(item,index) in personalCharacterDate" :key="index" :value="item">{{item}}</option>
           </select>
         </div>
 
@@ -236,10 +231,7 @@
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
             <option>全部</option>
-            <option>活泼型/社交者</option>
-            <option>支配型/控制者</option>
-            <option>稳定型/支持者</option>
-            <option>完美型/服从者</option>
+            <option v-for="(item,index) in personalCharacterDate" :key="index" :value="item">{{item}}</option>
           </select>
         </div>
 
@@ -342,7 +334,7 @@
 
 <script>
 import Pagination from "../views/pagination";
-import { talentPortrait, classes, professional } from "../js/url"
+import { talentPortrait, classes, professional,getPersonalCharacter } from "../js/url"
 export default {
   name: "TalentSearch",
   components: {
@@ -398,6 +390,7 @@ export default {
       talentSelect: '',
       personalCharacter: '',
       tableData: [],
+      personalCharacterDate:[]
     }
   },
   created () {
@@ -406,6 +399,7 @@ export default {
     this.getTalent();
     this.getTableData();
     this.getClasses();
+    this.getPersonalCharacter();
     this.getProfessional();
   },
   methods: {
@@ -426,8 +420,6 @@ export default {
         }
       }).then(res => {
         let data = JSON.parse(res.data).data;
-        console.log(data);
-
         this.professional = [...data]
       })
     },
@@ -559,6 +551,16 @@ export default {
     // 当前选中的学届
     changexuejie (event) {
       this.xuejie = event.target.value;
+    },
+    //获取性格列表
+    getPersonalCharacter(){
+      this.$ajax.get(this.baseUrl+getPersonalCharacter).then((res)=>{
+          let data = JSON.parse(res.data);
+        if (data.code == 200) {
+           this.personalCharacterDate = data.data;
+        }
+        
+      })
     },
     reset () {
       this.searchData.talentSelect = "请选择关键字";
