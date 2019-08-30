@@ -1,10 +1,7 @@
 <template>
   <el-main>
     <p class="title">人才搜索</p>
-    <div
-      v-if="userTypeId == 1"
-      class="formBox"
-    >
+    <div v-if="userTypeId == 1" class="formBox">
       <div class="form_top">
         <div>
           <label>搜索学校：</label>
@@ -22,20 +19,14 @@
         </div>
         <div>
           <label>搜索姓名：</label>
-          <input
-            placeholder="请输入学生姓名"
-            v-model="searchData.userName"
-          />
+          <input placeholder="请输入学生姓名" v-model="searchData.userName" />
         </div>
       </div>
       <div class="form_bottom">
         <div class="form-item1">
           <label>人才关键字：</label>
-          <select
-            v-model="searchData.talentSelect"
-            @change="getTalent"
-          >
-            <option>请选择关键字</option>
+          <select v-model="searchData.talentSelect" @change="getTalent">
+            <option value="">请选择关键字</option>
             <option>学习课程</option>
             <option>实训经验</option>
             <option>实战运营</option>
@@ -56,37 +47,29 @@
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
             <option>全部</option>
-            <option v-for="(item,index) in personalCharacterDate" :key="index" :value="item">{{item}}</option>
-          
+            <option
+              v-for="(item, index) in personalCharacterDate"
+              :key="index"
+              :value="item"
+              >{{ item }}</option
+            >
           </select>
         </div>
 
         <div class="form-item3">
-          <button
-            class="searchBtn"
-            @click="search"
-          >搜索</button>
+          <button class="searchBtn" @click="search">搜索</button>
         </div>
         <div class="form-item">
-          <button
-            class="searchBtnTwo"
-            @click="reset"
-          >重置搜索数据</button>
+          <button class="searchBtnTwo" @click="reset">重置搜索数据</button>
         </div>
       </div>
     </div>
     <!--v-if="userTypeId == 1"-->
-    <div
-      v-if="userTypeId == 8 ||userTypeId == 9 "
-      class="formBox"
-    >
+    <div v-if="userTypeId == 8 || userTypeId == 9" class="formBox">
       <div class="form_top">
         <div class="class">
           <label>选择班级：</label>
-          <select
-            v-model="searchData.editorial"
-            @change="changexuejie($event)"
-          >
+          <select v-model="searchData.editorial" @change="changexuejie($event)">
             <option value="">全部学届</option>
             <option value="2019">2019届</option>
             <option value="2018">2018届</option>
@@ -94,18 +77,15 @@
             <option value="2016">2016届</option>
             <option value="2015">2015届</option>
             <option value="2014">2014届</option>
-
           </select>
-          <select
-            v-model="searchData.pid"
-            @change="changezhuanye($event)"
-          >
+          <select v-model="searchData.pid" @change="changezhuanye($event)">
             <option value="">全部专业</option>
             <option
               v-for="item in professional"
               :key="item.id"
               :value="item.id"
-            >{{item.proname}}</option>
+              >{{ item.proname }}</option
+            >
           </select>
           <select
             style="width: 160px"
@@ -113,28 +93,20 @@
             @change="changeProduct($event)"
           >
             <option value="">全部班级</option>
-            <option
-              v-for="item in className"
-              :key="item.id"
-              :value="item.id"
-            >{{item.classname}}</option>
+            <option v-for="item in className" :key="item.id" :value="item.id">{{
+              item.classname
+            }}</option>
           </select>
         </div>
         <div>
           <label>搜索姓名：</label>
-          <input
-            placeholder="请输入学生姓名"
-            v-model=" searchData.userName"
-          />
+          <input placeholder="请输入学生姓名" v-model="searchData.userName" />
         </div>
       </div>
       <div class="form_bottom">
         <div class="form-item1">
           <label>人才关键字：</label>
-          <select
-            v-model="searchData.talentSelect"
-            @change="getTalent"
-          >
+          <select v-model="searchData.talentSelect" @change="getTalent">
             <option>请选择关键字</option>
             <option>学习课程</option>
             <option>实验实训</option>
@@ -157,28 +129,24 @@
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
             <option>全部</option>
-             <option v-for="(item,index) in personalCharacterDate" :key="index" :value="item">{{item}}</option>
+            <option
+              v-for="(item, index) in personalCharacterDate"
+              :key="index"
+              :value="item"
+              >{{ item }}</option
+            >
           </select>
         </div>
 
         <div class="form-item3">
-          <button
-            class="searchBtn"
-            @click="search"
-          >搜索</button>
+          <button class="searchBtn" @click="search">搜索</button>
         </div>
         <div class="form-item">
-          <button
-            class="searchBtnTwo"
-            @click="reset"
-          >重置搜索数据</button>
+          <button class="searchBtnTwo" @click="reset">重置搜索数据</button>
         </div>
       </div>
     </div>
-    <div
-      v-if="userTypeId == 3"
-      class="formBox"
-    >
+    <div v-if="userTypeId == 3" class="formBox">
       <div class="form_top">
         <div>
           <label>搜索学校：</label>
@@ -196,19 +164,13 @@
         </div>
         <div>
           <label>搜索姓名：</label>
-          <input
-            placeholder="请输入学生姓名"
-            v-model="searchData.userName"
-          />
+          <input placeholder="请输入学生姓名" v-model="searchData.userName" />
         </div>
       </div>
       <div class="form_bottom">
         <div class="form-item1">
           <label>人才关键字：</label>
-          <select
-            v-model="searchData.talentSelect"
-            @change="getTalent"
-          >
+          <select v-model="searchData.talentSelect" @change="getTalent">
             <option>请选择关键字</option>
             <option>学习课程</option>
             <option>实验实训</option>
@@ -231,33 +193,33 @@
           <label>搜索性格：</label>
           <select v-model="searchData.personalCharacter">
             <option>全部</option>
-            <option v-for="(item,index) in personalCharacterDate" :key="index" :value="item">{{item}}</option>
+            <option
+              v-for="(item, index) in personalCharacterDate"
+              :key="index"
+              :value="item"
+              >{{ item }}</option
+            >
           </select>
         </div>
 
         <div class="form-item3">
-          <button
-            class="searchBtn"
-            @click="search"
-          >搜索</button>
+          <button class="searchBtn" @click="search">搜索</button>
         </div>
         <div class="form-item">
-          <button
-            class="searchBtnTwo"
-            @click="reset"
-          >重置搜索数据</button>
+          <button class="searchBtnTwo" @click="reset">重置搜索数据</button>
         </div>
       </div>
-    </div><!-- v-if="userTypeId == 3"-->
+    </div>
+    <!-- v-if="userTypeId == 3"-->
     <div class="table">
-      <p
-        class="tableTit"
-        v-if="INP ==''"
-      >人才数量:<span class="blue">{{talents}}</span>位</p>
-      <p
-        class="tableTit"
-        v-else
-      >具备‘{{INP}}’标签人才数为:<span class="blue">{{talents}}</span>位</p>
+      <p class="tableTit" v-if="INP == ''">
+        人才数量:<span class="blue">{{ talents }}</span
+        >位
+      </p>
+      <p class="tableTit" v-else>
+        具备‘{{ INP }}’标签人才数为:<span class="blue">{{ talents }}</span
+        >位
+      </p>
 
       <el-table
         v-loading="loading"
@@ -266,13 +228,8 @@
         border
         style="width: 100%"
       >
-        <el-table-column
-          align="center"
-          prop="$index"
-          label="排序"
-          width="50"
-        >
-          <template slot-scope="scope">{{ scope.$index + 1}}</template>
+        <el-table-column align="center" prop="$index" label="排序" width="50">
+          <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -309,16 +266,9 @@
           label="个人性格"
           width="120"
         ></el-table-column>
-        <el-table-column
-          align="center"
-          label="操作"
-          width="100"
-        >
+        <el-table-column align="center" label="操作" width="100">
           <template slot-scope="scope">
-            <p
-              class="lookBtn"
-              @click="toLookDetail(scope.row)"
-            >查看详情</p>
+            <p class="lookBtn" @click="toLookDetail(scope.row)">查看详情</p>
           </template>
         </el-table-column>
       </el-table>
@@ -334,7 +284,7 @@
 
 <script>
 import Pagination from "../views/pagination";
-import { talentPortrait, classes, professional,getPersonalCharacter } from "../js/url"
+import { talentPortrait, classes, professional, getPersonalCharacter } from "../js/url"
 export default {
   name: "TalentSearch",
   components: {
@@ -372,6 +322,7 @@ export default {
       },
       searchData: {
         schoolName: '',
+        // 搜索姓名
         userName: '',
         className: "",
         professionalName: '',
@@ -379,7 +330,7 @@ export default {
         talentSelect: '请选择关键字',
         talentName: "",
         // // 学届
-        editorial: "全部学届",
+        editorial: "",
         // // 专业
         pid: "",
         // // 班级
@@ -387,15 +338,16 @@ export default {
       },
       className: [],
       professional: [],
+      // 人才关键字id
       talentSelect: '',
       personalCharacter: '',
       tableData: [],
-      personalCharacterDate:[]
+      personalCharacterDate: []
     }
   },
   created () {
     this.userTypeId = localStorage.getItem("userTypeId")
-    this.search();
+    // this.search();
     this.getTalent();
     this.getTableData();
     this.getClasses();
@@ -413,7 +365,9 @@ export default {
     },
 
     getProfessional () {
-       this.search();
+      if (this.professional.proname == '全部专业') {
+        this.professional.proname.id = '';
+      }
       this.$ajax.get(this.baseUrl + professional, {
         params: {
           schoolid: localStorage.getItem("schoolId")
@@ -426,7 +380,7 @@ export default {
     getClasses () {
       this.$ajax.get(this.baseUrl + classes, {
         params: {
-             schoolid: localStorage.getItem("schoolId"),
+          schoolid: localStorage.getItem("schoolId"),
           pid: this.searchData.pid
         }
       }).then(res => {
@@ -443,18 +397,19 @@ export default {
         this.selectTalentName = this.searchData.talentSelect + '积分';
       };
       // 全部学届
-      if (this.searchData.editorial == '全部学届') {
-        this.searchData.editorial = '';
-      }
+      // if (this.searchData.editorial == '全部学届') {
+      //   this.searchData.editorial = '';
+      // }
       // 全部专业
-      if (this.professional.proname == '全部专业') {
-        this.professional.proname.id = '';
-      }
+
       // 全部班级
       if (this.className.classname == '全部班级') {
         this.className.classname.id = '';
       }
-      this.getTableData()
+      this.getTableData();
+      console.log(1);
+
+
     },
     getTalent () {
       switch (this.searchData.talentSelect) {
@@ -492,7 +447,9 @@ export default {
           this.talentSelect = 10;
       }
     },
-    getTableData (dta) { // 获取表格数据
+    getTableData () { // 获取表格数据
+
+
       this.tableData = [];
       this.loading = true;
       this.$ajax.get(this.baseUrl + talentPortrait, {
@@ -532,6 +489,8 @@ export default {
       this.current = current;
       this.everyShowNum = everyShowNum;
       this.getTableData();
+      console.log(2);
+
     },
     toLookDetail (row) {
 
@@ -546,20 +505,20 @@ export default {
     // 当前选中的专业
     changezhuanye (event) {
       this.searchData.pid = event.target.value;
-       this.getClasses();
+      this.getClasses();
     },
     // 当前选中的学届
     changexuejie (event) {
       this.xuejie = event.target.value;
     },
     //获取性格列表
-    getPersonalCharacter(){
-      this.$ajax.get(this.baseUrl+getPersonalCharacter).then((res)=>{
-          let data = JSON.parse(res.data);
+    getPersonalCharacter () {
+      this.$ajax.get(this.baseUrl + getPersonalCharacter).then((res) => {
+        let data = JSON.parse(res.data);
         if (data.code == 200) {
-           this.personalCharacterDate = data.data;
+          this.personalCharacterDate = data.data;
         }
-        
+
       })
     },
     reset () {
@@ -571,12 +530,11 @@ export default {
       this.searchData.schoolName = "";
       this.searchData.talentName = "";
       this.searchData.userName = "";
-      this.searchData.editorial = "全部学届";
+      this.searchData.editorial = "";
       this.ProductActive = '';
       this.couponSelected = '';
       this.xuejie = '';
       this.searchData.pid = "";
-      this.search();
     }
 
   }

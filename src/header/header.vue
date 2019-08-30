@@ -124,14 +124,8 @@ export default {
       
       // 图片
       this.baseInfo = JSON.parse(sessionStorage.getItem("photo"));
-      console.log(this.baseInfo);
   
       this.typeId = localStorage.getItem("userTypeId");
-      // this.$set(this,'baseInfo',JSON.parse(sessionStorage.getItem("photo")))
-      console.log(this.$set(this, 'baseInfo', JSON.parse(sessionStorage.getItem("photo"))));
-      console.log(this.typeId);
-      
-      // this.$set(this.baseInfo,JSON.parse(sessionStorage.getItem("photo")))
     },
   }
 }

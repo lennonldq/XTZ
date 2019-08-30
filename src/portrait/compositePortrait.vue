@@ -3,43 +3,58 @@
     <div class="header">
       <div class="titleBox">
         <div>
-            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
-           <img v-else src="../assets/images/pho.png" alt="">
+          <img
+            v-if="baseInfo.photo"
+            :src="`https://etech-edu.com/${baseInfo.photo}`"
+            alt=""
+          />
+          <img v-else src="../assets/images/pho.png" alt="" />
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
       </div>
-     
+
       <router-link
         tag="button"
-        :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
+        :to="{
+          path: '/integralPortrait',
+          query: { classId: $route.query.classId, userId: $route.query.userId }
+        }"
       >
         返回上页
       </router-link>
-       <div class="synchronization" @click="synchronization()">
+      <div class="synchronization" @click="synchronization()">
         <div class="one">同步数据</div>
-        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+        <div class="two" v-if="gtime">上次同步:{{ gtime | gTime }}</div>
       </div>
     </div>
     <div class="module">
       <p class="title">综合能力</p>
-      <p class="resultDetail">根据益达积分系统9个指标进行换算，计算出{{baseInfo.username}}同学的综合积分为：<span>{{ agvIntegralValue }}</span></p>
-      <p class="resultDetail"> 
-        <span v-if="highScore.length>0">{{`其中在${highScore}这${highScorenuber}个方面表现突出`}}</span>
-        <span v-if="secondary.length>0">{{`在${secondary}这${secondarynuber}个方面表现良好`}}</span>
-          <span v-if="lowGrade.length>0">{{`在${lowGrade}这${lowGradenuber}个方面表现稍有不足`}}</span>
+      <p class="resultDetail">
+        根据益达积分系统9个指标进行换算，计算出{{
+          baseInfo.username
+        }}同学的综合积分为：<span>{{ agvIntegralValue }}</span>
+      </p>
+      <p class="resultDetail">
+        <span v-if="highScore.length > 0">{{
+          `其中在${highScore}这${highScorenuber}个方面表现突出`
+        }}</span>
+        <span v-if="secondary.length > 0">{{
+          `在${secondary}这${secondarynuber}个方面表现良好`
+        }}</span>
+        <span v-if="lowGrade.length > 0">{{
+          `在${lowGrade}这${lowGradenuber}个方面表现稍有不足`
+        }}</span>
       </p>
       <div class="moduleShow">
-        <div
-          class="skillChart"
-          ref="skillChart"
-        ></div>
+        <div class="skillChart" ref="skillChart"></div>
         <div class="dataShow">
           <ul>
-            <li v-for="(item,index) in resultData" :key="index">
+            <li v-for="(item, index) in resultData" :key="index">
               {{ item.moduleName }}：
-              <span>{{ item.integralValue?item.integralValue:0 }}/100</span>分
+              <span>{{ item.integralValue ? item.integralValue : 0 }}/100</span
+              >分
             </li>
           </ul>
         </div>
@@ -48,12 +63,8 @@
     <div class="module">
       <p class="title">潜质评测</p>
       <div class="evaluatMain">
-
         <div class="ma">
-          <img
-            src="../assets/images/ma.png"
-            alt=""
-          >
+          <img src="../assets/images/ma.png" alt="" />
           <div style="text-align: center;">无数据可扫码进行测试</div>
         </div>
         <div class="interest">
@@ -70,50 +81,39 @@
         <div class="interest">
           <p>个人性格</p>
           <span class="Thickening"> {{ personalCharacter }}</span>
-          <span class="one">{{personalCharacterRemark }}</span>
+          <span class="one">{{ personalCharacterRemark }}</span>
         </div>
-        <div
-          class="interest"
-          style="position: relative;"
-        >
+        <div class="interest" style="position: relative;">
           <p>心理年龄</p>
-          <div
-            class="ability"
-            ref="ability"
-          ></div>
-          <span
-            style="padding-left: 112px;"
-            class="one"
-          >{{mentalAgeRemark}}</span>
+          <div class="ability" ref="ability"></div>
+          <span style="padding-left: 112px;" class="one">{{
+            mentalAgeRemark
+          }}</span>
         </div>
         <div class="potentialBox">
           <p>软能力预测</p>
-          <div
-            class="potentialChart"
-            ref="potentialChart"
-          ></div>
+          <div class="potentialChart" ref="potentialChart"></div>
         </div>
         <div class="interest">
           <p>情商</p>
-          <span class="Thickening"> {{emotionalIntelligence }}</span>
-          <span class="one">{{emotionalIntelligenceRemark}}</span>
+          <span class="Thickening"> {{ emotionalIntelligence }}</span>
+          <span class="one">{{ emotionalIntelligenceRemark }}</span>
         </div>
       </div>
     </div>
-    <div
-      class="module"
-      style="margin-bottom: 0"
-    >
+    <div class="module" style="margin-bottom: 0">
       <p class="title">人才标签</p>
       <div class="labelBox">
-        <div class="labelBoxTit"><span>擅长:&nbsp;&nbsp;&nbsp;高</span>
-          <p></p><span>低</span>
+        <div class="labelBoxTit">
+          <span>擅长:&nbsp;&nbsp;&nbsp;高</span>
+          <p></p>
+          <span>低</span>
         </div>
         <div class="labelShow">
           <p
-            v-for="item,index in talentLabelNameArr"
+            v-for="(item, index) in talentLabelNameArr"
             class="minlabel"
-            :class="['label'+(index+1),addClass(item.integralValue)]"
+            :class="['label' + (index + 1), addClass(item.integralValue)]"
           >
             {{ item.talentLabelName }}
           </p>
@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { talentLabels, comprehensiveAbility, potentialEvaluation, updateData,  selectSynchroLog } from "../js/url"
+import { talentLabels, comprehensiveAbility, potentialEvaluation, updateData, selectSynchroLog } from "../js/url"
 export default {
   props: ["baseInfo"],
   name: "CompositePortrait",
@@ -133,17 +133,17 @@ export default {
       resultData: [],
       talentLabelNameArr: [],
       // 综合能力分数比较高于80的
-      highScore:[],
+      highScore: [],
       // 高于80的数量
-      highScorenuber:0,
+      highScorenuber: 0,
 
       // 综合能力分数比较60-80的
-      secondary:[],
-      secondarynuber:0,
+      secondary: [],
+      secondarynuber: 0,
 
-        // 综合能力分数比较低于60的
-        lowGrade:[],
-        lowGradenuber:0,
+      // 综合能力分数比较低于60的
+      lowGrade: [],
+      lowGradenuber: 0,
 
       professionalInterest: '',
       emotionalIntelligenceRemark: '',
@@ -155,7 +155,7 @@ export default {
       personalCharacter: "",
       mentalAgeRemark: "",
       emotionalIntelligence: "",
-       //更新数据时间
+      //更新数据时间
       gtime: '',
     }
   },
@@ -163,7 +163,7 @@ export default {
     this.getTalentLabels();
     this.getComprehensiveAbilityData();
     this.getPotentialEvaluationData();
-       this.Updatetime();
+    this.Updatetime();
   },
   methods: {
     addClass (value) {
@@ -176,6 +176,8 @@ export default {
       }
     },
     renderZZT (moduleName, integralValue) { //潜质柱状图
+      console.log(moduleName, integralValue);
+
       let potentialChart = this.$echart.init(this.$refs.potentialChart);
       potentialChart.setOption({
         xAxis: {
@@ -292,21 +294,21 @@ export default {
           for (let i = 0; i < this.resultData.length; i++) {
             moduleName.push(this.resultData[i].moduleName);
             // integralValue.push(this.resultData[i].integralValue);
-            arr.push({ value: this.gitdata(this.resultData[i].integralValue) , name: this.resultData[i].moduleName });
-            if(this.resultData[i].integralValue>80){
+            arr.push({ value: this.gitdata(this.resultData[i].integralValue), name: this.resultData[i].moduleName });
+            if (this.resultData[i].integralValue > 80) {
               this.highScore.push(this.resultData[i].moduleName);
               this.highScorenuber++
-            }else if(this.resultData[i].integralValue<80&&this.resultData[i].integralValue>60){
+            } else if (this.resultData[i].integralValue < 80 && this.resultData[i].integralValue > 60) {
               this.secondary.push(this.resultData[i].moduleName)
               this.secondarynuber++
-            }else{
-               this.lowGrade.push(this.resultData[i].moduleName);
-             this.lowGradenuber++
+            } else {
+              this.lowGrade.push(this.resultData[i].moduleName);
+              this.lowGradenuber++
             }
           }
-          
+
           console.log(arr);
-          
+
           this.mixedAbilityEchart(arr);
           // this.renderZZT(moduleName, integralValue)
         }
@@ -345,8 +347,6 @@ export default {
     getPotentialEvaluationData () { // 获取潜质测评数据
       this.$ajax.get(this.baseUrl + potentialEvaluation + '?userId=' + this.$route.query.userId).then(res => {
         let data = JSON.parse(res.data);
- 
-  
         if (data.code == 200) {
           console.log(data.data);
           // this.emotionalIntelligence = data.data.emotionalIntelligence
@@ -359,25 +359,24 @@ export default {
           this.personalCharacter = data.data.personalCharacter;
           this.mentalAgeRemark = data.data.mentalAgeRemark;
           this.emotionalIntelligence = data.data.emotionalIntelligence;
-  
-          
+
+
           this.abilityChart(this.gitdata(data.data.mentalAge));
 
           let moduleName = ["人际交往", "问题处理", "观察能力", "管理能力", "判断力", "空间想象能力", '计划性', '创新性'];
           // this.renderZZT(moduleName, data)
-   
 
           this.renderZZT(
             moduleName,
             [
-              this.gitdata(data.data.innovative),
               this.gitdata(data.data.interpersonalCommunication),
-              this.gitdata(data.data.judgment),
-              this.gitdata(data.data.managementAbility),
-              this.gitdata(data.data.observation),
-              this.gitdata(data.data.planned),
               this.gitdata(data.data.problemHandling),
-              this.gitdata(data.data.spatialImagination)
+              this.gitdata(data.data.observation),
+              this.gitdata(data.data.managementAbility),
+              this.gitdata(data.data.judgment),
+              this.gitdata(data.data.spatialImagination),
+              this.gitdata(data.data.planned),
+              this.gitdata(data.data.innovative)
             ]
           )
         }
@@ -406,7 +405,7 @@ export default {
         }
       })
     },
-     // 点击更新同步数据
+    // 点击更新同步数据
     synchronization () {
       let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + updateData, {
@@ -417,12 +416,12 @@ export default {
           location.reload()
           this.$router.go(0)
         }
-      }).catch(err=>{
-           this.$message.error('同步失败请联系管理员');
+      }).catch(err => {
+        this.$message.error('同步失败请联系管理员');
       })
     },
 
-       // 同步数据时间获取
+    // 同步数据时间获取
     Updatetime () {
       let { userId } = this.$route.query;
       this.$ajax.get(this.baseUrl + selectSynchroLog, {
