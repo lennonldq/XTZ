@@ -314,36 +314,36 @@ export default {
         }
       })
     },
-    abilityChart (mentalAge) { //
-      let ability = this.$echart.init(this.$refs.ability);
-      ability.setOption({
-        series: [
-          {
-            type: 'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: true,
-                position: 'center'
-              }
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            color: ["#10859d", "#CCC"],
-            data: [
-              { value: parseInt(mentalAge), name: `${mentalAge}` },
-              { value: 100 - parseInt(mentalAge), name: '' },
-            ]
-          }
-        ]
-      })
+    // abilityChart (mentalAge) { //
+    //   let ability = this.$echart.init(this.$refs.ability);
+    //   ability.setOption({
+    //     series: [
+    //       {
+    //         type: 'pie',
+    //         radius: ['50%', '70%'],
+    //         avoidLabelOverlap: false,
+    //         label: {
+    //           normal: {
+    //             show: true,
+    //             position: 'center'
+    //           }
+    //         },
+    //         labelLine: {
+    //           normal: {
+    //             show: false
+    //           }
+    //         },
+    //         color: ["#10859d", "#CCC"],
+    //         data: [
+    //           { value: parseInt(mentalAge), name: `${mentalAge}` },
+    //           { value: 100 - parseInt(mentalAge), name: '' },
+    //         ]
+    //       }
+    //     ]
+    //   })
 
 
-    },
+    // },
     getPotentialEvaluationData () { // 获取潜质测评数据
       this.$ajax.get(this.baseUrl + potentialEvaluation + '?userId=' + this.$route.query.userId).then(res => {
         let data = JSON.parse(res.data);
@@ -361,7 +361,7 @@ export default {
           this.emotionalIntelligence = data.data.emotionalIntelligence;
 
 
-          this.abilityChart(this.gitdata(data.data.mentalAge));
+          // this.abilityChart(this.gitdata(data.data.mentalAge));
 
           let moduleName = ["人际交往", "问题处理", "观察能力", "管理能力", "判断力", "空间想象能力", '计划性', '创新性'];
           // this.renderZZT(moduleName, data)
