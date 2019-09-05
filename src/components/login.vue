@@ -69,12 +69,12 @@ export default {
           localStorage.setItem("schoolId", data.schoolId);
           localStorage.setItem("classId", data.classId);
           localStorage.setItem("userId", data.userId);
-            sessionStorage.setItem("photo", JSON.stringify(data.photo));
+          sessionStorage.setItem("photo", JSON.stringify(data.photo));
           // 判断当账号是学生时
           if (data.userTypeId == 0) {
-                 let userId = localStorage.getItem("userId");
-                let classId = localStorage.getItem("classId");
-                // 请求接口
+            let userId = localStorage.getItem("userId");
+            let classId = localStorage.getItem("classId");
+            // 请求接口
             this.$ajax(this.baseUrl + talentPortrait, {
               headers: {
                 accessToken: localStorage.getItem("accessToken")
@@ -82,11 +82,11 @@ export default {
               params: {
                 userId: userId
               }
-            }).then(res=>{
+            }).then(res => {
               let data = JSON.parse(res.data)
-             sessionStorage.setItem("info", JSON.stringify(data.data[0]));
-             let routeData = this.$router.resolve({path: "/integralPortrait",query:{classId: classId, userId: userId }});
-             window.open(routeData.href, '_blank');
+              sessionStorage.setItem("info", JSON.stringify(data.data[0]));
+              let routeData = this.$router.resolve({ path: "/integralPortrait", query: { classId: classId, userId: userId } });
+              window.open(routeData.href, '_blank');
             })
           } else {
             this.$router.push("/talentSearch");
@@ -122,7 +122,6 @@ export default {
   padding-top: 20px;
   margin: 0 auto;
 }
-
 .el-input {
   width: 80%;
 }
