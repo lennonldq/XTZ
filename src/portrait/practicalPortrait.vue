@@ -630,8 +630,8 @@ export default {
           let termid = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
             termid.push(data.data[i].termid);
-            integralValue.push(parseInt(data.data[i].integralValue));
-            sumIntegralValue.push(parseInt(data.data[i].sumIntegralValue))
+            integralValue.push(data.data[i].integralValue);
+            sumIntegralValue.push(data.data[i].sumIntegralValue)
           }
           this.scoreEchart(termid, integralValue, sumIntegralValue);
         }

@@ -144,6 +144,11 @@
         <div class="form-item">
           <button class="searchBtnTwo" @click="reset">重置搜索数据</button>
         </div>
+        <div class="form-item4">
+          <button class="searchBtnTwo" @click="synchronization">
+            同步数据
+          </button>
+        </div>
       </div>
     </div>
     <div v-if="userTypeId == 3" class="formBox">
@@ -207,6 +212,11 @@
         </div>
         <div class="form-item">
           <button class="searchBtnTwo" @click="reset">重置搜索数据</button>
+        </div>
+        <div class="form-item4">
+          <button class="searchBtnTwo" @click="synchronization">
+            同步数据
+          </button>
         </div>
       </div>
     </div>
@@ -284,7 +294,7 @@
 
 <script>
 import Pagination from "../views/pagination";
-import { talentPortrait, classes, professional, getPersonalCharacter } from "../js/url"
+import { talentPortrait, classes, professional, getPersonalCharacter, getsynchronization } from "../js/url"
 export default {
   name: "TalentSearch",
   components: {
@@ -535,6 +545,28 @@ export default {
       this.couponSelected = '';
       this.xuejie = '';
       this.searchData.pid = "";
+    },
+    // 老师 企业 学校管理员 同步数据
+    synchronization () {
+      this.$ajax.get(this.baseUrl + getsynchronization, {
+        params: {
+          schoolId: localStorage.getItem("schoolId"),
+          userId: localStorage.getItem("userId")
+        }
+      }).then((res) => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.$message({
+          message: '同步成功',
+          type: 'success'
+        });
+          location.reload()
+          this.$router.go(0)
+        }
+
+      }).catch(err => {
+        this.$message.error('同步失败请联系管理员');
+      })
     }
 
   }
@@ -564,12 +596,16 @@ export default {
   border-bottom: 20px solid #f4f5f7;
 }
 
-.formBox .form_top,
-.formBox .form_bottom {
+.formBox .form_top {
   width: 920px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+}
+
+.formBox .form_bottom {
+  display: flex;
+  margin-left: 140px;
 }
 .formBox .form_top {
   margin-bottom: 20px;
@@ -582,11 +618,12 @@ export default {
   border-radius: 4px;
 }
 .formBox .form_bottom .form-item1 {
-  flex: 1;
+  /* flex: 1; */
+  padding-right: 30px;
 }
 .formBox .form_bottom .form-item {
   width: 150px;
-  text-align: right;
+  text-align: center;
 }
 .formBox .form_bottom .form-item3 {
   width: 150px;
@@ -635,5 +672,8 @@ input:-moz-placeholder {
 }
 input:-ms-input-placeholder {
   color: #b2b2b2;
+}
+.form-item4 .searchBtnTwo {
+  width: 80px;
 }
 </style>

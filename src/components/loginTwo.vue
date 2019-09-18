@@ -47,7 +47,7 @@ export default {
         if (this.theRequest.v == undefined) {
           //  window.location.href = "http://120.25.66.101:7777/auth/login"
         } else {
-          this.$ajax.get(`http://124.172.243.65:8092/new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res => {
+          this.$ajax.get(`${this.baseUrl}new/login?naughty=${this.theRequest.naughty}&veryStrong=${this.theRequest.veryStrong}&v=${this.theRequest.v}`).then(res => {
             let data = JSON.parse(res.data);
             if (data.msg == "登录成功") {
               console.log(data);
