@@ -3,8 +3,12 @@
     <div class="header">
       <div class="titleBox">
         <div>
-            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
-           <img v-else src="../assets/images/pho.png" alt="">
+          <img
+            v-if="baseInfo.photo"
+            :src="`https://etech-edu.com/${baseInfo.photo}`"
+            alt=""
+          />
+          <img v-else src="../assets/images/pho.png" alt="" />
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
@@ -12,7 +16,10 @@
       </div>
       <router-link
         tag="button"
-        :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
+        :to="{
+          path: '/integralPortrait',
+          query: { classId: $route.query.classId, userId: $route.query.userId }
+        }"
       >
         返回上页
       </router-link>
@@ -23,82 +30,74 @@
       >
         学校人才培养方案
       </div> -->
-      <div
-        class="synchronization"
-        @click="synchronization()"
-      >
+      <div class="synchronization" @click="synchronization()">
         <div class="one">同步数据</div>
-        <div
-          class="two"
-          v-if="gtime"
-        >上次同步:{{gtime | gTime}} </div>
+        <div class="two" v-if="gtime">上次同步:{{ gtime | gTime }}</div>
       </div>
     </div>
     <div class="module">
       <p class="title">课程学习情况</p>
       <div
         class="ExperimentalResult"
-        v-if="large.length>0&& small.length > 0"
+        v-if="large.length > 0 && small.length > 0"
       >
-        <span>{{`${baseInfo.username}在本${schools}的课程学习过程中：`}}</span>
-        <div
-          class="touRed"
-          v-if="large.length>0"
-        >
-          <span
-            v-for="item of large"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
-          <span>{{`等${largenuber}门课程掌握较好，高于或等于平均水平,`}}</span>
+        <span>{{
+          `${baseInfo.username}在本${schools}的课程学习过程中：`
+        }}</span>
+        <div class="touRed" v-if="large.length > 0">
+          <span v-for="item of large" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
+          <span>{{
+            `等${largenuber}门课程掌握较好，高于或等于平均水平,`
+          }}</span>
         </div>
-        <div
-          v-if="small.length > 0"
-          class="touRed"
-        >
+        <div v-if="small.length > 0" class="touRed">
           在
-          <span
-            v-for="item of small"
-            :key="item"
-            class="btRed"
-          >{{item}}、 </span>
-          <span>{{`等${smallnuber}门课程掌握较为一般，低于平均水平，有待加强提高；`}}</span>
+          <span v-for="item of small" :key="item" class="btRed"
+            >{{ item }}、
+          </span>
+          <span>{{
+            `等${smallnuber}门课程掌握较为一般，低于平均水平，有待加强提高；`
+          }}</span>
         </div>
-
       </div>
-      <div class="course">
-      </div>
-
+      <div class="course"></div>
     </div>
     <div class="module">
       <p class="title">学习轨迹跟踪</p>
       <p class="trajectoryDetail">
         {{
-        `${baseInfo.username}在本学期的课程学习过程中,作业成绩平均分为${typeScore3}分，${compareScore3}班级平均分${sumTypeScore3}分，课程练习成绩平均分为${typeScore2}分,${compareScore2}班级平均分${sumTypeScore2}分，考试成绩为${typeScore1}分,${compareScore1}班级平均分${sumTypeScore1}分；
+          `${baseInfo.username}在本学期的课程学习过程中,作业成绩平均分为${typeScore3}分，${compareScore3}班级平均分${sumTypeScore3}分，课程练习成绩平均分为${typeScore2}分,${compareScore2}班级平均分${sumTypeScore2}分，考试成绩为${typeScore1}分,${compareScore1}班级平均分${sumTypeScore1}分；
         ${higherThan}`
         }}
       </p>
       <div class="trajectory">
-        <div
-          class="achievementChart"
-          ref="achievementChart"
-        ></div>
+        <div class="achievementChart" ref="achievementChart"></div>
       </div>
+    </div>
 
+    <div class="module">
+      <p class="title">益学习</p>
+      <p></p>
+      <div class="benefitLearningName">
+        <span style="color: #ffb6da;">{{`${baseInfo.username}`}}</span><span>积分</span><span>{{pointTotal}}</span>
+      </div>
+      <div class="benefitLearning">
+        <div class="LFTLearning" ref="LFTLearning"></div>
+        <div class="RITLearning"></div>
+      </div>
     </div>
 
     <div class="module">
       <div class="title integral">
         <div class="LEF">课程积分情况</div>
         <div class="RIT">
-          <span>当前课程积分:&nbsp;{{jicurrent}}分</span>
+          <span>当前课程积分:&nbsp;{{ jicurrent }}分</span>
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
+      <div class="scoreChart" ref="scoreChart"></div>
     </div>
 
     <el-popover
@@ -112,15 +111,13 @@
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select
-            v-model="sendIntegralData.termid"
-            @change="getcurriculum()"
-          >
+          <select v-model="sendIntegralData.termid" @change="getcurriculum()">
             <option
               :value="item.termid"
-              v-for="(item,index) in semesterList"
+              v-for="(item, index) in semesterList"
               :key="index"
-            >{{item.termName}}</option>
+              >{{ item.termName }}</option
+            >
           </select>
         </div>
         <div class="integral">
@@ -128,20 +125,14 @@
           <select v-model="sendIntegralData.courseid">
             <option
               :value="item.courseid"
-              v-for="(item,index) in courseNameList"
+              v-for="(item, index) in courseNameList"
               :key="index"
-            >{{item.coursename}}</option>
-
+              >{{ item.coursename }}</option
+            >
           </select>
         </div>
-        <button
-          class="tanBtn"
-          @click="seachData"
-        >搜索</button>
-        <div
-          class="x"
-          @click="shu = false"
-        >X</div>
+        <button class="tanBtn" @click="seachData">搜索</button>
+        <div class="x" @click="shu = false">X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
@@ -160,17 +151,17 @@
           ></el-table-column>
           <el-table-column label="积分">
             <template slot-scope="scope">
-              <p :style="{color:scope.row.integralValue>0?'#e64f15':'#10859d'}">
-                <span v-if="scope.row.integralValue>=0">+</span>
+              <p
+                :style="{
+                  color: scope.row.integralValue > 0 ? '#e64f15' : '#10859d'
+                }"
+              >
+                <span v-if="scope.row.integralValue >= 0">+</span>
                 {{ scope.row.integralValue }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="integralName"
-            label="来源"
-          ></el-table-column>
-
+          <el-table-column prop="integralName" label="来源"></el-table-column>
         </el-table>
         <Pagination
           v-show="tableData.length"
@@ -183,7 +174,6 @@
   </div>
 
   <!-- 弹框列表 -->
-
 </template>
 
 <script>
@@ -197,7 +187,7 @@ import {
   integralStatistics,
   updateData,
   selectSynchroLog,
-  assessModules
+  assessModules, gitbenefitLearning
 } from "../js/url"
 export default {
   props: ['baseInfo'],
@@ -233,6 +223,8 @@ export default {
         backgroundColor: '#10859d',
         color: 'dimgrey',
       },
+      // 益达总积分
+      pointTotal:"",
       // 列表数据
       tableData: [],
       totalPage: 1,
@@ -286,6 +278,8 @@ export default {
     this.getIntegralStatistics();
     this.Updatetime();
     this.getPortrait();
+    this.getgitbenefitLearning();
+    // this.getLFTLearning();
   },
   methods: {
     getIntegralData () { //获取课程画像数据
@@ -294,6 +288,7 @@ export default {
         params: { userId, classId }
       }).then(res => {
         let data = JSON.parse(res.data);
+        
         if (data.code == 200) {
           let termid = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
@@ -313,7 +308,6 @@ export default {
     },
 
     courseIntegralEchart (termid, integralValue, sumIntegralValue) { // 课程积分情况
-      console.log(termid, integralValue, sumIntegralValue);
 
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
@@ -491,11 +485,76 @@ export default {
       }
     },
 
+    // 获取益学习饼图
+    getgitbenefitLearning () {
+      let userId = this.$route.query.userId;
+      this.$ajax.get(this.baseUrl + gitbenefitLearning,
+        { params: { userId } }).then(res => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let list = data.data.aiStatisticsResponseList;
+            
+          this.pointTotal = data.data.pointTotal;
+            let complianceRateList = [], majorNameList = [], targetNumberList = [];
+            for (let i = 0; i < list.length; i++) {
+              complianceRateList.push(list[i].complianceRate);
+              majorNameList.push(list[i].majorName);
+              targetNumberList.push(list[i].targetNumber);
+              list[i].name = list[i].majorName;
+              list[i].value = list[i].targetNumber;
+              delete list[i].majorName;
+              delete list[i].targetNumber;
+              delete list[i].majorId;
+              delete list[i].complianceRate;
+            }
+            this.getLFTLearning(list, majorNameList, complianceRateList);
+          }
+
+        })
+    },
+    // 益学习饼图
+    getLFTLearning (list, majorNameList, complianceRateList) {
+      console.log(list, majorNameList, complianceRateList);
+
+      let LFTLearning = this.$echart.init(this.$refs.LFTLearning);
+      LFTLearning.setOption({
+        title: {
+          text: '达标专业课程',
+          subtext: '达标课程数',
+          x: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+         color:['#2ec8ca', '#b6a2df','#59b1f0','#feb97e','#d67a7f'],
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: majorNameList
+        },
+        series: [
+          {
+            name: '达标专业课程',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: list,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      })
+    },
 
     //        班级分   , 个人分
     achievementEchart (sumTypeScore, typeScore) {//学习类型成绩
-    console.log(sumTypeScore, typeScore);
-    
+
       let achievementChart = this.$echart.init(this.$refs.achievementChart);
       achievementChart.setOption({
         legend: {
@@ -799,12 +858,12 @@ export default {
       this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-         
+
           for (let i = 0; i < data.data.length; i++) {
-            if(data.data[i].assessModuleId == 1){
-               this.jicurrent = data.data[i].integralValue;
+            if (data.data[i].assessModuleId == 1) {
+              this.jicurrent = data.data[i].integralValue;
             }
-            
+
           }
 
         }
@@ -1053,5 +1112,25 @@ export default {
   right: 32px;
   font-size: 20px;
   cursor: pointer;
+}
+.module .benefitLearning {
+  height: 400px;
+  display: flex;
+}
+.benefitLearning .LFTLearning {
+  margin-top: 18px;
+  padding: 0 22px;
+}
+.module .benefitLearningName{
+  padding: 0 40px;
+      border-bottom: #dcdcdc solid 2px;
+      line-height: 30px;
+}
+.module .benefitLearningName span{
+  display: inline-block;
+  padding-right: 46px;
+}
+.benefitLearning > div {
+  flex: 1;
 }
 </style>

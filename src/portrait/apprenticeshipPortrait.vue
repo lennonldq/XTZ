@@ -659,8 +659,9 @@ export default {
           ];
 
 
-          this.scoreEchart(pfArr, pfArr);
-          this.abilityEChart(pfArr, pfArr)
+
+          this.scoreEchart(percentage, percentage);
+          this.abilityEChart(percentage, percentage)
         }
       })
     },

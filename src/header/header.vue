@@ -2,7 +2,7 @@
   <el-header class="header">
     <div class="headerMain">
       <p class="logo"><img
-          src="../assets/images/logo.png"
+          src="../assets/images/logoL.png"
           alt=""
         > </p>
       <ul class="navList">
@@ -187,12 +187,12 @@ export default {
   padding-top: 12px;
 }
 .header .headerMain .logo img {
-  width: 173px;
-  height: 54px;
+ width: 276px;
+    height: 67px;
 }
 .header .headerMain .navList {
   display: flex;
-  padding-left: 32px;
+  padding-left: 80px;
   float: left;
 }
 .header .headerMain .navList .is-active {
