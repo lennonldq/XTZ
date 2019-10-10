@@ -556,12 +556,14 @@ export default {
       }).then((res) => {
         let data = JSON.parse(res.data);
         if (data.code == 200) {
-          this.$message({
-          message: '同步成功',
-          type: 'success'
-        });
-          location.reload()
-          this.$router.go(0)
+        //   this.$message({
+        //   message: '同步成功',
+        //   type: 'success'
+        // });
+        //   location.reload()
+        //   this.$router.go(0)
+        console.log(data);
+        
         }
 
       }).catch(err => {

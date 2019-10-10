@@ -11,6 +11,7 @@ export const courseIntegral = "apprentice/courseIntegral";        //课程画像
 export const learningTrajectoryTracking = "apprentice/learningTrajectoryTracking"; //课程画像 学习轨迹跟踪
 export const learningSituation = "apprentice/learningSituation";//课程画像 课程学习情况
 export const gitbenefitLearning = "aiStatistics/getAiStatisticsResponse";//课程画像 益学习 统计AL学习饼图
+export const integralCourse ="aiStatistics/getAiMajorTypeIntegralCourseResponse";//课程画像 益学习 专业学习积分，达标课程
 
 export const certification = "portrait/certification"; // 认证画像 认证积分情况
 export const certificationSituation = "portrait/certificationSituation"; // 认证画像 认证情况

@@ -81,11 +81,69 @@
       <p class="title">益学习</p>
       <p></p>
       <div class="benefitLearningName">
-        <span style="color: #ffb6da;">{{`${baseInfo.username}`}}</span><span>积分</span><span>{{pointTotal}}</span>
+        <div>
+          <span style="color: #ffb6da;padding: 0 16px;">{{
+            `${baseInfo.username}`
+          }}</span
+          ><span>积分</span><span>{{ pointTotal }}</span>
+        </div>
+        <span @click="centerDialogVisible = true" class="wen">?</span>
       </div>
       <div class="benefitLearning">
         <div class="LFTLearning" ref="LFTLearning"></div>
-        <div class="RITLearning"></div>
+        <div class="selela">
+          <el-select
+            size="medium"
+            v-model="value"
+            placeholder="请选择"
+            @change="Choice"
+          >
+            <el-option
+              v-for="item in optionsName"
+              :key="item.majorId"
+              :label="item.majorName"
+              :value="item.majorId"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div class="RITLearning">
+          <div class="transverse" ref="transverse"></div>
+          <div class="vertical" ref="vertical"></div>
+        </div>
+      </div>
+      <div class="analysia">
+        <div style="color:#993399;">综上分析 ：</div>
+        <div class="xuexianalys">
+          <p>
+            学习了{{ Selectivecourses }}的{{
+              Selectionquantity
+            }}门课程，其中有{{ Targetquantity }}门课程达标
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="课程达标条件：积分大于等于300且答题正确率大于等于60%"
+              placement="right-start"
+            >
+              <el-button class="bDnone">?</el-button>
+            </el-tooltip>
+          </p>
+          <div>
+            <el-tag
+              v-for="item in items"
+              :key="item.label"
+              :type="item.type"
+              effect="plain"
+            >
+              {{ item.label }}
+            </el-tag>
+          </div>
+          <p>
+            在学习的专业课程中，{{ mintypeName }}积分最低，{{
+              Answerrate
+            }}课程答题正确率最低。
+          </p>
+        </div>
       </div>
     </div>
 
@@ -171,9 +229,491 @@
         ></Pagination>
       </div>
     </el-popover>
-  </div>
+    <!-- 弹框列表 -->
 
-  <!-- 弹框列表 -->
+    <!-- 益学习弹框 -->
+    <el-dialog
+      title="达标统计与达标要求"
+      :visible.sync="centerDialogVisible"
+      width="30%"
+      center
+    >
+      <div id="u3104" class="text">
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            >数据统计与达标要求：</span
+          >
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            >一、达标课程折线条形图：</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >1、折线表示该专业课程答题正确率，数据来源于小程序的专业答题正确率统计。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >2、条形表示该专业课程答题积分和专题学习积分，数据来源于小程序的积分。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >3、课程达标条件：积分大于等于300且正确率大于等于60%。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            >二、达标专业课程饼图：</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >1、达标课程数：在饼图标出课程数，数据来源于达标课程折线条形图。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >2、达标课程百分比：达标课程数/参与答题总课程数*100%（同一专业内的课程）。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >3、鼠标滑过饼图专业，左侧的折线统计图显示对应专业的数据。弹出对应专业的积分结构环形图。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            >数据分析结果展示：</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >1、显示分析内容为当前查看专业的结果，当查看专业改变时，展示结果也随之改变。
+          </span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >2、分析结果示例：学习了{{ Selectivecourses }}专业的{{
+              Selectionquantity
+            }}门课程，其中有{{ Targetquantity }}门课程达标</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <div>
+          <el-tag
+            v-for="item in items"
+            :key="item.label"
+            :type="item.type"
+            effect="plain"
+          >
+            {{ item.label }}
+          </el-tag>
+        </div>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            在学习的专业课程中，{{ mintypeName }}积分最低，{{
+              Answerrate
+            }}课程答题正确率最低。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            >三、专业积分统计图：</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >展示查看专业的答题积分、阅读积分和专题学习积分。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span
+            style="font-family:'Arial Negreta', 'Arial Normal', 'Arial';font-weight:700;"
+            >益学习积分规则：</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >积分等级规则</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >相应操作获得积分，积分达到一定值可以提升等级称谓</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >怎样获得积分？</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >每日签到：登录即签到，每日仅首次登录+1积分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >刷题积分：</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >分类&nbsp; &nbsp;&nbsp; 获取途径和规则&nbsp; &nbsp;&nbsp;
+            获得积分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >专项练习&nbsp; &nbsp;&nbsp; 每连续答对5题&nbsp; &nbsp;&nbsp;
+            +1</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >专项练习&nbsp; &nbsp;&nbsp; 每连续答错3题&nbsp; &nbsp;&nbsp;
+            -1</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >专项练习&nbsp; &nbsp;&nbsp;
+            每答对一道题得该题分数等值积分，答错不给分不扣分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >模拟考试&nbsp; &nbsp;&nbsp;
+            考试每答对一道题得该题分数等值积分，答错不给分不扣分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >模拟考试&nbsp; &nbsp;&nbsp; 每完成一次模拟考试&nbsp; &nbsp; &nbsp;
+            +2&nbsp;&nbsp; （考试答一半就是没有完成不给完成奖励分）</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >模拟考试&nbsp; &nbsp;&nbsp; 考试正确率等于100%&nbsp; &nbsp;
+            +5</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >模拟考试&nbsp; &nbsp;&nbsp; 考试正确率大于等于90%且小于100%&nbsp;
+            &nbsp;&nbsp; +2</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >模拟考试&nbsp; &nbsp;&nbsp; 考试正确率大于80%且小于90%&nbsp;
+            &nbsp;&nbsp; +1&nbsp; &nbsp;&nbsp;
+            （考试正确率小于80%不给奖励分）</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >错题专训（错题本）&nbsp; &nbsp;&nbsp;
+            每答对一道题得该题分数等值积分，答错不给分不扣分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >收藏夹&nbsp; &nbsp; &nbsp;&nbsp;
+            每答对一道题得该题分数等值积分，答错不给分不扣分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >奖励积分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >奖励项目&nbsp; &nbsp;&nbsp; 获取途径和规则&nbsp; &nbsp;&nbsp;
+            获得积分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >答题冲量奖励&nbsp; &nbsp;&nbsp; 用户总答题数达到500题次&nbsp;
+            &nbsp;&nbsp; +2</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >答题冲量奖励&nbsp; &nbsp;&nbsp; 用户总答题数达到800题次&nbsp;
+            &nbsp;&nbsp; +3</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >答题冲量奖励&nbsp; &nbsp;&nbsp; 用户总答题数达到1500题次&nbsp;
+            &nbsp;&nbsp; +6</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >答题冲量奖励&nbsp; &nbsp;&nbsp; 用户总答题数达到2000题次&nbsp;
+            &nbsp;&nbsp; +9</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >答题冲量奖励&nbsp; &nbsp;&nbsp; 用户总答题数达到3000题次&nbsp;
+            &nbsp;&nbsp; +12</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >分项答题正确率排位奖励&nbsp; &nbsp;&nbsp;
+            用户首次进入答题排位前1&nbsp; &nbsp;&nbsp; +15</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >分项答题正确率排位奖励&nbsp; &nbsp;&nbsp;
+            用户首次进入答题排位前2&nbsp; &nbsp;&nbsp; +12</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >分项答题正确率排位奖励&nbsp; &nbsp;&nbsp;
+            用户首次进入答题排位前3&nbsp; &nbsp;&nbsp; +9</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >分项答题正确率排位奖励&nbsp; &nbsp;&nbsp;
+            用户首次进入答题排位前10&nbsp; &nbsp;&nbsp; +6</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >分项答题正确率排位奖励&nbsp; &nbsp;&nbsp;
+            用户首次进入答题排位前30&nbsp; &nbsp;&nbsp; +3</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >阅读积分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >怎样获得阅读积分？</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >每天浏览行业热点、资讯、获得阅读积分，浏览专题获得专题阅读积分。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >怎样获得专题阅读积分？</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >每天浏览知识快充站专题：每天每阅读一个专题得5积分，同一个专题每天只记当天第一次阅读积分，之后不再重复累加，直到零点后重新记录新一天的积分。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >怎样获得资讯阅读积分？</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >阅读项目&nbsp; &nbsp;&nbsp; 获取途径和规则&nbsp; &nbsp;&nbsp;
+            获得积分</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >行业热点&nbsp; &nbsp;&nbsp; 阅读一篇文章达2分钟/每日&nbsp; &nbsp;
+            &nbsp; +1</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >行业热点&nbsp; &nbsp;&nbsp; 阅读一篇文章大于5分钟/每日&nbsp;
+            &nbsp;&nbsp; +2</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >行业快讯&nbsp; &nbsp;&nbsp; 阅读一篇文章达2分钟/每日&nbsp; &nbsp;
+            &nbsp; +1</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >行业快讯&nbsp; &nbsp;&nbsp; 阅读一篇文章大于5分钟/每日&nbsp;
+            &nbsp;&nbsp; +2</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            ><br
+          /></span>
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >积分升级规则</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >用户等级按拥有积分划分，升级等级后积分低于等级要求积分时，等级不变。</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >用户等级对应积分表</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >等级&nbsp; &nbsp;&nbsp; 积分&nbsp; &nbsp;&nbsp; 等级称谓</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V1&nbsp; &nbsp;&nbsp; 0-50&nbsp; &nbsp;&nbsp; 童生</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V2&nbsp; &nbsp;&nbsp; 51-500&nbsp; &nbsp;&nbsp; 秀才</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V3&nbsp; &nbsp;&nbsp; 501-1000&nbsp; &nbsp;&nbsp; 举人</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V4&nbsp; &nbsp;&nbsp; 1001-2500&nbsp; &nbsp;&nbsp; 进士</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V5&nbsp; &nbsp;&nbsp; 2501-5000&nbsp; &nbsp;&nbsp; 庶吉士</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V6&nbsp; &nbsp;&nbsp; 5001-8000&nbsp; &nbsp;&nbsp; 侍读学士</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V7&nbsp; &nbsp;&nbsp; 8001-12000&nbsp; &nbsp;&nbsp; 掌院学士</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V8&nbsp; &nbsp;&nbsp; 12001-16000&nbsp; &nbsp;&nbsp; 侍郎</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V9&nbsp; &nbsp;&nbsp; 16001-20000&nbsp; &nbsp;&nbsp; 尚书</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V10&nbsp; &nbsp;&nbsp; 20001-26000&nbsp; &nbsp;&nbsp; 大学士</span
+          >
+        </p>
+        <p>
+          <span style="font-family:'Arial Normal', 'Arial';font-weight:400;"
+            >V11&nbsp; &nbsp;&nbsp; 26000以上&nbsp; &nbsp;&nbsp; 文曲星</span
+          >
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="centerDialogVisible = false"
+          >关闭</el-button
+        >
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -187,7 +727,7 @@ import {
   integralStatistics,
   updateData,
   selectSynchroLog,
-  assessModules, gitbenefitLearning
+  assessModules, gitbenefitLearning, integralCourse
 } from "../js/url"
 export default {
   props: ['baseInfo'],
@@ -224,7 +764,7 @@ export default {
         color: 'dimgrey',
       },
       // 益达总积分
-      pointTotal:"",
+      pointTotal: "",
       // 列表数据
       tableData: [],
       totalPage: 1,
@@ -266,7 +806,29 @@ export default {
       //更新数据时间
       gtime: '',
       // 当前积分
-      jicurrent: ''
+      jicurrent: '',
+      optionsName: [],
+      // 益学习课程选择到的id
+      value: '1',
+      // 益学习课程选择到的名字
+      Selectivecourses: "",
+      // 当前课程的数量
+      Selectionquantity: 0,
+      // 达标数量
+      Targetquantity: 0,
+      // 积分最低
+      //正确率最低
+      mintypeName: '',
+      // 答题率
+      Answerrate: '',
+      centerDialogVisible: false,
+      // 柱状加折现
+      aiCoursePrecisionResponseList: [],
+      // 柱状
+      aiMajorTypeIntegralResponseList: [],
+      items: [
+
+      ]
     }
   },
   mounted () {
@@ -279,6 +841,11 @@ export default {
     this.Updatetime();
     this.getPortrait();
     this.getgitbenefitLearning();
+    this.getOther();
+
+
+    this.gettransverse();
+    this.getvertical();
     // this.getLFTLearning();
   },
   methods: {
@@ -288,7 +855,7 @@ export default {
         params: { userId, classId }
       }).then(res => {
         let data = JSON.parse(res.data);
-        
+
         if (data.code == 200) {
           let termid = [], integralValue = [], sumIntegralValue = [];
           for (let i = 0; i < data.data.length; i++) {
@@ -305,6 +872,9 @@ export default {
       }).catch(() => {
         this.$message({ type: 'error', message: "请求出错，请联系技术人员" })
       })
+    },
+    getintegralCourse () {
+
     },
 
     courseIntegralEchart (termid, integralValue, sumIntegralValue) { // 课程积分情况
@@ -485,7 +1055,8 @@ export default {
       }
     },
 
-    // 获取益学习饼图
+
+    // 获取益学习饼图shuju
     getgitbenefitLearning () {
       let userId = this.$route.query.userId;
       this.$ajax.get(this.baseUrl + gitbenefitLearning,
@@ -493,8 +1064,8 @@ export default {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let list = data.data.aiStatisticsResponseList;
-            
-          this.pointTotal = data.data.pointTotal;
+            this.optionsName = data.data.aiStatisticsResponseList;
+            this.pointTotal = data.data.pointTotal;
             let complianceRateList = [], majorNameList = [], targetNumberList = [];
             for (let i = 0; i < list.length; i++) {
               complianceRateList.push(list[i].complianceRate);
@@ -502,10 +1073,9 @@ export default {
               targetNumberList.push(list[i].targetNumber);
               list[i].name = list[i].majorName;
               list[i].value = list[i].targetNumber;
-              delete list[i].majorName;
-              delete list[i].targetNumber;
-              delete list[i].majorId;
-              delete list[i].complianceRate;
+              if (this.value == list[i].majorId) {
+                this.Selectivecourses = list[i].majorName;
+              }
             }
             this.getLFTLearning(list, majorNameList, complianceRateList);
           }
@@ -514,7 +1084,6 @@ export default {
     },
     // 益学习饼图
     getLFTLearning (list, majorNameList, complianceRateList) {
-      console.log(list, majorNameList, complianceRateList);
 
       let LFTLearning = this.$echart.init(this.$refs.LFTLearning);
       LFTLearning.setOption({
@@ -527,7 +1096,7 @@ export default {
           trigger: 'item',
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
-         color:['#2ec8ca', '#b6a2df','#59b1f0','#feb97e','#d67a7f'],
+        color: ['#2ec8ca', '#b6a2df', '#59b1f0', '#feb97e', '#d67a7f'],
         legend: {
           orient: 'vertical',
           left: 'left',
@@ -550,6 +1119,196 @@ export default {
           }
         ]
       })
+    },
+
+    // 益学习其它数据
+    getOther () {
+      let userId = this.$route.query.userId;
+      let majorId = this.value;
+      this.$ajax.get(this.baseUrl + integralCourse, {        params: {
+          userId, majorId
+        }      }).then(res => {
+        let data = JSON.parse(res.data);
+        if (data.code == 200) {
+          this.aiCoursePrecisionResponseList = data.data.aiCoursePrecisionResponseList;
+          this.aiMajorTypeIntegralResponseList = data.data.aiMajorTypeIntegralResponseList;
+          let transversenameList = []; let transversenuberList = [];
+          for (let i = 0; i < data.data.aiMajorTypeIntegralResponseList.length; i++) {
+            transversenameList.push(data.data.aiMajorTypeIntegralResponseList[i].typeName);
+            transversenuberList.push(data.data.aiMajorTypeIntegralResponseList[i].typeIntegral);
+          }
+          let accuracyList = []; let answerIntegralList = []; let courseNameData = []; let num = 0; let danum = 0;
+          let typecolor = ['', 'success', "info", "danger", "warning", '', 'success', "info", "danger", "warning"];
+
+          
+          if (data.data.aiCoursePrecisionResponseList.length > 0) {
+            let maxda = data.data.aiCoursePrecisionResponseList[0].answerIntegral;
+            let minrate = data.data.aiCoursePrecisionResponseList[0].accuracy;
+            this.mintypeName = data.data.aiCoursePrecisionResponseList[0].courseName;
+            this.Answerrate = data.data.aiCoursePrecisionResponseList[0].courseName;
+
+            for (let y = 0; y < data.data.aiCoursePrecisionResponseList.length; y++) {
+              if (data.data.aiCoursePrecisionResponseList[y].answerIntegral > 300 && data.data.aiCoursePrecisionResponseList[y].accuracy >= 60) {
+                danum++;
+                this.items.push({ type: typecolor[y], label: data.data.aiCoursePrecisionResponseList[y].courseName })
+              }
+              if (data.data.aiCoursePrecisionResponseList[y].answerIntegral < maxda) {
+                maxda = data.data.aiCoursePrecisionResponseList[y].answerIntegral;
+                this.mintypeName = data.data.aiCoursePrecisionResponseList[y].courseName;
+              }
+              if (data.data.aiCoursePrecisionResponseList[y].accuracy < minrate) {
+
+                minrate = data.data.aiCoursePrecisionResponseList[y].accuracy;
+                this.Answerrate = data.data.aiCoursePrecisionResponseList[y].courseName;
+              }
+              num++;
+              accuracyList.push(data.data.aiCoursePrecisionResponseList[y].accuracy);
+              courseNameData.push(data.data.aiCoursePrecisionResponseList[y].courseName);
+              answerIntegralList.push(data.data.aiCoursePrecisionResponseList[y].answerIntegral);
+            }
+
+          }
+
+          this.Selectionquantity = num;
+          this.Targetquantity = danum;
+          this.gettransverse(transversenameList, transversenuberList);
+          this.getvertical(accuracyList, answerIntegralList, courseNameData)
+        }
+      })
+    },
+    // 益学习横柱状图
+    gettransverse (transversenameList, transversenuberList) {
+      let transverse = this.$echart.init(this.$refs.transverse);
+      transverse.setOption({
+        title: {
+          text: ''
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [{
+          type: 'value',
+          splitLine: {
+            show: false
+          }
+        }],
+        yAxis: [
+          {
+            type: 'category',
+            data: transversenameList,
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              alignWithLabel: true
+            }
+          }],
+        series: [{
+          type: 'bar',
+          label: {
+            normal: {
+              show: true,
+              position: 'right'
+            }
+          },
+          itemStyle: {
+            normal: {
+              // 定制显示（按顺序）
+              color: function (params) {
+                var colorList = ['#5a9bd5', '#528334', '#f5b185', '#EE9201', '#29AAE3', '#B74AE5', '#0AAF9F', '#E89589', '#16A085', '#4A235A', '#C39BD3 ', '#F9E79F', '#BA4A00', '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#3498DB'];
+                return colorList[params.dataIndex]
+              }
+            },
+          },
+          data: transversenuberList,
+        }]
+      })
+
+    },
+
+    // 益学习的下拉框事件
+    Choice (val) {
+      let obj = {};
+      obj = this.optionsName.find((item) => {
+        return item.majorId === val;
+      });
+      this.Selectivecourses = obj.majorName;
+      this.getOther();
+    },
+
+    // 益学习 柱状图加折现图
+    getvertical (accuracyList, answerIntegralList, courseNameData) {
+      let vertical = this.$echart.init(this.$refs.vertical);
+      vertical.setOption({
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        legend: {
+          data: ['答题数', "正确率"]
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: courseNameData
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          },
+          {
+            type: 'value',
+            name: '正确率',
+            min: 0,
+            max: 100,
+            interval: 5,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          }
+        ],
+        series: [
+          {
+            name: '答题数',
+            type: 'bar',
+            stack: '搜索引擎',
+            data: answerIntegralList,
+            itemStyle: {
+              normal: {
+                color: '#3edfcf'
+              }
+            }
+          },
+          // {
+          //   name: '其他',
+          //   type: 'bar',
+          //   stack: '搜索引擎',
+          //   data: [62, 82]
+          // },
+          {
+            name: '正确率',
+            type: 'line',
+            yAxisIndex: 1,
+            data: accuracyList
+          }
+        ]
+      })
+
     },
 
     //        班级分   , 个人分
@@ -1114,23 +1873,66 @@ export default {
   cursor: pointer;
 }
 .module .benefitLearning {
-  height: 400px;
-  display: flex;
+  height: 900px;
 }
 .benefitLearning .LFTLearning {
   margin-top: 18px;
   padding: 0 22px;
 }
-.module .benefitLearningName{
+.module .benefitLearningName {
   padding: 0 40px;
-      border-bottom: #dcdcdc solid 2px;
-      line-height: 30px;
+  border-bottom: #dcdcdc solid 2px;
+  line-height: 30px;
+  display: flex;
+  justify-content: space-between;
 }
-.module .benefitLearningName span{
+.module .benefitLearningName span {
   display: inline-block;
   padding-right: 46px;
 }
+.module .benefitLearningName > div:nth-child(2) {
+  cursor: pointer;
+}
+.module .benefitLearningName .wen{
+  width: 30px;
+    height: 30px;
+    text-align: center;
+    background: #cbcbcb;
+    padding-right: 0;
+    border-radius: 18px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 22px;
+    cursor: pointer;
+}
 .benefitLearning > div {
+  display: flex;
+  height: 50%;
+}
+.RITLearning > div {
+  height: 100%;
   flex: 1;
+}
+.selela {
+  height: 30px !important;
+  margin-left: 30px;
+}
+.analysia {
+  height: 100px;
+  padding: 12px 20px 5px 20px;
+  margin-top: 24px;
+  border-top: #dcdcdc solid 1px;
+  display: flex;
+}
+.xuexianalys > div {
+  margin: 10px 0px;
+}
+.xuexianalys > div .el-tag--plain {
+  margin-right: 16px;
+}
+.bDnone {
+  border: none;
+  padding: 0;
+  margin-left: 30px;
 }
 </style>

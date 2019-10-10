@@ -188,11 +188,10 @@ export default {
 }
 .header .headerMain .logo img {
  width: 276px;
-    height: 67px;
 }
 .header .headerMain .navList {
   display: flex;
-  padding-left: 80px;
+  padding-left: 94px;
   float: left;
 }
 .header .headerMain .navList .is-active {
