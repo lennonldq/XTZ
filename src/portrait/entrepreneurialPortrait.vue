@@ -51,7 +51,7 @@
           class="join"
           v-if="pioneerRelease!==null  && pioneerParticipate!==null"
         >
-          <p>创业计划书</p>
+          <p>创业项目发布</p>
           <p>创业参与项目</p>
           <span>创业项目发布数为{{pioneerRelease}}个，参与数为{{pioneerParticipate}}个</span>
           <div ref="join1"></div>

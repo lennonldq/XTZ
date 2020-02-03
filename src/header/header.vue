@@ -113,7 +113,7 @@ export default {
       localStorage.clear();
       sessionStorage.clear();
       this.typeId==8
-             window.location.href="https://etech-edu.com/auth/login";
+             window.location.href="https://etechedu.com/auth/login";
    
     },
     tojing (path) {

@@ -57,6 +57,11 @@ border-radius: 50px;
   flex: 3;
   text-indent: 30px;
 }
+.header .titleBox p:nth-child(2){
+  overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
+}
 .header button{
   width: 130px;
   height: 80px;

@@ -455,14 +455,28 @@ export default {
 
     histogramEchart (type_nameArr, scoreArr) {
       // console.log(type_nameArr, scoreArr);
+      let aa = [1,2,3,4,5,6,6]
 
       let histogramChart = this.$echart.init(this.$refs.histogramChart);
       histogramChart.setOption({
         tooltip: {
           trigger: 'axis',
           formatter: (params) => {
+            console.log( params[0],params[1],params[2]);
+            let suo = params[0].dataIndex ;
+            let aaa = [1,2,3,4,5,6]
+         let myName = ""
+            if (suo == 0) {
+              myName=aaa[0]
+            }else if (suo == 1) {
+              myName=aaa[1]
+            }else if (suo == 2) {
+              myName=aaa[2]
+            }else if (suo == 3) {
+              myName=aaa[3]
+            }
             let str = "";
-            str += `${params[0].name}<br/>运营得分:${params[0].data}`;
+            str += `${params[0].name}<br/>${myName}${params[0].data}`;
             return str;
           },
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
