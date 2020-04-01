@@ -1,54 +1,38 @@
 <template>
   <el-header class="header">
     <div class="headerMain">
-      <p class="logo"><img
-          src="../assets/images/logoL.png"
-          alt=""
-        > </p>
+      <p class="logo"><img src="../assets/images/logoL.png"
+             alt=""> </p>
       <ul class="navList">
         <li>
-          <a
-            v-if="typeId==8"
-            href="https://etech-edu.com/edu/cloudSchool"
-          >返回首页</a>
-          <a
-            v-else-if="typeId==9"
-            href="https://etech-edu.com/edu/cloudTeacher"
-          >返回首页</a>
-          <a
-            v-else-if="typeId==0"
-            href="https://etech-edu.com/edu/cloudStudent"
-          >返回首页</a>
-          <a
-            v-else-if="typeId==3"
-            href="https://etech-edu.com/edu/cloudEnterprise"
-          >返回首页</a>
-          <a
-            v-else-if="typeId==1"
-            href="https://etech-edu.com/edu/cloudAdmin"
-          >返回首页</a>
+          <a v-if="typeId==8"
+             href="https://etechedu.com/edu/cloudSchool">返回首页</a>
+          <a v-else-if="typeId==9"
+             href="https://etechedu.com/edu/cloudTeacher">返回首页</a>
+          <a v-else-if="typeId==0"
+             href="https://www.etechedu.com/edu/cloudStudent">返回首页</a>
+          <a v-else-if="typeId==3"
+             href="https://etechedu.com/edu/cloudEnterprise">返回首页</a>
+          <a v-else-if="typeId==1"
+             href="https://etechedu.com/edu/cloudAdmin">返回首页</a>
         </li>
         <li>
-          <a href="https://etech-edu.com/enterprise/index">企业服务</a>
+          <a href="https://etechedu.com/enterprise/index">企业服务</a>
         </li>
       </ul>
 
       <ul class="fotRit">
-        <li
-          v-for="(item,index) in jingList"
-          :key="index"
-          @click="tojing(item.path)"
-        >{{item.title}}</li>
+        <li v-for="(item,index) in jingList"
+            :key="index"
+            @click="tojing(item.path)">{{item.title}}</li>
       </ul>
       <div class="phoBox">
         <!-- <p class="btn">下载APP</p> -->
         <!-- <p class="ling"> -->
         <!-- <span></span><span></span> -->
         <!-- </p> -->
-        <el-dropdown
-          class="but"
-          @command="handleCommand"
-        >
+        <el-dropdown class="but"
+                     @command="handleCommand">
           <span class="el-dropdown-link">
             <i class="pho">
               <!-- <img
@@ -56,16 +40,12 @@
                 :src="`https://etech-edu.com/${baseInfo}`"
                 alt=""
               > -->
-              <img
-                v-if="baseInfo"
-                :src="`https://etech-edu.com/${baseInfo}`"
-                alt=""
-              >
-              <img
-                v-else
-                src="../assets/images/pho.png"
-                alt=""
-              >
+              <img v-if="baseInfo"
+                   :src="`https://etech-edu.com/${baseInfo}`"
+                   alt="">
+              <img v-else
+                   src="../assets/images/pho.png"
+                   alt="">
             </i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -83,22 +63,22 @@
 <script>
 export default {
   name: "Header",
-  data () {
+  data() {
     return {
       // usertypeid:0,
       navList: [
-        { title: "返回首页", path: "/talentSearch" },
+        { title: "返回首页", path: "/talentSearch" }
         // { title: "企业服务", path: "/company" },
       ],
       jingList: [
         { title: "学校人才培养方案", path: "/company" },
         { title: "积分制规则说明", path: "/home" }
       ],
-      baseInfo: '',
+      baseInfo: "",
       typeId: ""
-    }
+    };
   },
-  created () {
+  created() {
     // this.init();
     this.getBaseInfo();
   },
@@ -109,26 +89,24 @@ export default {
     //           this.usertypeid=0
     //        }
     // },
-    handleCommand () {
+    handleCommand() {
       localStorage.clear();
       sessionStorage.clear();
-      this.typeId==8
-             window.location.href="https://etechedu.com/auth/login";
-   
+      this.typeId == 8;
+      window.location.href = "https://etechedu.com/auth/login";
     },
-    tojing (path) {
+    tojing(path) {
       let routeData = this.$router.resolve({ path });
-      window.open(routeData.href, '_blank');
+      window.open(routeData.href, "_blank");
     },
-    getBaseInfo () {
-      
+    getBaseInfo() {
       // 图片
       this.baseInfo = JSON.parse(sessionStorage.getItem("photo"));
-  
+
       this.typeId = localStorage.getItem("userTypeId");
-    },
+    }
   }
-}
+};
 </script>
 <style scoped>
 .header {
@@ -151,7 +129,7 @@ export default {
   width: 24px;
   margin: 0 20px;
   position: relative;
-  background: url('../assets/images/ling.png') center no-repeat;
+  background: url("../assets/images/ling.png") center no-repeat;
 }
 .header .headerMain .phoBox .ling span {
   display: block;
@@ -187,7 +165,7 @@ export default {
   padding-top: 12px;
 }
 .header .headerMain .logo img {
- width: 276px;
+  width: 276px;
 }
 .header .headerMain .navList {
   display: flex;
@@ -209,10 +187,10 @@ export default {
   color: #000000;
 }
 .header .navList li:nth-child(1) {
-  background: url('../assets/images/home_act.png') 12px 30px no-repeat;
+  background: url("../assets/images/home_act.png") 12px 30px no-repeat;
 }
 .header .navList li:nth-child(2) {
-  background: url('../assets/images/com.png') 12px 30px no-repeat;
+  background: url("../assets/images/com.png") 12px 30px no-repeat;
 }
 .header .headerMain .fotRit {
   display: flex;

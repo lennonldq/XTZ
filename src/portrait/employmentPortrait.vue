@@ -40,7 +40,7 @@
           <div
             class="situtationItem"
             :class="{'typeName':item.typeName=='实习'}"
-            v-for="item in situtationData"
+            v-for="item in situtationData" :key="item"
           >
             <p class="job">{{ item.postName }}</p>
             <p class="company">{{ item.companyName }}</p>
