@@ -1321,6 +1321,7 @@ export default {
             for (let i in data.data) {
               this.situationData.push(data.data[i]);
             }
+            console.log(this.situationData);
 
             //  计算出课程学习情况的最多和最少
             for (let j = 0; j < this.situationData.length; j++) {
@@ -1409,6 +1410,17 @@ export default {
       sumIntegralValue
     ) {
       // 课程学习情况
+      console.log(
+        el,
+        "<br>",
+        year,
+        "<br>",
+        integralName,
+        "<br>",
+        integralValue,
+        "<br>",
+        sumIntegralValue
+      );
 
       let fistYearChart = this.$echart.init(el);
 
