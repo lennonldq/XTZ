@@ -72,7 +72,7 @@ export default {
       ],
       jingList: [
         { title: "学校人才培养方案", path: "/company" },
-        { title: "积分制规则说明", path: "/home" }
+        { title: "益画像规则说明", path: "/home" }
       ],
       baseInfo: "",
       typeId: ""

@@ -34,7 +34,7 @@ export default {
         },
         {
           path: "/portrait/apprenticeshipPortrait",
-          title: "学徒制画像"
+          title: "益企学画像"
         },
         {
           path: "/portrait/entrepreneurialPortrait",

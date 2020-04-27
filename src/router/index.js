@@ -16,129 +16,130 @@ import ActualPortrait from "../portrait/actualPortrait"                  //实�
 import ApprenticeshipPortrait from "../portrait/apprenticeshipPortrait"  //学徒制画像
 import EntrepreneurialPortrait from "../portrait/entrepreneurialPortrait" //创业画像
 import EmploymentPortrait from "../portrait/employmentPortrait" //实训就业画像
-import TaskPortrait  from "../portrait/taskPortrait.vue" //企业任务画像
+import TaskPortrait from "../portrait/taskPortrait.vue" //企业任务画像
 import CertifiedPortrai from "../portrait/certifiedPortrai" //认证画像
 import CompetitionPortrait from "../portrait/competitionPortrait" //竞赛画像
 // import { resolve } from 'dns';
 Vue.use(Router)
-let router =  new Router({
-  linkActiveClass:"is-active",
+let router = new Router({
+  linkActiveClass: "is-active",
   routes: [
-    {path:'/',
-    name:"主页面",
-    redirect:'/login'
-  },
+    {
+      path: '/',
+      name: "主页面",
+      redirect: '/login'
+    },
     {
       path: '/login',
       name: 'Login',
-      component:(resolve)=>require(['@/components/login'],resolve)
+      component: (resolve) => require(['@/components/login'], resolve)
     },
     {
       path: '/loginTwo',
       name: 'Logintwo',
-      component: resolve=>require(['@/components/loginTwo'],resolve)
+      component: resolve => require(['@/components/loginTwo'], resolve)
     },
     {
       path: '/home',
       name: 'Home',
-      component:  resolve=>require(['@/components/home'],resolve),
-      meta:{
-        auth:true,
+      component: resolve => require(['@/components/home'], resolve),
+      meta: {
+        auth: true,
         requireAuth: true,
       }
     },
     {
       path: '/company',
       name: 'Company',
-      component:  resolve=>require(['@/components/company'],resolve),
-      meta:{
-        auth:true, requireAuth: true,
+      component: resolve => require(['@/components/company'], resolve),
+      meta: {
+        auth: true, requireAuth: true,
       }
     },
     {
-      path:"/integralPortrait",
+      path: "/integralPortrait",
       name: 'IntegralPortrait',
-      component:  resolve=>require(['@/components/integralPortrait'],resolve),
-      meta:{
-        auth:true, requireAuth: true,
-        title: '职业画像'
+      component: resolve => require(['@/components/integralPortrait'], resolve),
+      meta: {
+        auth: true, requireAuth: true,
+        title: '益企学'
       }
     },
     {
       path: '/portrait',
-      component: resolve=>require(['@/components/portrait'],resolve),
-      meta:{
-        auth:true, requireAuth: true,
+      component: resolve => require(['@/components/portrait'], resolve),
+      meta: {
+        auth: true, requireAuth: true,
       },
-      children:[
+      children: [
         {
-          path:"compositePortrait",
-          name:"CompositePortrait",
-          component: resolve=>require(['../portrait/compositePortrait'],resolve)
-        },{
-          path:"coursePortrait",
-          name:"CoursePortrait",
-          component:resolve=>require(['../portrait/coursePortrait'],resolve)
-        },{
-          path:"practicalPortrait",
-          name:"PracticalPortrait",
-          component:resolve=>require(['../portrait/practicalPortrait'],resolve)
-        },{
-          path:"actualPortrait",
-          name:"ActualPortrait",
-          component:resolve=>require(['../portrait/actualPortrait'],resolve)
-        },{
-          path:"apprenticeshipPortrait",
-          name:"ApprenticeshipPortrait",
-          component:resolve=>require(['../portrait/apprenticeshipPortrait'],resolve)
-        },{
-          path:"entrepreneurialPortrait",
-          name:"EntrepreneurialPortrait",
-          component:resolve=>require(['../portrait/entrepreneurialPortrait'],resolve)
-        },{
-          path:'employmentPortrait',
-          name:"EmploymentPortrait",
-          component:resolve=>require(['../portrait/employmentPortrait'],resolve)
-        },{
-          path:"taskPortrait",
-          name:"TaskPortrait",
-          component:resolve=>require(['../portrait/taskPortrait'],resolve)
-        },{
-          path:"certifiedPortrai",
-          name:"CertifiedPortrai",
-          component:resolve=>require(['../portrait/certifiedPortrai'],resolve)
-        },{
-          path:"competitionPortrait",
-          name:"CompetitionPortrait",
-          component:resolve=>require(['../portrait/competitionPortrait'],resolve)
+          path: "compositePortrait",
+          name: "CompositePortrait",
+          component: resolve => require(['../portrait/compositePortrait'], resolve)
+        }, {
+          path: "coursePortrait",
+          name: "CoursePortrait",
+          component: resolve => require(['../portrait/coursePortrait'], resolve)
+        }, {
+          path: "practicalPortrait",
+          name: "PracticalPortrait",
+          component: resolve => require(['../portrait/practicalPortrait'], resolve)
+        }, {
+          path: "actualPortrait",
+          name: "ActualPortrait",
+          component: resolve => require(['../portrait/actualPortrait'], resolve)
+        }, {
+          path: "apprenticeshipPortrait",
+          name: "ApprenticeshipPortrait",
+          component: resolve => require(['../portrait/apprenticeshipPortrait'], resolve)
+        }, {
+          path: "entrepreneurialPortrait",
+          name: "EntrepreneurialPortrait",
+          component: resolve => require(['../portrait/entrepreneurialPortrait'], resolve)
+        }, {
+          path: 'employmentPortrait',
+          name: "EmploymentPortrait",
+          component: resolve => require(['../portrait/employmentPortrait'], resolve)
+        }, {
+          path: "taskPortrait",
+          name: "TaskPortrait",
+          component: resolve => require(['../portrait/taskPortrait'], resolve)
+        }, {
+          path: "certifiedPortrai",
+          name: "CertifiedPortrai",
+          component: resolve => require(['../portrait/certifiedPortrai'], resolve)
+        }, {
+          path: "competitionPortrait",
+          name: "CompetitionPortrait",
+          component: resolve => require(['../portrait/competitionPortrait'], resolve)
         }
       ]
     },
     {
       path: '/talentSearch',
       name: 'TalentSearch',
-      component: resolve=>require(['@/components/talentSearch'],resolve),
-      meta:{
-        auth:true,
-        keepAlive:false
+      component: resolve => require(['@/components/talentSearch'], resolve),
+      meta: {
+        auth: true,
+        keepAlive: false
       }
     }
   ]
 });
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = to.meta.title + '-'+JSON.parse(sessionStorage.getItem("info")).username
-    }
-  if (to.matched.some(record => record.meta.auth)){  // 判断该路由是否需要登录权限
+    document.title = to.meta.title + '-' + JSON.parse(sessionStorage.getItem("info")).username
+  }
+  if (to.matched.some(record => record.meta.auth)) {  // 判断该路由是否需要登录权限
     if (localStorage.getItem("userTypeId")) {  // 判断当前的userTypeId是否存在
       next();
     }
     else {
-      console.log( next());
+      console.log(next());
       next({
         path: '/login',
       })
-      console.log( next());
+      console.log(next());
     }
   }
   else {
