@@ -1,32 +1,31 @@
-.module{
+.module {
   margin-bottom: 40px;
   box-shadow: 0 0 18px #d4d2d2;
-  border-radius:0 0 20px 20px;
+  border-radius: 0 0 20px 20px;
 }
-.module .title{
+.module .title {
   height: 45px;
   line-height: 45px;
   padding-left: 36px;
   position: relative;
   border-bottom: #dcdcdc solid 2px;
 }
-.module .title:after{
+.module .title:after {
   display: block;
   position: absolute;
   width: 6px;
   height: 30px;
   background-color: #0088a0;
-  content:"";
-  top:8px;
-  color:#444444;
+  content: "";
+  top: 8px;
+  color: #444444;
   left: 20px;
-
 }
-.header{
+.header {
   height: 80px;
   margin-bottom: 40px;
 }
-.header .titleBox{
+.header .titleBox {
   height: 80px;
   line-height: 80px;
   display: flex;
@@ -35,34 +34,36 @@
   float: left;
   color: #444444;
 }
-.header .titleBox div{
+.header .titleBox div {
   flex: 1;
   text-align: center;
   border-right: 2px solid #f6f6f6;
   overflow: hidden;
 }
-.titleBox div img{
-    display: block;
-margin: 10px auto;
-width: 60px;
-height: 60px;
-border-radius: 50px;
+.titleBox div img {
+  display: block;
+  margin: 10px auto;
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
 }
-.header .titleBox p:nth-child(2),.titleBox p:nth-child(3){
+.header .titleBox p:nth-child(2),
+.titleBox p:nth-child(3) {
   flex: 2;
   text-align: center;
   border-right: 2px solid #f6f6f6;
+  overflow: hidden;
 }
-.header .titleBox p:nth-child(4){
+.header .titleBox p:nth-child(4) {
   flex: 3;
   text-indent: 30px;
 }
-.header .titleBox p:nth-child(2){
+.header .titleBox p:nth-child(2) {
   overflow: hidden;
-text-overflow:ellipsis;
-white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.header button{
+.header button {
   width: 130px;
   height: 80px;
   background-color: #10859d;
@@ -73,7 +74,7 @@ white-space: nowrap;
   font-size: 17px;
   cursor: pointer;
 }
-.header .synchronization{
+.header .synchronization {
   width: 170px;
   height: 80px;
   background-color: #10859d;
@@ -85,18 +86,16 @@ white-space: nowrap;
   margin-right: 10px;
   text-align: center;
 }
-.header .synchronization .one{
-  
+.header .synchronization .one {
   line-height: 80px;
   height: 52px;
 }
-.header .synchronization .two{
+.header .synchronization .two {
   font-size: 12px;
   line-height: 26px;
-  
 }
-.noData{
-  height:50px;
-  line-height:50px;
+.noData {
+  height: 50px;
+  line-height: 50px;
   text-align: center;
 }

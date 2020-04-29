@@ -62,7 +62,7 @@ let router = new Router({
       component: resolve => require(['@/components/integralPortrait'], resolve),
       meta: {
         auth: true, requireAuth: true,
-        title: '益企学'
+        title: '益画像'
       }
     },
     {

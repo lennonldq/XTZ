@@ -289,6 +289,8 @@ export default {
     },
 
     followEchart(el, title, color, colorArr, data) {
+      console.log(el, title, color, colorArr, data);
+
       // 创业知识跟踪
       let followChart = this.$echart.init(el, title, color, colorArr, data);
       followChart.setOption({

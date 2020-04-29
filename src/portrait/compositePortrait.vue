@@ -88,10 +88,9 @@
         <div class="interest"
              style="position: relative;">
           <p>心理年龄</p>
-          <div class="ability"
-               ref="ability"></div>
-          <span style="padding-left: 112px;"
-                class="one">{{
+          <!-- <div  class="ability"
+               ref="ability"></div> -->
+          <span class="one">{{
             mentalAgeRemark
           }}</span>
         </div>
@@ -555,10 +554,13 @@ export default {
 }
 .module .evaluatMain .ma {
   position: absolute;
+  top: 10px;
+  right: 0px;
   width: 200px;
   height: 200px;
-  top: 10px;
-  right: 30px;
+}
+.module .evaluatMain .ma img {
+  width: 100%;
 }
 .module .evaluatMain .interest {
   display: flex;
@@ -576,7 +578,7 @@ export default {
   line-height: 30px;
 }
 .module .evaluatMain .interest .one {
-  width: 390px;
+  width: 310px;
   display: block;
   line-height: 30px;
   padding-left: 1em;
