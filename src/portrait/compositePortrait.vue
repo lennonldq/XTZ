@@ -101,7 +101,7 @@
         </div>
         <div class="interest">
           <p>情商</p>
-          <span class="Thickening"> {{ emotionalIntelligence }}</span>
+          <!-- <span class="Thickening"> {{ emotionalIntelligence }}</span> -->
           <span class="one">{{ emotionalIntelligenceRemark }}</span>
         </div>
       </div>
