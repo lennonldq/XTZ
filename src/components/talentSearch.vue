@@ -30,11 +30,11 @@
             <option>实训经验</option>
             <option>实战运营</option>
             <option>学徒经历</option>
-            <option>创业知识</option>
+            <option>创业知识知识</option>
             <option>项目经验</option>
             <option>实习经历</option>
-            <option>认证历史</option>
-            <option>竞赛奖项</option>
+            <option>认证历史历史</option>
+            <option>竞赛奖项奖项</option>
           </select>
           <input style="margin-left: 10px"
                  placeholder="物流管理"
@@ -107,15 +107,14 @@
                   @change="getTalent">
             <option>请选择关键字</option>
             <option>学习课程</option>
-            <option>实验实训</option>
+            <option>实训经验</option>
             <option>实战运营</option>
-            <option>益企学</option>
-            <option>创业</option>
-            <option>任务外包</option>
-            <option>实习就业</option>
-            <option>认证</option>
-            <option>竞赛</option>
-            <option>益测评</option>
+            <option>学徒经历</option>
+            <option>创业知识</option>
+            <option>项目经验</option>
+            <option>实习经历</option>
+            <option>认证历史</option>
+            <option>竞赛奖项</option>
           </select>
           <input style="margin-left: 10px"
                  placeholder="请输入人才关键字"
@@ -173,14 +172,14 @@
                   @change="getTalent">
             <option>请选择关键字</option>
             <option>学习课程</option>
-            <option>实验实训</option>
+            <option>实训经验</option>
             <option>实战运营</option>
-            <option>益企学</option>
-            <option>创业</option>
-            <option>任务外包</option>
-            <option>实习就业</option>
-            <option>认证</option>
-            <option>竞赛</option>
+            <option>学徒经历</option>
+            <option>创业知识</option>
+            <option>项目经验</option>
+            <option>实习经历</option>
+            <option>认证历史</option>
+            <option>竞赛奖项</option>
             <option>人才评测</option>
           </select>
           <input style="margin-left: 10px"
@@ -409,7 +408,6 @@ export default {
         this.className.classname.id = "";
       }
       this.getTableData();
-      console.log(1);
     },
     getTalent() {
       switch (this.searchData.talentSelect) {
@@ -419,28 +417,28 @@ export default {
         case "学习课程":
           this.talentSelect = 1;
           break;
-        case "实验实训":
+        case "实训经验":
           this.talentSelect = 2;
           break;
         case "实战运营":
           this.talentSelect = 3;
           break;
-        case "益企学":
+        case "学徒经历":
           this.talentSelect = 4;
           break;
-        case "创业":
+        case "创业知识":
           this.talentSelect = 5;
           break;
-        case "任务外包":
+        case "项目经验":
           this.talentSelect = 6;
           break;
-        case "实习就业":
+        case "实习经历":
           this.talentSelect = 7;
           break;
-        case "认证":
+        case "认证历史":
           this.talentSelect = 8;
           break;
-        case "竞赛":
+        case "竞赛奖项":
           this.talentSelect = 9;
           break;
         default:
