@@ -32,10 +32,10 @@ export default {
           path: "/portrait/actualPortrait",
           title: "实战运营画像"
         },
-        {
-          path: "/portrait/apprenticeshipPortrait",
-          title: "益企学画像"
-        },
+        // {
+        //   path: "/portrait/apprenticeshipPortrait",
+        //   title: "益企学画像"
+        // },
         {
           path: "/portrait/entrepreneurialPortrait",
           title: "创业画像"
