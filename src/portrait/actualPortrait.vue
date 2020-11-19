@@ -202,14 +202,14 @@ import {
   integralStatistics,
   updateData,
   selectSynchroLog,
-  assessModules
+  assessModules,
 } from "../js/url";
 
 export default {
   props: ["baseInfo"],
   name: "PracticalPortrait",
   components: {
-    Pagination
+    Pagination,
   },
   data() {
     return {
@@ -222,7 +222,7 @@ export default {
         courseid: "", //课程选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId: 3
+        assessModuleId: 3,
       },
       // 获取的学期
       semesterList: [{ termName: "全部学期", termid: "" }],
@@ -235,7 +235,7 @@ export default {
       headerStyle: {
         height: "60px",
         backgroundColor: "#10859d",
-        color: "dimgrey"
+        color: "dimgrey",
       },
       // 列表数据
       tableData: [],
@@ -279,7 +279,7 @@ export default {
       //更新数据时间
       gtime: "",
       // 当前积分
-      jicurrent: ""
+      jicurrent: "",
     };
   },
   mounted() {
@@ -304,14 +304,14 @@ export default {
           right: 80,
           top: 100,
           bottom: 50,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
 
         toolbox: {
-          show: true
+          show: true,
         },
         legend: {
           data: ["个人积分", "班级平均积分"],
@@ -322,7 +322,7 @@ export default {
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle: { fontSize: 16 }
+          textStyle: { fontSize: 16 },
         },
         calculable: true,
         xAxis: [
@@ -333,13 +333,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
@@ -347,13 +347,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
@@ -365,11 +365,11 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#90dcdd",
                 lineStyle: {
-                  color: "#3bc7cb"
-                }
-              }
+                  color: "#3bc7cb",
+                },
+              },
             },
-            data: integralValue
+            data: integralValue,
           },
           {
             name: "班级平均积分",
@@ -380,13 +380,13 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#d7cdeb",
                 lineStyle: {
-                  color: "#b6a2de"
-                }
-              }
+                  color: "#b6a2de",
+                },
+              },
             },
-            data: sumIntegralValue
-          }
-        ]
+            data: sumIntegralValue,
+          },
+        ],
       });
     },
 
@@ -398,7 +398,7 @@ export default {
       histogramChart.setOption({
         tooltip: {
           trigger: "axis",
-          formatter: params => {
+          formatter: (params) => {
             console.log(params[0], params[1], params[2]);
             let suo = params[0].dataIndex;
             let aaa = [1, 2, 3, 4, 5, 6];
@@ -418,47 +418,47 @@ export default {
           },
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          },
         },
         grid: {
           top: 0,
           right: "4%",
           left: "20",
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: "value",
           axisLine: {
             lineStyle: {
               width: 2,
-              color: "#408829"
-            }
+              color: "#408829",
+            },
           },
           splitLine: {
             lineStyle: {
               type: "dashed",
-              width: 2
-            }
+              width: 2,
+            },
           },
           axisLabel: {
             textStyle: {
-              color: "#444444" //坐标值得具体的颜色
-            }
-          }
+              color: "#444444", //坐标值得具体的颜色
+            },
+          },
         },
         yAxis: {
           type: "category",
           axisLine: {
             lineStyle: {
               width: 2,
-              color: "#408829"
-            }
+              color: "#408829",
+            },
           },
           axisLabel: {
             show: true,
             interval: 0,
-            formatter: function(params) {
+            formatter: function (params) {
               var newParamsName = "";
               var paramsNameNumber = params.length;
               var provideNumber = 10; //一行显示几个字
@@ -481,10 +481,10 @@ export default {
               return newParamsName;
             },
             textStyle: {
-              color: "#444444" //坐标值得具体的颜色
-            }
+              color: "#444444", //坐标值得具体的颜色
+            },
           },
-          data: type_nameArr
+          data: type_nameArr,
         },
 
         series: [
@@ -496,26 +496,26 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "insideRight"
-              }
+                position: "insideRight",
+              },
             },
             itemStyle: {
               normal: {
-                color: function(params) {
+                color: function (params) {
                   var colorList = [
                     "#a9cba2",
                     "#a9cba2",
                     "#a9cba2",
                     "#a9cba2",
-                    "#c2dabd"
+                    "#c2dabd",
                   ];
                   return colorList[params.dataIndex];
-                }
-              }
+                },
+              },
             },
-            data: scoreArr
-          }
-        ]
+            data: scoreArr,
+          },
+        ],
       });
     },
     postHistogramEchart(type_nameArr, scoreArr) {
@@ -525,15 +525,15 @@ export default {
       postHistogramChart.setOption({
         tooltip: {
           trigger: "axis",
-          formatter: params => {
+          formatter: (params) => {
             let str = "";
             str += `${params[0].name}<br/>岗位得分:${params[0].data}`;
             return str;
           },
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          },
         },
         // legend: {
         //   data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
@@ -543,34 +543,34 @@ export default {
           left: "3%",
           right: "4%",
           bottom: "3%",
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: "value",
           axisLine: {
             lineStyle: {
               width: 2,
-              color: "#008acd"
-            }
+              color: "#008acd",
+            },
           },
           axisLabel: {
             textStyle: {
-              color: "#444444"
-            }
-          }
+              color: "#444444",
+            },
+          },
         },
         yAxis: {
           type: "category",
           axisLine: {
             lineStyle: {
               width: 2,
-              color: "#008acd"
-            }
+              color: "#008acd",
+            },
           },
           axisLabel: {
             show: true,
             interval: 0,
-            formatter: function(params) {
+            formatter: function (params) {
               var newParamsName = "";
               var paramsNameNumber = params.length;
               var provideNumber = 10; //一行显示几个字
@@ -593,10 +593,10 @@ export default {
               return newParamsName;
             },
             textStyle: {
-              color: "#444444"
-            }
+              color: "#444444",
+            },
           },
-          data: type_nameArr
+          data: type_nameArr,
         },
         series: [
           {
@@ -608,12 +608,12 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "insideRight"
-              }
+                position: "insideRight",
+              },
             },
             itemStyle: {
               normal: {
-                color: function(params) {
+                color: function (params) {
                   let colorList = [
                     "#5ab1ef",
                     "#5ab1ef",
@@ -624,15 +624,15 @@ export default {
                     "#5ab1ef",
                     "#5ab1ef",
                     "#5ab1ef",
-                    "#8bc8f3"
+                    "#8bc8f3",
                   ];
                   return colorList[params.dataIndex];
-                }
-              }
+                },
+              },
             },
-            data: scoreArr
-          }
-        ]
+            data: scoreArr,
+          },
+        ],
       });
     },
     getPortrait() {
@@ -640,7 +640,7 @@ export default {
 
       this.$ajax
         .get(this.baseUrl + assessModules, { params: this.$route.query })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -656,9 +656,9 @@ export default {
       let { userId, classId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + experimentalTrainingPortrait, {
-          params: { userId, classId, typeId: 3 }
+          params: { userId, classId, typeId: 3 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let termid = [],
@@ -678,9 +678,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + experimentalTraining, {
-          params: { userId, typeId: 3 }
+          params: { userId, typeId: 3 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if ((data.code = 200)) {
             this.dataList = data.data;
@@ -722,9 +722,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + getJobScore, {
-          params: { userId, assessModuleId: 3 }
+          params: { userId, assessModuleId: 3 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.jobScoreList = data.data.scoreListResponseList;
@@ -798,9 +798,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + semester, {
-          params: { userId }
+          params: { userId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -820,10 +820,10 @@ export default {
           .get(this.baseUrl + curriculum, {
             params: {
               userId,
-              termid: this.sendIntegralData.termid
-            }
+              termid: this.sendIntegralData.termid,
+            },
           })
-          .then(res => {
+          .then((res) => {
             let data = JSON.parse(res.data);
             if (data.code == 200) {
               for (let i = 0; i < data.data.length; i++) {
@@ -842,22 +842,22 @@ export default {
       this.loading = true;
       this.$ajax
         .get(this.baseUrl + integralStatistics, {
-          params: this.sendIntegralData
+          params: this.sendIntegralData,
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           this.loading = false;
           this.tableData = [];
           if (data.code == 200) {
             this.tableData = JSON.parse(JSON.stringify(data.data));
             this.totalPage = data.totalPages;
-            this.tableData.forEach(item => {
+            this.tableData.forEach((item) => {
               item.integralTime = item.integralTime.substring(0, 10);
               item.integralValue = parseInt(item.integralValue);
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.tableData = [];
           if (err.message.indexOf("timeout") > -1) {
@@ -882,16 +882,16 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + updateData, {
-          params: { userId, assessModuleId: 3 }
+          params: { userId, assessModuleId: 3 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             location.reload();
             this.$router.go(0);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error("同步失败请联系管理员");
         });
     },
@@ -903,17 +903,17 @@ export default {
         .get(this.baseUrl + selectSynchroLog, {
           params: {
             assessModuleId: 3,
-            userId
-          }
+            userId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.gtime = data.data.createtime;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
