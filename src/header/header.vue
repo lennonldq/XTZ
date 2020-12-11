@@ -5,19 +5,10 @@
              alt=""> </p>
       <ul class="navList">
         <li>
-          <a v-if="typeId==8"
-             href="https://etechedu.com/edu/cloudSchool">返回首页</a>
-          <a v-else-if="typeId==9"
-             href="https://etechedu.com/edu/cloudTeacher">返回首页</a>
-          <a v-else-if="typeId==0"
-             href="https://www.etechedu.com/edu/cloudStudent">返回首页</a>
-          <a v-else-if="typeId==3"
-             href="https://etechedu.com/edu/cloudEnterprise">返回首页</a>
-          <a v-else-if="typeId==1"
-             href="https://etechedu.com/edu/cloudAdmin">返回首页</a>
+          <div @click="blak()">返回首页</div>
         </li>
         <li>
-          <a href="https://etechedu.com/enterprise/index">企业服务</a>
+          <a @click="enterprise()">企业服务</a>
         </li>
       </ul>
 
@@ -67,15 +58,15 @@ export default {
     return {
       // usertypeid:0,
       navList: [
-        { title: "返回首页", path: "/talentSearch" }
+        { title: "返回首页", path: "/talentSearch" },
         // { title: "企业服务", path: "/company" },
       ],
       jingList: [
         { title: "学校人才培养方案", path: "/company" },
-        { title: "益画像规则说明", path: "/home" }
+        { title: "益画像规则说明", path: "/home" },
       ],
       baseInfo: "",
-      typeId: ""
+      typeId: "",
     };
   },
   created() {
@@ -83,17 +74,49 @@ export default {
     this.getBaseInfo();
   },
   methods: {
-    // init(){
-    //      this.usertypeid =  localStorage.getItem("userTypeId");
-    //        if(this.usertypeid == null){
-    //           this.usertypeid=0
-    //        }
-    // },
+    // 返回首页跳转
+    blak() {
+      let token = localStorage.getItem("accessToken");
+      console.log(token);
+      if (this.typeId == 8) {
+        window.location.href =
+          "https://www.etechedu.com/auth/transLogin?token=" +
+          token +
+          "&path=edu/cloudSchool";
+      } else if (this.typeId == 9) {
+        window.location.href =
+          "https://www.etechedu.com/auth/transLogin?token=" +
+          token +
+          "&path=edu/cloudTeacher";
+      } else if (this.typeId == 0) {
+        window.location.href =
+          "https://www.etechedu.com/auth/transLogin?token=" +
+          token +
+          "&path=edu/cloudStudent";
+      } else if (this.typeId == 3) {
+        window.location.href =
+          "https://www.etechedu.com/auth/transLogin?token=" +
+          token +
+          "&path=edu/cloudEnterprise";
+      } else if (this.typeId == 1) {
+        window.location.href =
+          "https://www.etechedu.com/auth/transLogin?token=" +
+          token +
+          "&path=edu/cloudAdmin";
+      }
+    },
+    enterprise(){
+        let token = localStorage.getItem("accessToken");
+         window.location.href =
+          "https://www.etechedu.com/enterprise/index?token=" +
+          token 
+    },
     handleCommand() {
       localStorage.clear();
       sessionStorage.clear();
       this.typeId == 8;
-      window.location.href = "https://etechedu.com/auth/login";
+      window.location.href =
+        "https://www.etechedu.com/auth/transLoginauth/login";
     },
     tojing(path) {
       let routeData = this.$router.resolve({ path });
@@ -104,8 +127,8 @@ export default {
       this.baseInfo = JSON.parse(sessionStorage.getItem("photo"));
 
       this.typeId = localStorage.getItem("userTypeId");
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

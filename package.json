@@ -10,7 +10,8 @@
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "build": "node build/build.js"
+    "upload": "node build/upload-oss.js",
+    "prod": "npm run build & npm run upload"
   },
   "dependencies": {
     "axios": "^0.18.0",

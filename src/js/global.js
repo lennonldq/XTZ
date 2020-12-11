@@ -1,3 +1,3 @@
 export default {
-    baseUrl: "http://profession.etechedu.com/"
+    baseUrl: "http://profession-server.etechedu.com/"
 }
