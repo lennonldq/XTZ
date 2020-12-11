@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     login () {
-      this.$ajax.get(`${this.baseUrl}xtz/account/login?username=${this.formLabelAlign.username}&password=${this.formLabelAlign.password}`).then(res => {
+      this.$ajax.get(`https://apprentice-server.etechedu.com/xtz/account/login?username=${this.formLabelAlign.username}&password=${this.formLabelAlign.password}`).then(res => {
         let data = JSON.parse(res.data);
         // 登录成功 把登录信息存储到localStorage
         if (data.code == 200) {

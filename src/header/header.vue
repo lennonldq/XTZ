@@ -107,9 +107,11 @@ export default {
     },
     enterprise(){
         let token = localStorage.getItem("accessToken");
+        console.log(token);
          window.location.href =
           "https://www.etechedu.com/enterprise/index?token=" +
-          token 
+          token  +
+          "&path=/enterprise/index";
     },
     handleCommand() {
       localStorage.clear();
