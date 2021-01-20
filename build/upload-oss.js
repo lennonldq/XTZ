@@ -23,7 +23,7 @@ new WebpackAliyunOss({
     },
     setHeaders: filePath => {
         return {
-            "Cache-Control": "max-age=31536000"
+            "Cache-Control": "max-age=0"
         };
     }
 }).apply();

@@ -4,7 +4,7 @@
       <div class="titleBox">
         <div>
           <img v-if="baseInfo.photo"
-               :src="`https://etech-edu.com/${baseInfo.photo}`"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
                alt="">
           <img v-else
                src="../assets/images/pho.png"
@@ -137,13 +137,13 @@ import {
   integralStatistics,
   updateData,
   selectSynchroLog,
-  assessModules
+  assessModules,
 } from "../js/url";
 export default {
   props: ["baseInfo"],
   name: "EntrepreneurialPortrait",
   components: {
-    Pagination
+    Pagination,
   },
   data() {
     return {
@@ -155,7 +155,7 @@ export default {
         courseid: "", //课程选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId: 5
+        assessModuleId: 5,
       },
       // 获取的学期
       semesterList: [{ termName: "全部学期", termid: "" }],
@@ -168,7 +168,7 @@ export default {
       headerStyle: {
         height: "60px",
         backgroundColor: "#10859d",
-        color: "dimgrey"
+        color: "dimgrey",
       },
       // 列表数据
       tableData: [],
@@ -181,7 +181,7 @@ export default {
       //更新数据时间
       gtime: "",
       // 当前积分
-      jicurrent: ""
+      jicurrent: "",
     };
   },
   mounted() {
@@ -202,14 +202,14 @@ export default {
           right: 80,
           top: 100,
           bottom: 50,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
 
         toolbox: {
-          show: true
+          show: true,
         },
         legend: {
           data: ["个人积分", "班级平均积分"],
@@ -220,7 +220,7 @@ export default {
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle: { fontSize: 16 }
+          textStyle: { fontSize: 16 },
         },
         calculable: true,
         xAxis: [
@@ -231,13 +231,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
@@ -245,13 +245,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
@@ -263,11 +263,11 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#90dcdd",
                 lineStyle: {
-                  color: "#3bc7cb"
-                }
-              }
+                  color: "#3bc7cb",
+                },
+              },
             },
-            data: integralValue
+            data: integralValue,
           },
           {
             name: "班级平均积分",
@@ -278,13 +278,13 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#d7cdeb",
                 lineStyle: {
-                  color: "#b6a2de"
-                }
-              }
+                  color: "#b6a2de",
+                },
+              },
             },
-            data: sumIntegralValue
-          }
-        ]
+            data: sumIntegralValue,
+          },
+        ],
       });
     },
 
@@ -299,8 +299,8 @@ export default {
           x: "center",
           fontWeight: "normal",
           textStyle: {
-            fontWeight: "normal"
-          }
+            fontWeight: "normal",
+          },
         },
         color: colorArr,
         series: [
@@ -312,24 +312,24 @@ export default {
             label: {
               normal: {
                 show: false,
-                position: "center"
-              }
+                position: "center",
+              },
             },
             labelLine: {
               normal: {
-                show: false
-              }
+                show: false,
+              },
             },
-            data: data
-          }
-        ]
+            data: data,
+          },
+        ],
       });
     },
     joinEchart(el, color, value, item) {
       let joinChart = this.$echart.init(el);
       joinChart.setOption({
         tooltip: {
-          trigger: "item"
+          trigger: "item",
         },
         color: color,
         series: [
@@ -338,19 +338,19 @@ export default {
             radius: "55%",
             label: {
               normal: {
-                show: false
-              }
+                show: false,
+              },
             },
             center: ["50%", "60%"],
             data: [
               {
                 value: value,
                 name: item,
-                itemStyle: { normal: { color: color } }
-              }
-            ]
-          }
-        ]
+                itemStyle: { normal: { color: color } },
+              },
+            ],
+          },
+        ],
       });
     },
     getEntrepreneurPortraitData() {
@@ -358,9 +358,9 @@ export default {
       let { userId, classId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + entrepreneurPortrait, {
-          params: { userId, classId }
+          params: { userId, classId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let termid = [],
@@ -381,9 +381,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + pioneerInfo, {
-          params: { userId }
+          params: { userId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.pioneerGeneral = data.data[0].pioneerGeneral; //创业通识学习完成度
@@ -397,7 +397,7 @@ export default {
               ["#7384f4", "#dadada"],
               [
                 { value: this.pioneerGeneral, name: "" },
-                { value: 100 - this.pioneerGeneral, name: "" }
+                { value: 100 - this.pioneerGeneral, name: "" },
               ]
             );
             this.followEchart(
@@ -407,7 +407,7 @@ export default {
               ["#7edfb4", "#dadada"],
               [
                 { value: this.pioneerPlan, name: "直接访问" },
-                { value: 100 - this.pioneerPlan, name: "" }
+                { value: 100 - this.pioneerPlan, name: "" },
               ]
             );
 
@@ -431,7 +431,7 @@ export default {
 
       this.$ajax
         .get(this.baseUrl + assessModules, { params: this.$route.query })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -448,9 +448,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + semester, {
-          params: { userId }
+          params: { userId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -470,10 +470,10 @@ export default {
           .get(this.baseUrl + curriculum, {
             params: {
               userId,
-              termid: this.sendIntegralData.termid
-            }
+              termid: this.sendIntegralData.termid,
+            },
           })
-          .then(res => {
+          .then((res) => {
             let data = JSON.parse(res.data);
             if (data.code == 200) {
               for (let i = 0; i < data.data.length; i++) {
@@ -492,22 +492,22 @@ export default {
       this.loading = true;
       this.$ajax
         .get(this.baseUrl + integralStatistics, {
-          params: this.sendIntegralData
+          params: this.sendIntegralData,
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           this.loading = false;
           this.tableData = [];
           if (data.code == 200) {
             this.tableData = JSON.parse(JSON.stringify(data.data));
             this.totalPage = data.totalPages;
-            this.tableData.forEach(item => {
+            this.tableData.forEach((item) => {
               item.integralTime = item.integralTime.substring(0, 10);
               item.integralValue = parseInt(item.integralValue);
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.tableData = [];
           if (err.message.indexOf("timeout") > -1) {
@@ -532,9 +532,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + updateData, {
-          params: { userId, assessModuleId: 5 }
+          params: { userId, assessModuleId: 5 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             location.reload();
@@ -550,17 +550,17 @@ export default {
         .get(this.baseUrl + selectSynchroLog, {
           params: {
             assessModuleId: 5,
-            userId
-          }
+            userId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.gtime = data.data.createtime;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

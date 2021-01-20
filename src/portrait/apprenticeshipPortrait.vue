@@ -3,70 +3,50 @@
     <div class="header">
       <div class="titleBox">
         <div>
-          <img
-            v-if="baseInfo.photo"
-            :src="`https://etech-edu.com/${baseInfo.photo}`"
-            alt=""
-          >
-          <img
-            v-else
-            src="../assets/images/pho.png"
-            alt=""
-          >
+          <img v-if="baseInfo.photo"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
+               alt="">
+          <img v-else
+               src="../assets/images/pho.png"
+               alt="">
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
       </div>
-      <router-link
-        tag="button"
-        :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
-      >
+      <router-link tag="button"
+                   :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}">
         返回上页
       </router-link>
-      <div
-        class="synchronization"
-        @click="synchronization()"
-      >
+      <div class="synchronization"
+           @click="synchronization()">
         <div class="one">同步数据</div>
-        <div
-          class="two"
-          v-if="gtime"
-        >上次同步:{{gtime | gTime}} </div>
+        <div class="two"
+             v-if="gtime">上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
     <div class="module">
       <p class="title">岗位分析</p>
-      <p
-        class="scoreResult"
-        v-if="postAnalysis.length > 0"
-      >根据岗位分析的计算方式，以每个岗位的百分制计算，适合岗位的分值线以60分为达标值。
+      <p class="scoreResult"
+         v-if="postAnalysis.length > 0">根据岗位分析的计算方式，以每个岗位的百分制计算，适合岗位的分值线以60分为达标值。
         </br>本平台根据岗位分析得出，适合岗位为：<span>{{`${fit}`}}</span>
       </p>
-      <div
-        class="postAnalysis"
-        ref="postAnalysis"
-      >
+      <div class="postAnalysis"
+           ref="postAnalysis">
 
       </div>
-      <p
-        class="noData"
-        v-if="postAnalysis.length == 0&& !loading"
-      > 暂无数据！ </p>
+      <p class="noData"
+         v-if="postAnalysis.length == 0&& !loading"> 暂无数据！ </p>
     </div>
     <div class="module">
       <p class="title">软技能得分</p>
       <p class="scoreResult">本平台根据逻辑思维能力、人际交流能力、领导组织能力、适应调整能力、解决问题能力、创新想象能力、学习总结能力、信息收集能力等八项软
         能力对在学徒制过程进行软能力诊断，达标率为：<span>{{poss}}</span><br />
       </p>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
-      <div
-        class="abilityChart"
-        ref="abilityChart"
-      ></div>
+      <div class="scoreChart"
+           ref="scoreChart"></div>
+      <div class="abilityChart"
+           ref="abilityChart"></div>
     </div>
     <div class="module">
       <p class="title">任务得分</p>
@@ -88,10 +68,8 @@
             <span>{{ counti }}</span>
           </div>
         </div>
-        <div
-          class="gradeAly"
-          style="left:470px"
-        >
+        <div class="gradeAly"
+             style="left:470px">
           <div style="padding-bottom: 0">
             <p>优秀任务占比</p>
             <span>{{ excellent_rate }}%</span>
@@ -106,10 +84,8 @@
             <span>{{ medium_rate }}%</span>
           </div>
         </div>
-        <div
-          class="taskChart"
-          ref="taskChart"
-        > </div>
+        <div class="taskChart"
+             ref="taskChart"> </div>
         <div class="persent">
           <div class="presentShow">
             <p :style="{width:excellentPre}">{{excellent_count}}</p>
@@ -125,37 +101,27 @@
       </div>
     </div>
 
-    <div
-      class="module"
-      style="margin-bottom: 0"
-    >
+    <div class="module"
+         style="margin-bottom: 0">
       <div class="title">
         课程得分
         <div class="tab">
-          <p
-            v-for="(item,index) in tab"
-            :key="index"
-            :class="{'active':inx === index}"
-            @click="tabChange(index,item.termnum)"
-          >{{ item.title }}</p>
+          <p v-for="(item,index) in tab"
+             :key="index"
+             :class="{'active':inx === index}"
+             @click="tabChange(index,item.termnum)">{{ item.title }}</p>
         </div>
       </div>
       <div class="tabWarp">
-        <p
-          class="noData"
-          v-if="courseData.length == 0&& !loading"
-        > 暂无数据！ </p>
+        <p class="noData"
+           v-if="courseData.length == 0&& !loading"> 暂无数据！ </p>
         <div class="echartBox">
-          <div
-            class="echartCon"
-            v-loading="loading"
-            element-loading-text="拼命加载中"
-          >
-            <div
-              class="echatWarp"
-              v-for="(item,index) in courseData"
-              :key="index"
-            >
+          <div class="echartCon"
+               v-loading="loading"
+               element-loading-text="拼命加载中">
+            <div class="echatWarp"
+                 v-for="(item,index) in courseData"
+                 :key="index">
               <div class="chartTiT">
                 <span>{{ item.coursename }}</span>
                 <p>平均得分<br>{{item.pf}}</p>
@@ -164,20 +130,14 @@
                 <p style="border: none">达标率<br>{{ item.standardRate }}%</p>
                 <button @click="clickHandler(item.courseid)">技能画像</button>
               </div>
-              <div
-                class="chartRender"
-                :class="item.courseid == courseid?'show':''"
-              >
+              <div class="chartRender"
+                   :class="item.courseid == courseid?'show':''">
                 <!--课程雷达图-->
-                <div
-                  class="kcldtChart"
-                  :id="'kcldtChart'+item.courseid"
-                ></div>
+                <div class="kcldtChart"
+                     :id="'kcldtChart'+item.courseid"></div>
                 <!--课程折现图-->
-                <div
-                  class="kczxtChart"
-                  :id="'kczxtChart'+item.courseid"
-                ></div>
+                <div class="kczxtChart"
+                     :id="'kczxtChart'+item.courseid"></div>
               </div>
             </div>
           </div>
@@ -193,24 +153,23 @@ import {
   jbsStatistics,
   skillsPortrait,
   updateData,
-  selectSynchroLog
-}
-  from "../js/url"
-import { log } from 'util';
+  selectSynchroLog,
+} from "../js/url";
+import { log } from "util";
 export default {
   props: ["baseInfo"],
-  data () {
+  data() {
     return {
       // 岗位分析的数据
       postAnalysis: [],
       inx: 0,
-      excellent_rate: "",//成绩优秀的比例
-      good_rate: "",//成绩良好的比例
-      medium_rate: "",//成绩中等的比例
-      counti: "",//参与任务数量
+      excellent_rate: "", //成绩优秀的比例
+      good_rate: "", //成绩良好的比例
+      medium_rate: "", //成绩中等的比例
+      counti: "", //参与任务数量
       excellent_count: "", //成绩优秀的人数
-      good_count: "",//成绩良好的人数
-      medium_count: '',//成绩中等的人数
+      good_count: "", //成绩良好的人数
+      medium_count: "", //成绩中等的人数
       excellentPre: 0,
       goodPre: 0,
       mediumPre: 0,
@@ -226,64 +185,66 @@ export default {
         { title: "第八学期", termnum: 6 },
       ],
       cypf: "", // 超越百分之多少的人
-      pf: "",  // 任务平均分
+      pf: "", // 任务平均分
       courseData: [],
       courseid: "",
       loading: true,
-      fit: [],//适合岗位
-      poss: '',//达标率 
+      fit: [], //适合岗位
+      poss: "", //达标率
       //更新数据时间
-      gtime: ''
-
-    }
+      gtime: "",
+    };
   },
-  mounted () {
+  mounted() {
     this.getuserPortraitData();
     this.getCourseListData(null);
     this.getJbsStatistics();
     this.Updatetime();
   },
   methods: {
-    tackEchart (excellent_rate, good_rate, medium_rate) { //任务得分
+    tackEchart(excellent_rate, good_rate, medium_rate) {
+      //任务得分
       let taskChart = this.$echart.init(this.$refs.taskChart);
       taskChart.setOption({
         series: [
           {
-            name: '任务得分',
-            type: 'pie',
-            radius: ['30%', '50%'],
+            name: "任务得分",
+            type: "pie",
+            radius: ["30%", "50%"],
             avoidLabelOverlap: false,
-            center: ['38%', '50%'],
+            center: ["38%", "50%"],
             itemStyle: {
               normal: {
-                label: {        //此处为指示线文字
+                label: {
+                  //此处为指示线文字
                   show: true,
-                  position: 'inner', //标签的位置
+                  position: "inner", //标签的位置
                 },
-                labelLine: {    //指示线状态
+                labelLine: {
+                  //指示线状态
                   show: true,
                   smooth: 0.2,
                   length: 10,
-                  length2: 20
-                }
-              }
+                  length2: 20,
+                },
+              },
             },
             color: ["#7384f4", "#7edfb4", "#f09796"],
             data: [
-              { value: good_rate, name: '良好' },
-              { value: excellent_rate, name: '优秀' },
-              { value: medium_rate, name: '中等' }
-            ]
-          }
-        ]
-      })
+              { value: good_rate, name: "良好" },
+              { value: excellent_rate, name: "优秀" },
+              { value: medium_rate, name: "中等" },
+            ],
+          },
+        ],
+      });
     },
-    scoreEchart (pf, percentage) {
+    scoreEchart(pf, percentage) {
       // 软技能得分雷达图
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           // formatter: (params) => {
 
           //   let str = "";
@@ -304,60 +265,64 @@ export default {
           // },
         },
         textStyle: {
-          color: '#444444'
+          color: "#444444",
         },
         radar: [
           {
             indicator: [
-              { text: '逻辑思维', max: 100 },
-              { text: '人际交流', max: 100 },
-              { text: '领导组织', max: 100 },
-              { text: '适应调整', max: 100 },
-              { text: '解决问题', max: 100 },
-              { text: '创新想象', max: 100 },
-              { text: '学习总结', max: 100 },
-              { text: '信息收集', max: 100 },
+              { text: "逻辑思维", max: 100 },
+              { text: "人际交流", max: 100 },
+              { text: "领导组织", max: 100 },
+              { text: "适应调整", max: 100 },
+              { text: "解决问题", max: 100 },
+              { text: "创新想象", max: 100 },
+              { text: "学习总结", max: 100 },
+              { text: "信息收集", max: 100 },
             ],
             splitLine: {
-              show: true,    //去掉网格线
+              show: true, //去掉网格线
               lineStyle: {
                 width: 4,
-                color: "#adb8ff"
-              }
+                color: "#adb8ff",
+              },
             },
             splitArea: {
               areaStyle: {
-                color: ["#fff", "#e2e6ff"]
-              }
-            }
-          }
+                color: ["#fff", "#e2e6ff"],
+              },
+            },
+          },
         ],
         color: "#85c4ed",
         series: [
           {
-            type: 'radar',
+            type: "radar",
             tooltip: {
-              trigger: 'item'
+              trigger: "item",
             },
 
-            itemStyle: { normal: { areaStyle: { type: 'default', color: '#85c4ed' } } },
+            itemStyle: {
+              normal: { areaStyle: { type: "default", color: "#85c4ed" } },
+            },
             data: [
               {
                 value: pf,
-                name: '软技能得分：'
-              }
-            ]
-          }
-        ]
-      })
+                name: "软技能得分：",
+              },
+            ],
+          },
+        ],
+      });
     },
-    abilityEChart (pfArr, percentage) { //软技能得分柱状图
+    abilityEChart(pfArr, percentage) {
+      //软技能得分柱状图
       let abilityChart = this.$echart.init(this.$refs.abilityChart);
       abilityChart.setOption({
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
           },
           // formatter: (params) => {
           //   let str = "";
@@ -367,159 +332,178 @@ export default {
         },
         grid: {
           top: 20,
-          left: '100',
-          right: '4%',
-          bottom: 30
+          left: "100",
+          right: "4%",
+          bottom: 30,
         },
         xAxis: {
-          type: 'value',
+          type: "value",
           axisLine: {
             lineStyle: {
               width: 4,
-              color: '#5ac1e9'
-            }
+              color: "#5ac1e9",
+            },
           },
           splitLine: {
             lineStyle: {
               type: "solid",
               width: 2,
-              color: "#fff"
-            }
+              color: "#fff",
+            },
           },
           axisLabel: {
             textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-            }
-          }
+              color: "#444444", //坐标值得具体的颜色
+            },
+          },
         },
         yAxis: {
-          type: 'category',
+          type: "category",
           axisLine: {
             lineStyle: {
               width: 4,
-              color: '#5ac1e9'
-            }
+              color: "#5ac1e9",
+            },
           },
           axisLabel: {
             textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-            }
+              color: "#444444", //坐标值得具体的颜色
+            },
           },
-          data: ['逻辑思维', '人际交流', '领导组织', '适应调整', '解决问题', '创新想象', '学习总结', '信息收集'],
+          data: [
+            "逻辑思维",
+            "人际交流",
+            "领导组织",
+            "适应调整",
+            "解决问题",
+            "创新想象",
+            "学习总结",
+            "信息收集",
+          ],
         },
         backgroundColor: "#cbe7f2",
         borderRadius: 10,
         series: [
           {
-            name: '得分',
-            type: 'bar',
-            stack: '总量',
+            name: "得分",
+            type: "bar",
+            stack: "总量",
             barWidth: 30,
             label: {
               normal: {
                 show: true,
-                position: 'insideRight',
-              }
+                position: "insideRight",
+              },
             },
             itemStyle: {
               normal: {
-                color: '#7384f4',
+                color: "#7384f4",
                 barBorderRadius: [4, 4, 4, 4],
-              }
+              },
             },
-            data: pfArr
-          }
-        ]
-      })
+            data: pfArr,
+          },
+        ],
+      });
     },
-    kcldtEchart (taskName, pf, allPf, courseid) { //课程雷达图
+    kcldtEchart(taskName, pf, allPf, courseid) {
+      //课程雷达图
       // console.log(taskName, pf, allPf, courseid);
 
-      let kcldtChart = this.$echart.init(document.getElementById("kcldtChart" + courseid));
+      let kcldtChart = this.$echart.init(
+        document.getElementById("kcldtChart" + courseid)
+      );
       kcldtChart.setOption({
         tooltip: {
-          trigger: 'axis'
+          trigger: "axis",
         },
         textStyle: {
-          color: '#444444'
+          color: "#444444",
         },
         radar: [
           {
             indicator: taskName,
             splitLine: {
-              show: true,    //去掉网格线
+              show: true, //去掉网格线
               lineStyle: {
                 width: 4,
-                color: "#f09796"
-              }
+                color: "#f09796",
+              },
             },
             splitArea: {
               areaStyle: {
-                color: ["#fff", "#f6dcdc"]
-              }
+                color: ["#fff", "#f6dcdc"],
+              },
             },
             radius: 120,
           },
-
         ],
         color: "#a7e2ef",
         series: [
           {
-            type: 'radar',
+            type: "radar",
             tooltip: {
-              trigger: 'item'
+              trigger: "item",
             },
 
-            itemStyle: {              normal: {
-                areaStyle: { type: 'default', color: "#79cec1" }
-              }            },
+            itemStyle: {
+              normal: {
+                areaStyle: { type: "default", color: "#79cec1" },
+              },
+            },
             data: [
               {
                 value: pf,
-                name: '任务得分'
-              }
-            ]
-          }, {
-            type: 'radar',
+                name: "任务得分",
+              },
+            ],
+          },
+          {
+            type: "radar",
             tooltip: {
-              trigger: 'item'
+              trigger: "item",
             },
 
-            itemStyle: { normal: { areaStyle: { type: 'default', color: "#73bbce" } } },
+            itemStyle: {
+              normal: { areaStyle: { type: "default", color: "#73bbce" } },
+            },
             data: [
               {
                 value: allPf,
-                name: '实验实训'
-              }
-            ]
-          }
-        ]
+                name: "实验实训",
+              },
+            ],
+          },
+        ],
       });
     },
-    kczxtEchart (pf, courseid, taskName) { // 课程得分折现图
+    kczxtEchart(pf, courseid, taskName) {
+      // 课程得分折现图
       console.log(pf, courseid, taskName);
 
-      let kczxtChart = this.$echart.init(document.getElementById("kczxtChart" + courseid));
+      let kczxtChart = this.$echart.init(
+        document.getElementById("kczxtChart" + courseid)
+      );
       kczxtChart.setOption({
         xAxis: {
-          type: 'category',
+          type: "category",
           axisLine: {
             lineStyle: {
               width: 4,
-              color: '#5ac1e9'
-            }
+              color: "#5ac1e9",
+            },
           },
-          data: []
+          data: [],
         },
         tooltip: {
           trigger: "item",
           confine: true,
           formatter: (params) => {
-            return `${params.name}平均分：${params.value}`
-          }
+            return `${params.name}平均分：${params.value}`;
+          },
         },
         xAxis: {
-          type: 'category',
+          type: "category",
           boundaryGap: false,
           data: taskName,
           axisLabel: {
@@ -528,7 +512,7 @@ export default {
             formatter: function (params) {
               var newParamsName = "";
               var paramsNameNumber = params.length;
-              var provideNumber = 3;  //一行显示几个字
+              var provideNumber = 3; //一行显示几个字
               var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
               if (paramsNameNumber > provideNumber) {
                 for (var p = 0; p < rowNumber; p++) {
@@ -542,241 +526,257 @@ export default {
                   }
                   newParamsName += tempStr;
                 }
-
               } else {
                 newParamsName = params;
               }
-              return newParamsName
+              return newParamsName;
             },
-          }
-
-
+          },
         },
         yAxis: {
-          type: 'value',
+          type: "value",
           axisLine: {
             lineStyle: {
               width: 4,
-              color: '#5ac1e9'
-            }
+              color: "#5ac1e9",
+            },
           },
           axisLabel: {
             textStyle: {
-              color: '#444444',//坐标值得具体的颜色
-
-            }
+              color: "#444444", //坐标值得具体的颜色
+            },
           },
           splitLine: {
-            show: false
+            show: false,
           },
         },
-        series: [{
-          symbol: 'emptyCircle',
-          symbolSize: 8,
-          itemStyle: {
-            normal: {
-              color: '#7384f4',
-              lineStyle: {
-                color: '#7384f4',
-                width: 4,
-              }
-            }
+        series: [
+          {
+            symbol: "emptyCircle",
+            symbolSize: 8,
+            itemStyle: {
+              normal: {
+                color: "#7384f4",
+                lineStyle: {
+                  color: "#7384f4",
+                  width: 4,
+                },
+              },
+            },
+            data: pf,
+            type: "line",
           },
-          data: pf,
-          type: 'line'
-        }]
+        ],
       });
     },
-    tabChange (index, termnum) {
+    tabChange(index, termnum) {
       this.inx = index;
       this.courseid = "";
       this.getCourseListData(termnum);
     },
-    clickHandler (courseid) {
+    clickHandler(courseid) {
       if (this.courseid == courseid) {
-        this.courseid = '关闭';
+        this.courseid = "关闭";
       } else {
-        this.courseid = courseid
-        this.getSkillsPortrait(courseid)
+        this.courseid = courseid;
+        this.getSkillsPortrait(courseid);
       }
     },
 
-    getuserPortraitData () { // 获取用户画像数据
+    getuserPortraitData() {
+      // 获取用户画像数据
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + userPortrait, {
-        params: { userId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          let excellent_rate = this.gitnull(data.data.excellent_rate);//成绩优秀的比例
-          let good_rate = this.gitnull(data.data.good_rate); //成绩良好的比例
-          let medium_rate = this.gitnull(data.data.medium_rate);//成绩中等的比例
-          this.excellent_rate = excellent_rate;
-          this.good_rate = good_rate;
-          this.medium_rate = medium_rate;
-          this.excellent_count = parseInt(data.data.excellent_count); //成绩优秀的人数
-          this.good_count = parseInt(data.data.good_count); //成绩良好的人数
-          this.medium_count = parseInt(data.data.medium_count); //成绩中等的人数
-          let total = this.excellent_count + this.good_count + this.medium_count;
-          this.excellentPre = this.commonJs.percentNum(this.excellent_count, total);
-          this.goodPre = this.commonJs.percentNum(this.good_count, total);
-          this.mediumPre = this.commonJs.percentNum(this.medium_count, total);
-          this.cypf = data.data.cypf; // 超越百分之多少的人
-          this.pf = this.gitnull(data.data.pf); //任务平均分
-          this.counti = this.gitnull(data.data.counti);//参与任务数量
-          this.poss = this.gitnullenen(data.data.taskPf) + '%';//达标率
-          this.tackEchart(excellent_rate, good_rate, medium_rate)
-          let pfArr = [
-            this.gitnull(data.data.pf31),
-            this.gitnull(data.data.pf32),
-            this.gitnull(data.data.pf33),
-            this.gitnull(data.data.pf34),
-            this.gitnull(data.data.pf35),
-            this.gitnull(data.data.pf36),
-            this.gitnull(data.data.pf37),
-            this.gitnull(data.data.pf38)
-          ];
-          let pfbzArr = [
-            data.data.pfbz31,
-            data.data.pfbz32,
-            data.data.pfbz33,
-            data.data.pfbz34,
-            data.data.pfbz35,
-            data.data.pfbz36,
-            data.data.pfbz37,
-            data.data.pfbz38
-          ];
-          // 
-          let percentage = [
-            data.data.pfrate31,
-            data.data.pfrate32,
-            data.data.pfrate33,
-            data.data.pfrate34,
-            data.data.pfrate35,
-            data.data.pfrate36,
-            data.data.pfrate37,
-            data.data.pfrate38
-          ];
+      this.$ajax
+        .get(this.baseUrl + userPortrait, {
+          params: { userId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let excellent_rate = this.gitnull(data.data.excellent_rate); //成绩优秀的比例
+            let good_rate = this.gitnull(data.data.good_rate); //成绩良好的比例
+            let medium_rate = this.gitnull(data.data.medium_rate); //成绩中等的比例
+            this.excellent_rate = excellent_rate;
+            this.good_rate = good_rate;
+            this.medium_rate = medium_rate;
+            this.excellent_count = parseInt(data.data.excellent_count); //成绩优秀的人数
+            this.good_count = parseInt(data.data.good_count); //成绩良好的人数
+            this.medium_count = parseInt(data.data.medium_count); //成绩中等的人数
+            let total =
+              this.excellent_count + this.good_count + this.medium_count;
+            this.excellentPre = this.commonJs.percentNum(
+              this.excellent_count,
+              total
+            );
+            this.goodPre = this.commonJs.percentNum(this.good_count, total);
+            this.mediumPre = this.commonJs.percentNum(this.medium_count, total);
+            this.cypf = data.data.cypf; // 超越百分之多少的人
+            this.pf = this.gitnull(data.data.pf); //任务平均分
+            this.counti = this.gitnull(data.data.counti); //参与任务数量
+            this.poss = this.gitnullenen(data.data.taskPf) + "%"; //达标率
+            this.tackEchart(excellent_rate, good_rate, medium_rate);
+            let pfArr = [
+              this.gitnull(data.data.pf31),
+              this.gitnull(data.data.pf32),
+              this.gitnull(data.data.pf33),
+              this.gitnull(data.data.pf34),
+              this.gitnull(data.data.pf35),
+              this.gitnull(data.data.pf36),
+              this.gitnull(data.data.pf37),
+              this.gitnull(data.data.pf38),
+            ];
+            let pfbzArr = [
+              data.data.pfbz31,
+              data.data.pfbz32,
+              data.data.pfbz33,
+              data.data.pfbz34,
+              data.data.pfbz35,
+              data.data.pfbz36,
+              data.data.pfbz37,
+              data.data.pfbz38,
+            ];
+            //
+            let percentage = [
+              data.data.pfrate31,
+              data.data.pfrate32,
+              data.data.pfrate33,
+              data.data.pfrate34,
+              data.data.pfrate35,
+              data.data.pfrate36,
+              data.data.pfrate37,
+              data.data.pfrate38,
+            ];
 
-
-
-          this.scoreEchart(percentage, percentage);
-          this.abilityEChart(percentage, percentage)
-        }
-      })
+            this.scoreEchart(percentage, percentage);
+            this.abilityEChart(percentage, percentage);
+          }
+        });
     },
     // 让数据为null时转为0 否则取整
-    gitnull (data) {
+    gitnull(data) {
       if (data == null) {
-        data = 0
+        data = 0;
       } else {
-        data = parseInt(data)
+        data = parseInt(data);
       }
-      return data
+      return data;
     },
-    gitnullenen (data) {
+    gitnullenen(data) {
       if (data == null) {
-        data = 0
+        data = 0;
       } else {
-        data = data
+        data = data;
       }
-      return data
+      return data;
     },
-    getCourseListData (termnum) { //获取课程得分数据
+    getCourseListData(termnum) {
+      //获取课程得分数据
       this.loading = true;
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + courseList, {
-        params: {
-          userId,
-          termnum
-        }
-      }).then(res => {
-        this.loading = false;
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          data.data.map((item) => {
-            return item.standardRate == parseFloat(item.standardRate)
-          });
-          this.courseData = data.data;
-        }
-      })
+      this.$ajax
+        .get(this.baseUrl + courseList, {
+          params: {
+            userId,
+            termnum,
+          },
+        })
+        .then((res) => {
+          this.loading = false;
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            data.data.map((item) => {
+              return item.standardRate == parseFloat(item.standardRate);
+            });
+            this.courseData = data.data;
+          }
+        });
     },
-    getSkillsPortrait (courseid) { // 获取技能画像数据
+    getSkillsPortrait(courseid) {
+      // 获取技能画像数据
       let { userId, classId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + skillsPortrait, {
-        params: {
-          userId,
-          classid: classId,
-          courseid: courseid
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          let taskName = [], pf = [], allPf = []; let arrName = [];
-          for (let i = 0; i < data.data.length; i++) {
-            taskName.push({ text: data.data[i].taskName, max: 100 });
-            arrName.push(data.data[i].taskName)
-            pf.push(data.data[i].pf);
-            allPf.push(data.data[i].allPf)
-          }
-          // console.log(arrName);
-
-          this.kczxtEchart(pf, courseid, arrName);
-          this.kcldtEchart(taskName, pf, allPf, courseid)
-
-        }
-      })
-    },
-    getJbsStatistics () {   //获取岗位分析数据
-      let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + jbsStatistics, {
-        params: {
-          userId
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          this.postAnalysis = data.data;
-          let dataName = [], pf = [], many = data.data[0].pf;
-          for (let i = 0; i < data.data.length; i++) {
-            dataName.push(data.data[i].positionName)
-            pf.push(data.data[i].pf);
-            if (data.data[i].pf > 60) {
-              this.fit.push(data.data[i].positionName)
+      this.$ajax
+        .get(this.baseUrl + skillsPortrait, {
+          params: {
+            userId,
+            classid: classId,
+            courseid: courseid,
+          },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let taskName = [],
+              pf = [],
+              allPf = [];
+            let arrName = [];
+            for (let i = 0; i < data.data.length; i++) {
+              taskName.push({ text: data.data[i].taskName, max: 100 });
+              arrName.push(data.data[i].taskName);
+              pf.push(data.data[i].pf);
+              allPf.push(data.data[i].allPf);
             }
+            // console.log(arrName);
+
+            this.kczxtEchart(pf, courseid, arrName);
+            this.kcldtEchart(taskName, pf, allPf, courseid);
           }
-          this.gangwei(dataName, pf)
-        }
-      })
+        });
     },
-    gangwei (dataName, pf) {
+    getJbsStatistics() {
+      //获取岗位分析数据
+      let { userId } = this.$route.query;
+      this.$ajax
+        .get(this.baseUrl + jbsStatistics, {
+          params: {
+            userId,
+          },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            this.postAnalysis = data.data;
+            let dataName = [],
+              pf = [],
+              many = data.data[0].pf;
+            for (let i = 0; i < data.data.length; i++) {
+              dataName.push(data.data[i].positionName);
+              pf.push(data.data[i].pf);
+              if (data.data[i].pf > 60) {
+                this.fit.push(data.data[i].positionName);
+              }
+            }
+            this.gangwei(dataName, pf);
+          }
+        });
+    },
+    gangwei(dataName, pf) {
       let postAnalysis = this.$echart.init(this.$refs.postAnalysis);
       postAnalysis.setOption({
         grid: {
-          left: '100',
-          right: '100',
-          bottom: '20',
-          top: '100',
-          containLabel: true
+          left: "100",
+          right: "100",
+          bottom: "20",
+          top: "100",
+          containLabel: true,
         },
         xAxis: {
           data: dataName,
-          name: '岗位',
+          name: "岗位",
           axisTick: {
-            show: false
+            show: false,
           },
           nameTextStyle: {
-            color: 'black',
+            color: "black",
             fontWeight: 800,
-            fontSize: 18
+            fontSize: 18,
           },
-            axisLabel: {
-             show: true,
+          axisLabel: {
+            show: true,
             interval: 0,
             formatter: function (params) {
               var newParamsName = "";
               var paramsNameNumber = params.length;
-              var provideNumber = 4;  //一行显示几个字
+              var provideNumber = 4; //一行显示几个字
               var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
               if (paramsNameNumber > provideNumber) {
                 for (var p = 0; p < rowNumber; p++) {
@@ -790,90 +790,91 @@ export default {
                   }
                   newParamsName += tempStr;
                 }
-
               } else {
                 newParamsName = params;
               }
-              return newParamsName
+              return newParamsName;
             },
             textStyle: {
-              color: '#444444'
-            }
+              color: "#444444",
+            },
           },
-
         },
         yAxis: {
-          name: '得分',
+          name: "得分",
           splitLine: {
             axisLine: {
               lineStyle: {
-                color: '#ff7f27',
-                width: 1,//这里是为了突出显示加上的  
-              }
-            }
+                color: "#ff7f27",
+                width: 1, //这里是为了突出显示加上的
+              },
+            },
           },
           nameTextStyle: {
-            color: 'black',
+            color: "black",
             fontWeight: 800,
-            fontSize: 18
+            fontSize: 18,
           },
           type: "value",
-          max: 100
+          max: 100,
           // data:['0人','10人','20人','20人','20人'],
         },
-        series: [{
-          data: pf,
-          barWidth: 50,
-          type: 'bar',
-          itemStyle: {
-            normal: {
-              color: '#ff7f27',
-              label: {
-                show: true,
-                position: 'top',
-              }
-            }
-          }
-        }]
-      })
+        series: [
+          {
+            data: pf,
+            barWidth: 50,
+            type: "bar",
+            itemStyle: {
+              normal: {
+                color: "#ff7f27",
+                label: {
+                  show: true,
+                  position: "top",
+                },
+              },
+            },
+          },
+        ],
+      });
     },
     // 点击更新同步数据
-    synchronization () {
+    synchronization() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + updateData, {
-        params: { userId, assessModuleId: 4 }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          location.reload()
-          this.$router.go(0)
-
-        }
-      })
-
+      this.$ajax
+        .get(this.baseUrl + updateData, {
+          params: { userId, assessModuleId: 4 },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            location.reload();
+            this.$router.go(0);
+          }
+        });
     },
 
     // 同步数据时间获取
-    Updatetime () {
+    Updatetime() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + selectSynchroLog, {
-        params: {
-          assessModuleId: 4,
-          userId
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          this.gtime = data.data.createtime
-
-        }
-      })
+      this.$ajax
+        .get(this.baseUrl + selectSynchroLog, {
+          params: {
+            assessModuleId: 4,
+            userId,
+          },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            this.gtime = data.data.createtime;
+          }
+        });
     },
-  }
-}
+  },
+};
 </script>
 <style>
-@import '../style/portrait.css';
+@import "../style/portrait.css";
 .module {
   position: relative;
 }
@@ -908,12 +909,12 @@ export default {
 .module .taskShow .grade .bdjt .one {
   width: 100%;
   height: 33px;
-  background: url('../assets/images/bd.png') 16px 16px no-repeat;
+  background: url("../assets/images/bd.png") 16px 16px no-repeat;
 }
 .module .taskShow .grade .bdjt .two {
   height: 100%;
   width: 100%;
-  background: url('../assets/images/jt.png') 0px -1px no-repeat;
+  background: url("../assets/images/jt.png") 0px -1px no-repeat;
 }
 .module .taskShow .gradeAly {
   width: 144px;

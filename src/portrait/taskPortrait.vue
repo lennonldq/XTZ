@@ -3,40 +3,37 @@
     <div class="header">
       <div class="titleBox">
         <div>
-            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
-           <img v-else src="../assets/images/pho.png" alt="">
+          <img v-if="baseInfo.photo"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
+               alt="">
+          <img v-else
+               src="../assets/images/pho.png"
+               alt="">
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
       </div>
-      <router-link
-        tag="button"
-        :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
-      >
+      <router-link tag="button"
+                   :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}">
         返回上页
       </router-link>
-            <div
-        class="synchronization"
-        @click="synchronization()"
-      >
+      <div class="synchronization"
+           @click="synchronization()">
         <div class="one">同步数据</div>
-        <div class="two" v-if="gtime">上次同步:{{gtime | gTime}} </div>
+        <div class="two"
+             v-if="gtime">上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
 
     <div class="module">
       <p class="title">任务外包情况</p>
-      <p
-        class="scoreDetail"
-        v-if="joinItem.length >0"
-      >
+      <p class="scoreDetail"
+         v-if="joinItem.length >0">
         {{`参与项目： ${joinItem} `}}
       </p>
-      <div
-        class="echartBox"
-        v-if="joinItem"
-      >
+      <div class="echartBox"
+           v-if="joinItem">
         <div class="type">
           <p>报名/任务参与类型</p>
           <div class="present">
@@ -45,18 +42,16 @@
           </div>
           <div class="presentItem">
             <div style="width: 50%">
-              <div
-                class="LEF"
-                style="width: 40px;
+              <div class="LEF"
+                   style="width: 40px;
                   height: 20px;
                     background-color: #7384f4;
-                    margin: 20px 10px 20px 30px;"
-              ></div>
+                    margin: 20px 10px 20px 30px;"></div>
               个人参与
             </div>
             <div style="width: 50%">
               <div class="RIT"
-              style="width: 40px;
+                   style="width: 40px;
                   height: 20px;
                     background-color: #5ac1e9;
                    margin: 20px 10px 20px 30px;"></div>
@@ -64,16 +59,12 @@
             </div>
           </div>
         </div>
-        <div
-          class="taskChart"
-          ref="taskChart"
-        ></div>
+        <div class="taskChart"
+             ref="taskChart"></div>
       </div>
-      <div
-        style="line-height: 80px;
+      <div style="line-height: 80px;
     text-align: center;"
-        v-else
-      >
+           v-else>
         <p>无具体数据</p>
       </div>
     </div>
@@ -86,52 +77,41 @@
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
+      <div class="scoreChart"
+           ref="scoreChart"></div>
     </div>
-    <el-popover
-      ref="popover4"
-      placement="right"
-      width="800"
-      trigger="click"
-      class="tan"
- v-model="shu"
-    >
+    <el-popover ref="popover4"
+                placement="right"
+                width="800"
+                trigger="click"
+                class="tan"
+                v-model="shu">
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
           <select v-model="sendIntegralData.termid">
-            <option
-              :value="item.termid"
-              v-for="(item,index) in semesterList"
-              :key="index"
-            >{{item.termName}}</option>
+            <option :value="item.termid"
+                    v-for="(item,index) in semesterList"
+                    :key="index">{{item.termName}}</option>
           </select>
         </div>
-       
-        <button
-          class="tanBtn"
-          @click="seachData"
-        >搜索</button>
-        <div class="x" @click="shu = false">X</div>
+
+        <button class="tanBtn"
+                @click="seachData">搜索</button>
+        <div class="x"
+             @click="shu = false">X</div>
       </div>
       <!-- 列表 -->
       <div class="tableBox">
-        <el-table
-          v-loading="loading"
-          :empty-text="emptyText"
-          element-loading-text="拼命加载中"
-          :header-row-style="headerStyle"
-          :data="tableData"
-          style="width: 100%"
-        >
-          <el-table-column
-            prop="integralTime"
-            label="日期"
-            width="300"
-          ></el-table-column>
+        <el-table v-loading="loading"
+                  :empty-text="emptyText"
+                  element-loading-text="拼命加载中"
+                  :header-row-style="headerStyle"
+                  :data="tableData"
+                  style="width: 100%">
+          <el-table-column prop="integralTime"
+                           label="日期"
+                           width="300"></el-table-column>
           <el-table-column label="积分">
             <template slot-scope="scope">
               <p :style="{color:scope.row.integralValue>0?'#e64f15':'#10859d'}">
@@ -140,18 +120,14 @@
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="integralName"
-            label="来源"
-          ></el-table-column>
+          <el-table-column prop="integralName"
+                           label="来源"></el-table-column>
 
         </el-table>
-        <Pagination
-          v-show="tableData.length"
-          :current="current"
-          :totalPage="totalPage"
-          @changePageHandler="changePage"
-        ></Pagination>
+        <Pagination v-show="tableData.length"
+                    :current="current"
+                    :totalPage="totalPage"
+                    @changePageHandler="changePage"></Pagination>
       </div>
     </el-popover>
   </div>
@@ -169,57 +145,53 @@ import {
   integralStatistics,
   updateData,
   selectSynchroLog,
-assessModules
-} from "../js/url"
+  assessModules,
+} from "../js/url";
 export default {
-  props: ['baseInfo'],
-  name: 'TaskPortrait',
+  props: ["baseInfo"],
+  name: "TaskPortrait",
   components: {
-    Pagination
+    Pagination,
   },
-  data () {
+  data() {
     return {
       // 弹框数据
-        shu:false,
+      shu: false,
       sendIntegralData: {
         userId: "",
-        termid: '',//学期选择
+        termid: "", //学期选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId: 6
+        assessModuleId: 6,
       },
       // 获取的学期
-      semesterList: [
-        {termName:"全部学期",termid:""}
-      ],
+      semesterList: [{ termName: "全部学期", termid: "" }],
 
-    
       loading: true,
       emptyText: "暂无数据",
       current: 1,
       headerStyle: {
-        height: '60px',
-        backgroundColor: '#10859d',
-        color: 'dimgrey',
+        height: "60px",
+        backgroundColor: "#10859d",
+        color: "dimgrey",
       },
       // 列表数据
       tableData: [],
       totalPage: 1,
 
-      sumProjectCount: 0,//参与项目数
+      sumProjectCount: 0, //参与项目数
       joinItem: [],
       project_count1_present: "",
       project_count2_present: "",
       project_count1: "",
       project_count2: "",
       //更新数据时间
-      gtime: '',
-       // 当前积分
-      jicurrent: ''
-
-    }
+      gtime: "",
+      // 当前积分
+      jicurrent: "",
+    };
   },
-  mounted () {
+  mounted() {
     // 强制刷新一遍
     // this.shua();
     this.getTaskJoinNumberData();
@@ -229,103 +201,110 @@ export default {
     this.getEnterpriseOutsourcingData();
     this.getTaskJoinInfoData();
     this.Updatetime();
-     this.getPortrait();
+    this.getPortrait();
   },
   methods: {
-    shua(){
-location. reload()
-this.$router.go(0)
+    shua() {
+      location.reload();
+      this.$router.go(0);
     },
-    scoreEchart (termid, integralValue, sumIntegralValue) { // 任务外包积分
+    scoreEchart(termid, integralValue, sumIntegralValue) {
+      // 任务外包积分
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
-     
-  scoreChart.setOption({
+
+      scoreChart.setOption({
         grid: {
           left: 80,
           right: 80,
           top: 100,
           bottom: 50,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
-          trigger: 'axis'
+          trigger: "axis",
         },
 
         toolbox: {
           show: true,
         },
         legend: {
-          data: ['个人积分', '班级平均积分'],
-          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          data: ["个人积分", "班级平均积分"],
+          icon: "rect", //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
           y: "30",
           itemWidth: 20,
 
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle: { fontSize: 16 }
+          textStyle: { fontSize: 16 },
         },
         calculable: true,
         xAxis: [
           {
-            type: 'category',
+            type: "category",
             boundaryGap: false,
             data: termid,
-             axisLine: {
+            axisLine: {
               lineStyle: {
-                color: '#008acd',
-                width: 2,//这里是为了突出显示加上的
-              }
+                color: "#008acd",
+                width: 2, //这里是为了突出显示加上的
+              },
             },
-             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+            axisLabel: {
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
-            type: 'value',
-             axisLine: {
+            type: "value",
+            axisLine: {
               lineStyle: {
-                color: '#008acd',
-                width: 2,//这里是为了突出显示加上的
-              }
+                color: "#008acd",
+                width: 2, //这里是为了突出显示加上的
+              },
             },
-             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+            axisLabel: {
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
-            name: '个人积分',
-            type: 'line',
+            name: "个人积分",
+            type: "line",
             smooth: true,
             itemStyle: {
               normal: {
-                areaStyle: { type: 'default' }, 
-                color: '#90dcdd',
-                  lineStyle: {
-                color: "#3bc7cb"
-            }
-              }
+                areaStyle: { type: "default" },
+                color: "#90dcdd",
+                lineStyle: {
+                  color: "#3bc7cb",
+                },
+              },
             },
-            data: integralValue
+            data: integralValue,
           },
           {
-            name: '班级平均积分',
-            type: 'line',
+            name: "班级平均积分",
+            type: "line",
             smooth: true,
-            itemStyle: { normal: { areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
-                color: "#b6a2de"
-            } } },
-            data: sumIntegralValue
+            itemStyle: {
+              normal: {
+                areaStyle: { type: "default" },
+                color: "#d7cdeb",
+                lineStyle: {
+                  color: "#b6a2de",
+                },
+              },
+            },
+            data: sumIntegralValue,
           },
-
-        ]
-      })
+        ],
+      });
     },
-    taskEchart (begin_date, project_count, sum_project_count) { //任务外包积分柱状图
+    taskEchart(begin_date, project_count, sum_project_count) {
+      //任务外包积分柱状图
       let taskChart = this.$echart.init(this.$refs.taskChart);
       taskChart.setOption({
         title: {
@@ -333,39 +312,39 @@ this.$router.go(0)
           x: "center",
           y: 32,
           textStyle: {
-            fontWeight: 'normal',
-          }
+            fontWeight: "normal",
+          },
         },
         xAxis: {
-          type: 'category',
+          type: "category",
           data: begin_date,
           axisTick: {
-            show: false
+            show: false,
           },
           axisLine: {
             lineStyle: {
               width: 4,
-              color: '#5ac1e9'
-            }
+              color: "#5ac1e9",
+            },
           },
           axisLabel: {
             textStyle: {
-              fontWeight: 'bold',
+              fontWeight: "bold",
               fontSize: 16,
-              color: '#444',//坐标值得具体的颜色
-            }
-          }
+              color: "#444", //坐标值得具体的颜色
+            },
+          },
         },
         grid: {
           left: 40,
           top: 120,
           bottom: 50,
-          right: 10
+          right: 10,
         },
         yAxis: {
-          type: 'value',
+          type: "value",
           axisTick: {
-            show: false
+            show: false,
           },
           splitLine: {
             show: false,
@@ -373,215 +352,251 @@ this.$router.go(0)
           axisLine: {
             lineStyle: {
               width: 4,
-              color: '#5ac1e9'
-            }
+              color: "#5ac1e9",
+            },
           },
           axisLabel: {
             textStyle: {
-              fontWeight: 'bold',
-              fontSize: 16,
-              color: '#444',//坐标值得具体的颜色
-            }
-          }
-        },
-        series: [{
-          data: project_count,
-          barWidth: 40,
-          type: 'bar',
-          label: {
-            normal: {
-              show: true,            //显示数字
-              position: 'top',
               fontWeight: "bold",
               fontSize: 16,
-              color: "#444"
-            }
+              color: "#444", //坐标值得具体的颜色
+            },
           },
-          itemStyle: {
-            normal: {
-              color: '#f09796'
+        },
+        series: [
+          {
+            data: project_count,
+            barWidth: 40,
+            type: "bar",
+            label: {
+              normal: {
+                show: true, //显示数字
+                position: "top",
+                fontWeight: "bold",
+                fontSize: 16,
+                color: "#444",
+              },
+            },
+            itemStyle: {
+              normal: {
+                color: "#f09796",
+              },
+            },
+          },
+        ],
+      });
+    },
+
+    getTaskOutsourcingData() {
+      //获取任务外包积分数据
+      let { userId, classId } = this.$route.query;
+      this.$ajax
+        .get(this.baseUrl + taskOutsourcing, {
+          params: {
+            userId,
+            classId,
+          },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let termid = [],
+              integralValue = [],
+              sumIntegralValue = [];
+            for (let i = 0; i < data.data.length; i++) {
+              termid.push(data.data[i].termid);
+              integralValue.push(parseInt(data.data[i].integralValue));
+              sumIntegralValue.push(parseInt(data.data[i].sumIntegralValue));
+            }
+            this.scoreEchart(termid, integralValue, sumIntegralValue);
+          }
+        });
+    },
+    getEnterpriseOutsourcingData() {
+      //任务外包情况
+      let { userId } = this.$route.query;
+      this.$ajax
+        .get(this.baseUrl + enterpriseOutsourcing, {
+          params: { userId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.joinItem.push(data.data[i] + "、");
             }
           }
-        }]
-      })
+        });
     },
-
-    getTaskOutsourcingData () { //获取任务外包积分数据
-      let { userId, classId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + taskOutsourcing, {
-        params: {
-          userId, classId
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          let termid = [], integralValue = [], sumIntegralValue = [];
-          for (let i = 0; i < data.data.length; i++) {
-            termid.push(data.data[i].termid);
-            integralValue.push(parseInt(data.data[i].integralValue));
-            sumIntegralValue.push(parseInt(data.data[i].sumIntegralValue));
-          }
-          this.scoreEchart(termid, integralValue, sumIntegralValue);
-        }
-      })
-    },
-    getEnterpriseOutsourcingData () {   //任务外包情况
+    getTaskJoinNumberData() {
+      //获取参与项目数量
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + enterpriseOutsourcing, {
-        params: {          userId
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-
-
-        if (data.code == 200) {
-          for (let i = 0; i < data.data.length; i++) {
-            this.joinItem.push(data.data[i] + '、')
+      this.$ajax
+        .get(this.baseUrl + taskJoinNumber, {
+          params: { userId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let begin_date = [],
+              project_count = [];
+            for (let i = 0; i < data.data.length; i++) {
+              begin_date.push(data.data[i].begin_date);
+              project_count.push(parseInt(data.data[i].project_count));
+            }
+            this.taskEchart(
+              begin_date,
+              project_count,
+              data.data[0].sum_project_count
+            );
           }
-        }
-      })
+        });
     },
-    getTaskJoinNumberData () { //获取参与项目数量
+    getTaskJoinInfoData() {
+      // 获取任务参与情况数据
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + taskJoinNumber, {
-        params: { userId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          let begin_date = [], project_count = [];
-          for (let i = 0; i < data.data.length; i++) {
-            begin_date.push(data.data[i].begin_date);
-            project_count.push(parseInt(data.data[i].project_count))
+      this.$ajax
+        .get(this.baseUrl + taskJoinInfo, {
+          params: { userId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let [project_count1, project_count2] = [
+              parseInt(data.data.project_count1),
+              parseInt(data.data.project_count2),
+            ];
+            let total = project_count1 + project_count2;
+            this.project_count1_present = this.commonJs.percentNum(
+              project_count1,
+              total
+            );
+            this.project_count2_present = this.commonJs.percentNum(
+              project_count2,
+              total
+            );
+            this.project_count1 = project_count1;
+            this.project_count2 = project_count2;
           }
-          this.taskEchart(begin_date, project_count, data.data[0].sum_project_count);
-        }
-
-      })
-    },
-    getTaskJoinInfoData () { // 获取任务参与情况数据
-      let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + taskJoinInfo, {
-        params: { userId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          let [project_count1, project_count2] = [parseInt(data.data.project_count1), parseInt(data.data.project_count2)];
-          let total = project_count1 + project_count2;
-          this.project_count1_present = this.commonJs.percentNum(project_count1, total);
-          this.project_count2_present = this.commonJs.percentNum(project_count2, total);
-          this.project_count1 = project_count1;
-          this.project_count2 = project_count2;
-        }
-      })
+        });
     },
     //获取学期接口
-    getsemester () {
+    getsemester() {
       // this.shua();
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + semester, {
-        params: { userId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-        for (let i = 0; i < data.data.length; i++) {
-             this.semesterList.push(data.data[i]);
-         }
-        }
-      })
+      this.$ajax
+        .get(this.baseUrl + semester, {
+          params: { userId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              this.semesterList.push(data.data[i]);
+            }
+          }
+        });
     },
 
-   
-
     //  获取积分明细列表
-    getIntegralStatistics () { //获取积分统计
+    getIntegralStatistics() {
+      //获取积分统计
       this.sendIntegralData.userId = this.$route.query.userId;
       this.tableData = [];
       this.loading = true;
-      this.$ajax.get(this.baseUrl + integralStatistics, {
-        params: this.sendIntegralData 
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        this.loading = false;
-        this.tableData = [];
-        if (data.code == 200) {
-          this.tableData = JSON.parse(JSON.stringify(data.data));
-          this.totalPage = data.totalPages;
-          this.tableData.forEach((item) => {
-            item.integralTime = item.integralTime.substring(0, 10);
-            item.integralValue = parseInt(item.integralValue);
-          });
-        }
-      }).catch(err => {
-        this.loading = false;
-        this.tableData = [];
-        if (err.message.indexOf('timeout') > -1) {
-          this.emptyText = "请求超时,请刷新重试！"
-        } else {
-          this.emptyText = "请求出错，请稍后重试！"
-        }
-      })
+      this.$ajax
+        .get(this.baseUrl + integralStatistics, {
+          params: this.sendIntegralData,
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          this.loading = false;
+          this.tableData = [];
+          if (data.code == 200) {
+            this.tableData = JSON.parse(JSON.stringify(data.data));
+            this.totalPage = data.totalPages;
+            this.tableData.forEach((item) => {
+              item.integralTime = item.integralTime.substring(0, 10);
+              item.integralValue = parseInt(item.integralValue);
+            });
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.tableData = [];
+          if (err.message.indexOf("timeout") > -1) {
+            this.emptyText = "请求超时,请刷新重试！";
+          } else {
+            this.emptyText = "请求出错，请稍后重试！";
+          }
+        });
     },
-    seachData () { // 点击搜索查询
-      this.getIntegralStatistics()
-
+    seachData() {
+      // 点击搜索查询
+      this.getIntegralStatistics();
     },
-    changePage (current, everyShowNum) {
+    changePage(current, everyShowNum) {
       this.current = current;
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
     },
     // 点击更新同步数据
-    synchronization () {
+    synchronization() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + updateData, {
-        params: { userId, assessModuleId: 6 }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          location.reload()
-          this.$router.go(0)
-        }
-      }).catch(err=>{
-           this.$message.error('同步失败请联系管理员');
-      })
-
-    },
-getPortrait () { //获取当前积分
-      this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-            for (let i = 0; i < data.data.length; i++) {
-            if(data.data[i].assessModuleId == 6){
-               this.jicurrent = data.data[i].integralValue;
-            }
-            
+      this.$ajax
+        .get(this.baseUrl + updateData, {
+          params: { userId, assessModuleId: 6 },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            location.reload();
+            this.$router.go(0);
           }
-        }
-      })
+        })
+        .catch((err) => {
+          this.$message.error("同步失败请联系管理员");
+        });
+    },
+    getPortrait() {
+      //获取当前积分
+      this.$ajax
+        .get(this.baseUrl + assessModules, { params: this.$route.query })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              if (data.data[i].assessModuleId == 6) {
+                this.jicurrent = data.data[i].integralValue;
+              }
+            }
+          }
+        });
     },
     // 同步数据时间获取
-    Updatetime () {
+    Updatetime() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + selectSynchroLog, {
-        params: {
-          assessModuleId: 6,
-          userId
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          this.gtime = data.data.createtime
-
-        }
-      })
+      this.$ajax
+        .get(this.baseUrl + selectSynchroLog, {
+          params: {
+            assessModuleId: 6,
+            userId,
+          },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            this.gtime = data.data.createtime;
+          }
+        });
     },
-
-  }
-}
+  },
+};
 </script>
 <style scoped>
-@import '../style/portrait.css';
+@import "../style/portrait.css";
 .module .scoreChart {
   height: 450px;
 }
@@ -678,7 +693,7 @@ getPortrait () { //获取当前积分
   width: 6px;
   height: 30px;
   background-color: #0088a0;
-  content: '';
+  content: "";
   top: 8px;
   color: #444444;
   left: 20px;
@@ -737,7 +752,7 @@ getPortrait () { //获取当前积分
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background: url('../assets/images/search.png') 72px center no-repeat;
+  background: url("../assets/images/search.png") 72px center no-repeat;
   background-color: #12849c;
   font-size: 15px;
   box-shadow: 2px 2px 5px #b1b0b0;
@@ -745,10 +760,10 @@ getPortrait () { //获取当前积分
 .el-popper .tableBox {
   padding: 0px 34px;
 }
-.x{
-      position: absolute;
-    right: 32px;
-    font-size: 20px;
-    cursor: pointer;
+.x {
+  position: absolute;
+  right: 32px;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>

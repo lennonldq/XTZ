@@ -4,7 +4,7 @@
       <div class="titleBox">
         <div>
           <img v-if="baseInfo.photo"
-               :src="`https://etech-edu.com/${baseInfo.photo}`"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
                alt="" />
           <img v-else
                src="../assets/images/pho.png"
@@ -540,13 +540,13 @@ import {
   selectSynchroLog,
   assessModules,
   gitbenefitLearning,
-  integralCourse
+  integralCourse,
 } from "../js/url";
 export default {
   props: ["baseInfo"],
   name: "CompositePortrait",
   components: {
-    Pagination
+    Pagination,
   },
   data() {
     return {
@@ -558,7 +558,7 @@ export default {
         courseid: "", //课程选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId: 1
+        assessModuleId: 1,
       },
       // 获取的学期
       semesterList: [{ termName: "全部学期", termid: "" }],
@@ -571,7 +571,7 @@ export default {
       headerStyle: {
         height: "60px",
         backgroundColor: "#10859d",
-        color: "dimgrey"
+        color: "dimgrey",
       },
       // 益达总积分
       pointTotal: "",
@@ -636,7 +636,7 @@ export default {
       aiCoursePrecisionResponseList: [],
       // 柱状
       aiMajorTypeIntegralResponseList: [],
-      items: []
+      items: [],
     };
   },
   mounted() {
@@ -661,9 +661,9 @@ export default {
       let { userId, classId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + courseIntegral, {
-          params: { userId, classId }
+          params: { userId, classId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
 
           if (data.code == 200) {
@@ -680,7 +680,7 @@ export default {
           } else {
             this.$message({
               type: "error",
-              message: "请求出错，请联系技术人员"
+              message: "请求出错，请联系技术人员",
             });
           }
         })
@@ -700,14 +700,14 @@ export default {
           right: 80,
           top: 100,
           bottom: 50,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
 
         toolbox: {
-          show: true
+          show: true,
         },
         legend: {
           data: ["个人积分", "班级平均积分"],
@@ -718,7 +718,7 @@ export default {
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle: { fontSize: 16 }
+          textStyle: { fontSize: 16 },
         },
         calculable: true,
         xAxis: [
@@ -729,13 +729,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
@@ -743,13 +743,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
@@ -761,11 +761,11 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#90dcdd",
                 lineStyle: {
-                  color: "#3bc7cb"
-                }
-              }
+                  color: "#3bc7cb",
+                },
+              },
             },
-            data: integralValue
+            data: integralValue,
           },
           {
             name: "班级平均积分",
@@ -776,13 +776,13 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#d7cdeb",
                 lineStyle: {
-                  color: "#b6a2de"
-                }
-              }
+                  color: "#b6a2de",
+                },
+              },
             },
-            data: sumIntegralValue
-          }
-        ]
+            data: sumIntegralValue,
+          },
+        ],
       });
     },
     getLearningTrajectoryTrackingData() {
@@ -790,9 +790,9 @@ export default {
       let { userId, classId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + learningTrajectoryTracking, {
-          params: { userId, classId }
+          params: { userId, classId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let typeCount = [],
@@ -828,12 +828,10 @@ export default {
             for (let attr in data.data) {
               if (attr.indexOf("typeCount") > -1) {
                 typeCount.push({
-                  value: parseInt(data.data[attr])
+                  value: parseInt(data.data[attr]),
                 });
               }
               if (attr.indexOf("sumTypeScore") > -1) {
-                // console.log(data.data[attr]);
-
                 sumTypeScore.push(data.data[attr]);
               }
               if (attr.indexOf("typeScore") > -1) {
@@ -895,7 +893,7 @@ export default {
       let userId = this.$route.query.userId;
       this.$ajax
         .get(this.baseUrl + gitbenefitLearning, { params: { userId } })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let list = data.data.aiStatisticsResponseList;
@@ -925,17 +923,17 @@ export default {
         title: {
           text: "达标专业课程",
           subtext: "达标课程数",
-          x: "center"
+          x: "center",
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
         },
         color: ["#2ec8ca", "#b6a2df", "#59b1f0", "#feb97e", "#d67a7f"],
         legend: {
           orient: "vertical",
           left: "left",
-          data: majorNameList
+          data: majorNameList,
         },
         series: [
           {
@@ -948,11 +946,11 @@ export default {
               emphasis: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
       });
     },
 
@@ -964,10 +962,10 @@ export default {
         .get(this.baseUrl + integralCourse, {
           params: {
             userId,
-            majorId
-          }
+            majorId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.aiCoursePrecisionResponseList =
@@ -1003,7 +1001,7 @@ export default {
               "success",
               "info",
               "danger",
-              "warning"
+              "warning",
             ];
 
             if (data.data.aiCoursePrecisionResponseList.length > 0) {
@@ -1028,7 +1026,8 @@ export default {
                   danum++;
                   this.items.push({
                     type: typecolor[y],
-                    label: data.data.aiCoursePrecisionResponseList[y].courseName
+                    label:
+                      data.data.aiCoursePrecisionResponseList[y].courseName,
                   });
                 }
                 if (
@@ -1072,36 +1071,36 @@ export default {
       let transverse = this.$echart.init(this.$refs.transverse);
       transverse.setOption({
         title: {
-          text: ""
+          text: "",
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
         grid: {
           left: "3%",
           right: "4%",
           bottom: "3%",
-          containLabel: true
+          containLabel: true,
         },
         xAxis: [
           {
             type: "value",
             splitLine: {
-              show: false
-            }
-          }
+              show: false,
+            },
+          },
         ],
         yAxis: [
           {
             type: "category",
             data: transversenameList,
             splitLine: {
-              show: false
+              show: false,
             },
             axisTick: {
-              alignWithLabel: true
-            }
-          }
+              alignWithLabel: true,
+            },
+          },
         ],
         series: [
           {
@@ -1109,13 +1108,13 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "right"
-              }
+                position: "right",
+              },
             },
             itemStyle: {
               normal: {
                 // 定制显示（按顺序）
-                color: function(params) {
+                color: function (params) {
                   var colorList = [
                     "#5a9bd5",
                     "#528334",
@@ -1134,22 +1133,22 @@ export default {
                     "#616A6B",
                     "#EAF2F8",
                     "#4A235A",
-                    "#3498DB"
+                    "#3498DB",
                   ];
                   return colorList[params.dataIndex];
-                }
-              }
+                },
+              },
             },
-            data: transversenuberList
-          }
-        ]
+            data: transversenuberList,
+          },
+        ],
       });
     },
 
     // 益学习的下拉框事件
     Choice(val) {
       let obj = {};
-      obj = this.optionsName.find(item => {
+      obj = this.optionsName.find((item) => {
         return item.majorId === val;
       });
       this.Selectivecourses = obj.majorName;
@@ -1164,27 +1163,27 @@ export default {
           trigger: "axis",
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          },
         },
         legend: {
-          data: ["答题数", "正确率"]
+          data: ["答题数", "正确率"],
         },
         grid: {
           left: "3%",
           right: "4%",
           bottom: "3%",
-          containLabel: true
+          containLabel: true,
         },
         xAxis: [
           {
             type: "category",
-            data: courseNameData
-          }
+            data: courseNameData,
+          },
         ],
         yAxis: [
           {
-            type: "value"
+            type: "value",
           },
           {
             type: "value",
@@ -1193,9 +1192,9 @@ export default {
             max: 100,
             interval: 5,
             axisLabel: {
-              formatter: "{value} %"
-            }
-          }
+              formatter: "{value} %",
+            },
+          },
         ],
         series: [
           {
@@ -1205,9 +1204,9 @@ export default {
             data: answerIntegralList,
             itemStyle: {
               normal: {
-                color: "#3edfcf"
-              }
-            }
+                color: "#3edfcf",
+              },
+            },
           },
           // {
           //   name: '其他',
@@ -1219,9 +1218,9 @@ export default {
             name: "正确率",
             type: "line",
             yAxisIndex: 1,
-            data: accuracyList
-          }
-        ]
+            data: accuracyList,
+          },
+        ],
       });
     },
 
@@ -1233,7 +1232,7 @@ export default {
       achievementChart.setOption({
         legend: {
           data: ["个人平均分", "班级平均分"],
-          top: 60
+          top: 60,
         },
         title: {
           text: "学习类型成绩",
@@ -1241,21 +1240,21 @@ export default {
           top: 40,
           textStyle: {
             color: "#444444",
-            fontWeight: "normal"
-          }
+            fontWeight: "normal",
+          },
         },
         tooltip: {
-          trigger: "item"
+          trigger: "item",
         },
         splitLine: {
           show: true,
           lineStyle: {
             width: 10,
-            color: "#286fbb" // 图表背景网格线的颜色
-          }
+            color: "#286fbb", // 图表背景网格线的颜色
+          },
         },
         textStyle: {
-          color: "#444444"
+          color: "#444444",
         },
         color: ["#f09796", "#9ac5f4"],
         radar: [
@@ -1263,7 +1262,7 @@ export default {
             indicator: [
               { text: "考试成绩", max: 100 },
               { text: "课堂学习成绩", max: 100 },
-              { text: "平时成绩（作业）", max: 100 }
+              { text: "平时成绩（作业）", max: 100 },
             ],
             center: ["50%", "65%"],
             radius: "80%",
@@ -1271,15 +1270,15 @@ export default {
               show: true, //去掉网格线
               lineStyle: {
                 width: 4,
-                color: "#7384f4"
-              }
+                color: "#7384f4",
+              },
             },
             splitArea: {
               areaStyle: {
-                color: ["#fff", "#fff", "#7384f4"]
-              }
-            }
-          }
+                color: ["#fff", "#fff", "#7384f4"],
+              },
+            },
+          },
         ],
         series: [
           {
@@ -1289,22 +1288,22 @@ export default {
               normal: {
                 areaStyle: {
                   type: "default",
-                  backgroundColor: "green"
-                }
-              }
+                  backgroundColor: "green",
+                },
+              },
             },
             data: [
               {
                 value: typeScore,
-                name: "个人平均分"
+                name: "个人平均分",
               },
               {
                 value: sumTypeScore,
-                name: "班级平均分"
-              }
-            ]
-          }
-        ]
+                name: "班级平均分",
+              },
+            ],
+          },
+        ],
       });
     },
     getLearningSituationData() {
@@ -1312,9 +1311,9 @@ export default {
       let { userId, classId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + learningSituation, {
-          params: { userId, classId }
+          params: { userId, classId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let str = "";
@@ -1364,9 +1363,8 @@ export default {
               for (let k = 0; k < this.situationData[i].length; k++) {
                 integralName[i].push({
                   name: this.situationData[i][k].integralName,
-                  max: 100
+                  max: 100,
                 });
-                // console.log(integralName[i]);
 
                 integralValue[i].push(this.situationData[i][k].integralValue);
                 sumIntegralValue[i].push(
@@ -1388,7 +1386,6 @@ export default {
             for (let j = 0; j < schollyear.length; j++) {
               schollyearis[j] = schollyear[j][0];
             }
-            // console.log(integralName);
             for (let k = 0; k < this.situationData.length; k++) {
               this.learningSituationEchart(
                 document.getElementById("fistYearChart" + k),
@@ -1409,19 +1406,6 @@ export default {
       integralValue,
       sumIntegralValue
     ) {
-      // 课程学习情况
-      console.log(
-        el,
-        "<br>",
-        year,
-        "<br>",
-        integralName,
-        "<br>",
-        integralValue,
-        "<br>",
-        sumIntegralValue
-      );
-
       let fistYearChart = this.$echart.init(el);
 
       let stu = this.baseInfo.username;
@@ -1430,15 +1414,15 @@ export default {
           text: year,
           textStyle: {
             color: "#444",
-            fontWeight: "normal"
+            fontWeight: "normal",
           },
           x: "center",
-          y: 0
+          y: 0,
         },
         splitLine: {
           lineStyle: {
-            width: 6
-          }
+            width: 6,
+          },
         },
         color: ["#7edfb4", "#b6a2de"],
         legend: {
@@ -1446,27 +1430,27 @@ export default {
           icon: "rect",
           itemWidth: 20,
           itemHeight: 20,
-          data: [stu, "班级平均"]
+          data: [stu, "班级平均"],
         },
         tooltip: {
           trigger: "item",
-          confine: true
+          confine: true,
         },
         radar: {
           name: {
             textStyle: {
               color: "#444",
-              lineHeight: 20
-            }
+              lineHeight: 20,
+            },
           },
           indicator: integralName,
           radius: 120,
           splitLine: {
             show: true, //去掉网格线
             lineStyle: {
-              width: 2
-            }
-          }
+              width: 2,
+            },
+          },
         },
         series: [
           {
@@ -1475,15 +1459,15 @@ export default {
             data: [
               {
                 value: integralValue,
-                name: stu
+                name: stu,
               },
               {
                 value: sumIntegralValue,
-                name: "班级平均"
-              }
-            ]
-          }
-        ]
+                name: "班级平均",
+              },
+            ],
+          },
+        ],
       });
     },
 
@@ -1492,16 +1476,16 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + updateData, {
-          params: { userId, assessModuleId: 1 }
+          params: { userId, assessModuleId: 1 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             location.reload();
             this.$router.go(0);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error("同步失败请联系管理员");
         });
     },
@@ -1513,10 +1497,10 @@ export default {
         .get(this.baseUrl + selectSynchroLog, {
           params: {
             assessModuleId: 1,
-            userId
-          }
+            userId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.gtime = data.data.createtime;
@@ -1529,9 +1513,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + semester, {
-          params: { userId }
+          params: { userId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -1551,10 +1535,10 @@ export default {
           .get(this.baseUrl + curriculum, {
             params: {
               userId,
-              termid: this.sendIntegralData.termid
-            }
+              termid: this.sendIntegralData.termid,
+            },
           })
-          .then(res => {
+          .then((res) => {
             let data = JSON.parse(res.data);
             if (data.code == 200) {
               for (let i = 0; i < data.data.length; i++) {
@@ -1568,7 +1552,7 @@ export default {
       //获取当前积分
       this.$ajax
         .get(this.baseUrl + assessModules, { params: this.$route.query })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -1588,22 +1572,22 @@ export default {
       this.loading = true;
       this.$ajax
         .get(this.baseUrl + integralStatistics, {
-          params: this.sendIntegralData
+          params: this.sendIntegralData,
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           this.loading = false;
           this.tableData = [];
           if (data.code == 200) {
             this.tableData = JSON.parse(JSON.stringify(data.data));
             this.totalPage = data.totalPages;
-            this.tableData.forEach(item => {
+            this.tableData.forEach((item) => {
               item.integralTime = item.integralTime.substring(0, 10);
               item.integralValue = parseInt(item.integralValue);
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.tableData = [];
           if (err.message.indexOf("timeout") > -1) {
@@ -1623,8 +1607,8 @@ export default {
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

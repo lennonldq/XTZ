@@ -3,28 +3,26 @@
     <div class="header">
       <div class="titleBox">
         <div>
-            <img v-if="baseInfo.photo" :src="`https://etech-edu.com/${baseInfo.photo}`" alt="">
-           <img v-else src="../assets/images/pho.png" alt="">
+          <img v-if="baseInfo.photo"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
+               alt="">
+          <img v-else
+               src="../assets/images/pho.png"
+               alt="">
         </div>
         <p>{{ baseInfo.username }}</p>
         <p>{{ baseInfo.schoolname }}</p>
         <p>{{ baseInfo.classname }}</p>
       </div>
-      <router-link
-        tag="button"
-        :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}"
-      >
+      <router-link tag="button"
+                   :to="{path:'/integralPortrait',query:{classId:$route.query.classId,userId:$route.query.userId}}">
         返回上页
       </router-link>
-      <div
-        class="synchronization"
-        @click="synchronization()"
-      >
+      <div class="synchronization"
+           @click="synchronization()">
         <div class="one">同步数据</div>
-        <div
-          class="two"
-          v-if="gtime"
-        >上次同步:{{gtime | gTime}} </div>
+        <div class="two"
+             v-if="gtime">上次同步:{{gtime | gTime}} </div>
       </div>
     </div>
 
@@ -37,25 +35,20 @@
           <p>实习评价：{{evaluate.practiceEvaluation}}</p>
         </div>
         <div class="situtation">
-          <div
-            class="situtationItem"
-            :class="{'typeName':item.typeName=='实习'}"
-            v-for="item in situtationData" :key="item"
-          >
+          <div class="situtationItem"
+               :class="{'typeName':item.typeName=='实习'}"
+               v-for="item in situtationData"
+               :key="item">
             <p class="job">{{ item.postName }}</p>
             <p class="company">{{ item.companyName }}</p>
             <span class="date icon">{{ item.beginDate }}</span>
-            <span
-              class="date"
-              v-if="item.endDate"
-            >{{'-'+item.endDate }}</span>
+            <span class="date"
+                  v-if="item.endDate">{{'-'+item.endDate }}</span>
           </div>
         </div>
       </div>
-      <div
-        class="wei"
-        v-else
-      >
+      <div class="wei"
+           v-else>
         未有具体数据
       </div>
     </div>
@@ -68,59 +61,43 @@
           <el-button v-popover:popover4>积分明细</el-button>
         </div>
       </div>
-      <div
-        class="scoreChart"
-        ref="scoreChart"
-      ></div>
+      <div class="scoreChart"
+           ref="scoreChart"></div>
     </div>
-    <el-popover
-      ref="popover4"
-      placement="right"
-      width="800"
-      trigger="click"
-      v-model="shu"
-      class="tan"
-    >
+    <el-popover ref="popover4"
+                placement="right"
+                width="800"
+                trigger="click"
+                v-model="shu"
+                class="tan">
       <div class="statistics_title">
         <div class="integral">
           <label>选择学期</label>
-          <select
-            v-model="sendIntegralData.termid"
-            @change="getcurriculum()"
-          >
-            <option
-              :value="item.termid"
-              v-for="(item,index) in semesterList"
-              :key="index"
-            >{{item.termName}}</option>
+          <select v-model="sendIntegralData.termid"
+                  @change="getcurriculum()">
+            <option :value="item.termid"
+                    v-for="(item,index) in semesterList"
+                    :key="index">{{item.termName}}</option>
           </select>
         </div>
-       
-        <button
-          class="tanBtn"
-          @click="seachData"
-        >搜索</button>
-        <div
-          class="x"
-          @click="shu = false"
-        >X</div>
+
+        <button class="tanBtn"
+                @click="seachData">搜索</button>
+        <div class="x"
+             @click="shu = false">X</div>
 
       </div>
       <!-- 列表 -->
       <div class="tableBox">
-        <el-table
-          v-loading="loading"
-          :empty-text="emptyText"
-          element-loading-text="拼命加载中"
-          :header-row-style="headerStyle"
-          :data="tableData"
-          style="width: 100%"
-        >
-          <el-table-column
-            prop="integralTime"
-            label="日期"
-            width="300"
-          ></el-table-column>
+        <el-table v-loading="loading"
+                  :empty-text="emptyText"
+                  element-loading-text="拼命加载中"
+                  :header-row-style="headerStyle"
+                  :data="tableData"
+                  style="width: 100%">
+          <el-table-column prop="integralTime"
+                           label="日期"
+                           width="300"></el-table-column>
           <el-table-column label="积分">
             <template slot-scope="scope">
               <p :style="{color:scope.row.integralValue>0?'#e64f15':'#10859d'}">
@@ -129,18 +106,14 @@
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="integralName"
-            label="来源"
-          ></el-table-column>
+          <el-table-column prop="integralName"
+                           label="来源"></el-table-column>
 
         </el-table>
-        <Pagination
-          v-show="tableData.length"
-          :current="current"
-          :totalPage="totalPage"
-          @changePageHandler="changePage"
-        ></Pagination>
+        <Pagination v-show="tableData.length"
+                    :current="current"
+                    :totalPage="totalPage"
+                    @changePageHandler="changePage"></Pagination>
       </div>
     </el-popover>
   </div>
@@ -148,60 +121,61 @@
 
 <script>
 import Pagination from "../views/pagination";
-import {  practicePortrait, practiceInfoD, getPracticeInfo, semester,
+import {
+  practicePortrait,
+  practiceInfoD,
+  getPracticeInfo,
+  semester,
   curriculum,
   integralStatistics,
   updateData,
-  selectSynchroLog, assessModules} from "../js/url"
+  selectSynchroLog,
+  assessModules,
+} from "../js/url";
 export default {
-  props: ['baseInfo'],
+  props: ["baseInfo"],
   name: "EmploymentPortrait",
   components: {
-    Pagination
+    Pagination,
   },
-  data () {
+  data() {
     return {
       situtationData: [],
       // 评语
-      evaluate: '',
+      evaluate: "",
       // 弹框数据
       shu: false,
       sendIntegralData: {
         userId: "",
-        termid: '',//学期选择
-        courseid: '',//课程选择
+        termid: "", //学期选择
+        courseid: "", //课程选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId: 7
+        assessModuleId: 7,
       },
       // 获取的学期
-      semesterList: [
-        { termName: "全部学期", termid: "" }
-      ],
+      semesterList: [{ termName: "全部学期", termid: "" }],
 
       // 获取课程名称
-      courseNameList: [
-        { coursename: "全部课程", courseid: "" }
-      ],
+      courseNameList: [{ coursename: "全部课程", courseid: "" }],
       loading: true,
       emptyText: "暂无数据",
       current: 1,
       headerStyle: {
-        height: '60px',
-        backgroundColor: '#10859d',
-        color: 'dimgrey',
+        height: "60px",
+        backgroundColor: "#10859d",
+        color: "dimgrey",
       },
       // 列表数据
       tableData: [],
       totalPage: 1,
       //更新数据时间
-      gtime: '',
+      gtime: "",
       // 当前积分
-      jicurrent: ''
-
-    }
+      jicurrent: "",
+    };
   },
-  mounted () {
+  mounted() {
     this.getsemester();
     this.getcurriculum();
     this.getIntegralStatistics();
@@ -212,7 +186,8 @@ export default {
     this.getPortrait();
   },
   methods: {
-    scoreEchart (termid, integralValue, sumIntegralValue) { // 实习积分
+    scoreEchart(termid, integralValue, sumIntegralValue) {
+      // 实习积分
       let scoreChart = this.$echart.init(this.$refs.scoreChart);
       scoreChart.setOption({
         grid: {
@@ -220,264 +195,288 @@ export default {
           right: 80,
           top: 100,
           bottom: 50,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
-          trigger: 'axis'
+          trigger: "axis",
         },
 
         toolbox: {
           show: true,
         },
         legend: {
-          data: ['个人积分', '班级平均积分'],
-          icon: "rect",   //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          data: ["个人积分", "班级平均积分"],
+          icon: "rect", //  这个字段控制形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
           y: "30",
           itemWidth: 20,
 
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle: { fontSize: 16 }
+          textStyle: { fontSize: 16 },
         },
         calculable: true,
         xAxis: [
           {
-            type: 'category',
+            type: "category",
             boundaryGap: false,
             data: termid,
             axisLine: {
               lineStyle: {
-                color: '#008acd',
-                width: 2,//这里是为了突出显示加上的
-              }
+                color: "#008acd",
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
-            type: 'value',
+            type: "value",
             axisLine: {
               lineStyle: {
-                color: '#008acd',
-                width: 2,//这里是为了突出显示加上的
-              }
+                color: "#008acd",
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
-            name: '个人积分',
-            type: 'line',
+            name: "个人积分",
+            type: "line",
             smooth: true,
             itemStyle: {
               normal: {
-                areaStyle: { type: 'default' },
-                color: '#90dcdd',
+                areaStyle: { type: "default" },
+                color: "#90dcdd",
                 lineStyle: {
-                  color: "#3bc7cb"
-                }
-              }
+                  color: "#3bc7cb",
+                },
+              },
             },
-            data: integralValue
+            data: integralValue,
           },
           {
-            name: '班级平均积分',
-            type: 'line',
+            name: "班级平均积分",
+            type: "line",
             smooth: true,
-            itemStyle: {              normal: {                areaStyle: { type: 'default' }, color: '#d7cdeb', lineStyle: {
-                  color: "#b6a2de"
-                }              }            },
-            data: sumIntegralValue
+            itemStyle: {
+              normal: {
+                areaStyle: { type: "default" },
+                color: "#d7cdeb",
+                lineStyle: {
+                  color: "#b6a2de",
+                },
+              },
+            },
+            data: sumIntegralValue,
           },
-
-        ]
-      })
-
+        ],
+      });
     },
-    getPracticePortraitData () { // 获取实习积分数据
+    getPracticePortraitData() {
+      // 获取实习积分数据
       let { userId, classId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + practicePortrait, {
-        params: { userId, classId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          let termid = [], integralValue = [], sumIntegralValue = [];
-          for (let i = 0; i < data.data.length; i++) {
-            termid.push(data.data[i].termid);
-            integralValue.push(data.data[i].integralValue);
-            sumIntegralValue.push(data.data[i].sumIntegralValue)
-          }
-          this.scoreEchart(termid, integralValue, sumIntegralValue)
-        }
-      })
-    },
-    getPracticeInfoData () { // 获取实习情况数据
-      let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + practiceInfoD, {
-        params: { userId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          data.data.forEach(item => {
-            item.beginDate = item.beginDate.substring(0, 10);
-            if (item.endDate) {
-              item.endDate = item.endDate.substring(0, 10)
-            } else {
-              item.endDate = "就职中"
+      this.$ajax
+        .get(this.baseUrl + practicePortrait, {
+          params: { userId, classId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            let termid = [],
+              integralValue = [],
+              sumIntegralValue = [];
+            for (let i = 0; i < data.data.length; i++) {
+              termid.push(data.data[i].termid);
+              integralValue.push(data.data[i].integralValue);
+              sumIntegralValue.push(data.data[i].sumIntegralValue);
             }
-          })
-          this.situtationData = data.data;
-          //  console.log(data.data)
-        }
-      })
+            this.scoreEchart(termid, integralValue, sumIntegralValue);
+          }
+        });
     },
-    PracticeInfoData () {//获取实习情况评分
+    getPracticeInfoData() {
+      // 获取实习情况数据
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + getPracticeInfo, {
-        params: { userId }
-      }).then(res => {
-        this.evaluate = JSON.parse(res.data).data
-      })
+      this.$ajax
+        .get(this.baseUrl + practiceInfoD, {
+          params: { userId },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            data.data.forEach((item) => {
+              item.beginDate = item.beginDate.substring(0, 10);
+              if (item.endDate) {
+                item.endDate = item.endDate.substring(0, 10);
+              } else {
+                item.endDate = "就职中";
+              }
+            });
+            this.situtationData = data.data;
+            //  console.log(data.data)
+          }
+        });
+    },
+    PracticeInfoData() {
+      //获取实习情况评分
+      let { userId } = this.$route.query;
+      this.$ajax
+        .get(this.baseUrl + getPracticeInfo, {
+          params: { userId },
+        })
+        .then((res) => {
+          this.evaluate = JSON.parse(res.data).data;
+        });
     },
     //获取学期接口
-    getsemester () {
+    getsemester() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + semester, {
-        params: { userId }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          for (let i = 0; i < data.data.length; i++) {
-            this.semesterList.push(data.data[i]);
-          }
-
-        }
-      })
-    },
-
-    //获取课程名称接口
-    getcurriculum () {  
-      if (this.sendIntegralData.termid == "") {
-        this.courseNameList = [
-          { coursename: "全部课程", courseid: "" }
-        ]
-      } else {
-        let { userId } = this.$route.query;
-        this.$ajax.get(this.baseUrl + curriculum, {
-          params: {
-            userId,
-            termid: this.sendIntegralData.termid
-          }
-        }).then(res => {
+      this.$ajax
+        .get(this.baseUrl + semester, {
+          params: { userId },
+        })
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
-              this.courseNameList.push(data.data[i]);
+              this.semesterList.push(data.data[i]);
             }
           }
+        });
+    },
 
-        })
+    //获取课程名称接口
+    getcurriculum() {
+      if (this.sendIntegralData.termid == "") {
+        this.courseNameList = [{ coursename: "全部课程", courseid: "" }];
+      } else {
+        let { userId } = this.$route.query;
+        this.$ajax
+          .get(this.baseUrl + curriculum, {
+            params: {
+              userId,
+              termid: this.sendIntegralData.termid,
+            },
+          })
+          .then((res) => {
+            let data = JSON.parse(res.data);
+            if (data.code == 200) {
+              for (let i = 0; i < data.data.length; i++) {
+                this.courseNameList.push(data.data[i]);
+              }
+            }
+          });
       }
     },
 
     //  获取积分明细列表
-    getIntegralStatistics () { //获取积分统计
+    getIntegralStatistics() {
+      //获取积分统计
       this.sendIntegralData.userId = this.$route.query.userId;
       this.tableData = [];
       this.loading = true;
-      this.$ajax.get(this.baseUrl + integralStatistics, {
-        params: this.sendIntegralData
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        this.loading = false;
-        this.tableData = [];
-        if (data.code == 200) {
-          this.tableData = JSON.parse(JSON.stringify(data.data));
-          this.totalPage = data.totalPages;
-          this.tableData.forEach((item) => {
-            item.integralTime = item.integralTime.substring(0, 10);
-            item.integralValue = parseInt(item.integralValue);
-          });
-        }
-      }).catch(err => {
-        this.loading = false;
-        this.tableData = [];
-        if (err.message.indexOf('timeout') > -1) {
-          this.emptyText = "请求超时,请刷新重试！"
-        } else {
-          this.emptyText = "请求出错，请稍后重试！"
-        }
-      })
-    },
-    getPortrait () { //获取当前积分
-
-      this.$ajax.get(this.baseUrl + assessModules, { params: this.$route.query }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          for (let i = 0; i < data.data.length; i++) {
-            if(data.data[i].assessModuleId == 7){
-               this.jicurrent = data.data[i].integralValue;
-            }
-            
+      this.$ajax
+        .get(this.baseUrl + integralStatistics, {
+          params: this.sendIntegralData,
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          this.loading = false;
+          this.tableData = [];
+          if (data.code == 200) {
+            this.tableData = JSON.parse(JSON.stringify(data.data));
+            this.totalPage = data.totalPages;
+            this.tableData.forEach((item) => {
+              item.integralTime = item.integralTime.substring(0, 10);
+              item.integralValue = parseInt(item.integralValue);
+            });
           }
-        }
-      })
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.tableData = [];
+          if (err.message.indexOf("timeout") > -1) {
+            this.emptyText = "请求超时,请刷新重试！";
+          } else {
+            this.emptyText = "请求出错，请稍后重试！";
+          }
+        });
     },
-    seachData () { // 点击搜索查询
-      this.getIntegralStatistics()
+    getPortrait() {
+      //获取当前积分
 
+      this.$ajax
+        .get(this.baseUrl + assessModules, { params: this.$route.query })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            for (let i = 0; i < data.data.length; i++) {
+              if (data.data[i].assessModuleId == 7) {
+                this.jicurrent = data.data[i].integralValue;
+              }
+            }
+          }
+        });
     },
-    changePage (current, everyShowNum) {
+    seachData() {
+      // 点击搜索查询
+      this.getIntegralStatistics();
+    },
+    changePage(current, everyShowNum) {
       this.current = current;
       this.everyShowNum = everyShowNum;
       this.sendIntegralData.pageNum = this.current;
       this.getIntegralStatistics();
     },
     // 点击更新同步数据
-    synchronization () {
+    synchronization() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + updateData, {
-        params: { userId, assessModuleId: 7 }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          location.reload()
-          this.$router.go(0)
-        }
-      }).catch(err => {
-        this.$message.error('同步失败请联系管理员');
-      })
-
+      this.$ajax
+        .get(this.baseUrl + updateData, {
+          params: { userId, assessModuleId: 7 },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            location.reload();
+            this.$router.go(0);
+          }
+        })
+        .catch((err) => {
+          this.$message.error("同步失败请联系管理员");
+        });
     },
 
     // 同步数据时间获取
-    Updatetime () {
+    Updatetime() {
       let { userId } = this.$route.query;
-      this.$ajax.get(this.baseUrl + selectSynchroLog, {
-        params: {
-          assessModuleId: 7,
-          userId
-        }
-      }).then(res => {
-        let data = JSON.parse(res.data);
-        if (data.code == 200) {
-          this.gtime = data.data.createtime
-
-        }
-      })
+      this.$ajax
+        .get(this.baseUrl + selectSynchroLog, {
+          params: {
+            assessModuleId: 7,
+            userId,
+          },
+        })
+        .then((res) => {
+          let data = JSON.parse(res.data);
+          if (data.code == 200) {
+            this.gtime = data.data.createtime;
+          }
+        });
     },
-  }
-}
+  },
+};
 </script>
 <style>
-@import '../style/portrait.css';
+@import "../style/portrait.css";
 .module .scoreChart {
   height: 400px;
 }
@@ -503,7 +502,7 @@ export default {
   overflow: hidden;
 }
 .module .situtation .typeName {
-  background: url('../assets/images/sx.png') 174px 10px no-repeat;
+  background: url("../assets/images/sx.png") 174px 10px no-repeat;
 }
 .module .situtation .situtationItem {
   width: 203px;
@@ -535,7 +534,7 @@ export default {
 }
 .module .situtation .situtationItem .icon {
   padding-left: 20px;
-  background: url('../assets/images/time.png') 0 center no-repeat;
+  background: url("../assets/images/time.png") 0 center no-repeat;
 }
 .module .integral {
   display: flex;
@@ -570,7 +569,7 @@ export default {
   width: 6px;
   height: 30px;
   background-color: #0088a0;
-  content: '';
+  content: "";
   top: 8px;
   color: #444444;
   left: 20px;
@@ -629,7 +628,7 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background: url('../assets/images/search.png') 72px center no-repeat;
+  background: url("../assets/images/search.png") 72px center no-repeat;
   background-color: #12849c;
   font-size: 15px;
   box-shadow: 2px 2px 5px #b1b0b0;

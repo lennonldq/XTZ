@@ -4,7 +4,7 @@
       <div class="titleBox">
         <div>
           <img v-if="baseInfo.photo"
-               :src="`https://etech-edu.com/${baseInfo.photo}`"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
                alt="">
           <img v-else
                src="../assets/images/pho.png"
@@ -107,12 +107,12 @@ import {
   integralStatistics,
   assessModules,
   selectSynchroLog,
-  updateData
+  updateData,
 } from "../js/url";
 export default {
   props: ["baseInfo"],
   components: {
-    Pagination
+    Pagination,
   },
   data() {
     return {
@@ -123,7 +123,7 @@ export default {
         termid: "", //学期选择
         pageNum: 1,
         pageSize: 10,
-        assessModuleId: 9
+        assessModuleId: 9,
       },
       // 获取的学期
       semesterList: [{ termName: "全部学期", termid: "" }],
@@ -134,7 +134,7 @@ export default {
       headerStyle: {
         height: "60px",
         backgroundColor: "#10859d",
-        color: "dimgrey"
+        color: "dimgrey",
       },
       // 列表数据
       tableData: [],
@@ -145,7 +145,7 @@ export default {
       // 当前积分
       jicurrent: "",
       //更新数据时间
-      gtime: ""
+      gtime: "",
     };
   },
   mounted() {
@@ -167,14 +167,14 @@ export default {
           right: 80,
           top: 100,
           bottom: 50,
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
 
         toolbox: {
-          show: true
+          show: true,
         },
         legend: {
           data: ["个人积分", "班级平均积分"],
@@ -185,7 +185,7 @@ export default {
           itemHeight: 10,
 
           itemGap: 40,
-          textStyle: { fontSize: 16 }
+          textStyle: { fontSize: 16 },
         },
         calculable: true,
         xAxis: [
@@ -196,13 +196,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
@@ -210,13 +210,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
@@ -228,11 +228,11 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#90dcdd",
                 lineStyle: {
-                  color: "#3bc7cb"
-                }
-              }
+                  color: "#3bc7cb",
+                },
+              },
             },
-            data: integralValue
+            data: integralValue,
           },
           {
             name: "班级平均积分",
@@ -243,13 +243,13 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#d7cdeb",
                 lineStyle: {
-                  color: "#b6a2de"
-                }
-              }
+                  color: "#b6a2de",
+                },
+              },
             },
-            data: sumIntegralValue
-          }
-        ]
+            data: sumIntegralValue,
+          },
+        ],
       });
     },
     situtationEchart(termid, countNo) {
@@ -257,11 +257,11 @@ export default {
       let situtationChart = this.$echart.init(this.$refs.situtationChart);
       situtationChart.setOption({
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
 
         toolbox: {
-          show: true
+          show: true,
         },
         calculable: true,
         xAxis: [
@@ -272,13 +272,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#008acd",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         yAxis: [
           {
@@ -286,13 +286,13 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "#5da6c5",
-                width: 2 //这里是为了突出显示加上的
-              }
+                width: 2, //这里是为了突出显示加上的
+              },
             },
             axisLabel: {
-              color: "#333333" //刻度线标签颜色
-            }
-          }
+              color: "#333333", //刻度线标签颜色
+            },
+          },
         ],
         series: [
           {
@@ -304,13 +304,13 @@ export default {
                 areaStyle: { type: "default" },
                 color: "#f8d5b8",
                 lineStyle: {
-                  color: "#ffb981"
-                }
-              }
+                  color: "#ffb981",
+                },
+              },
             },
-            data: countNo
-          }
-        ]
+            data: countNo,
+          },
+        ],
       });
     },
 
@@ -351,10 +351,10 @@ export default {
         .get(this.baseUrl + competition, {
           params: {
             userId,
-            classId
-          }
+            classId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
 
           this.dataList = data.data;
@@ -378,10 +378,10 @@ export default {
         .get(this.baseUrl + competitionSituation, {
           params: {
             userId,
-            classId
-          }
+            classId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             let countNo = [],
@@ -401,9 +401,9 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + semester, {
-          params: { userId }
+          params: { userId },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           console.log(data);
           if (data.code == 200) {
@@ -419,7 +419,7 @@ export default {
 
       this.$ajax
         .get(this.baseUrl + assessModules, { params: this.$route.query })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             for (let i = 0; i < data.data.length; i++) {
@@ -438,22 +438,22 @@ export default {
       this.loading = true;
       this.$ajax
         .get(this.baseUrl + integralStatistics, {
-          params: this.sendIntegralData
+          params: this.sendIntegralData,
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           this.loading = false;
           this.tableData = [];
           if (data.code == 200) {
             this.tableData = JSON.parse(JSON.stringify(data.data));
             this.totalPage = data.totalPages;
-            this.tableData.forEach(item => {
+            this.tableData.forEach((item) => {
               item.integralTime = item.integralTime.substring(0, 10);
               item.integralValue = parseInt(item.integralValue);
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.tableData = [];
           if (err.message.indexOf("timeout") > -1) {
@@ -478,16 +478,16 @@ export default {
       let { userId } = this.$route.query;
       this.$ajax
         .get(this.baseUrl + updateData, {
-          params: { userId, assessModuleId: 9 }
+          params: { userId, assessModuleId: 9 },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             location.reload();
             this.$router.go(0);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error("同步失败请联系管理员");
         });
     },
@@ -498,17 +498,17 @@ export default {
         .get(this.baseUrl + selectSynchroLog, {
           params: {
             assessModuleId: 9,
-            userId
-          }
+            userId,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let data = JSON.parse(res.data);
           if (data.code == 200) {
             this.gtime = data.data.createtime;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

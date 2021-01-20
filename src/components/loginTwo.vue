@@ -24,16 +24,16 @@ export default {
     login() {
       var url = this.$route.query; //获取url中"?"符后的字串
       this.theRequest = url;
-
+      console.log(url);
       //跳转方登录   目标方未登录则异步登录
       //没有时间戳跳转到
       if (this.theRequest.accessToken == undefined) {
-        window.location.href = "http://profession.etechedu.com/auth/login";
+        window.location.href = "http://profession.etechedu.com/#/login";
       } else {
         console.log(this.theRequest.accessToken);
         localStorage.setItem("accessToken", this.theRequest.accessToken);
         this.$ajax
-          .get(`http://profession.etechedu.com/new/getUserInfo`, {
+          .get(`https://apprentice-server.etechedu.com/new/getUserInfo`, {
             headers: {
               accessToken: localStorage.getItem("accessToken"),
             },
@@ -41,7 +41,6 @@ export default {
           .then((res) => {
             let data = JSON.parse(res.data);
             if (data.code == 200) {
-              console.log(data);
               //登录成功 把登录信息存储 保存登录信息
               localStorage.setItem("userTypeId", data.data.userTypeId);
               localStorage.setItem("schoolId", data.data.schoolId);
@@ -71,8 +70,7 @@ export default {
               }
             } else {
               //首页或登录页
-              window.location.href =
-                "http://profession.etechedu.com/auth/login";
+              window.location.href = "http://profession.etechedu.com/#/login";
               alert(data.msg);
             }
           });

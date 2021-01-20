@@ -4,7 +4,7 @@
       <div class="titleBox">
         <div>
           <img v-if="baseInfo.photo"
-               :src="`https://etech-edu.com/${baseInfo.photo}`"
+               :src="`https://etechedu.com/${baseInfo.photo}`"
                alt="">
           <img v-else
                src="../assets/images/pho.png"

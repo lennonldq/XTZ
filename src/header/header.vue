@@ -28,11 +28,11 @@
             <i class="pho">
               <!-- <img
                 v-if="baseInfo"
-                :src="`https://etech-edu.com/${baseInfo}`"
+                :src="`https://etechedu.com/${baseInfo}`"
                 alt=""
               > -->
               <img v-if="baseInfo"
-                   :src="`https://etech-edu.com/${baseInfo}`"
+                   :src="`https://etechedu.com/${baseInfo}`"
                    alt="">
               <img v-else
                    src="../assets/images/pho.png"
@@ -105,20 +105,19 @@ export default {
           "&path=edu/cloudAdmin";
       }
     },
-    enterprise(){
-        let token = localStorage.getItem("accessToken");
-        console.log(token);
-         window.location.href =
-          "https://www.etechedu.com/enterprise/index?token=" +
-          token  +
-          "&path=/enterprise/index";
+    enterprise() {
+      let token = localStorage.getItem("accessToken");
+      console.log(token);
+      window.location.href =
+        "https://www.etechedu.com/auth/transLogin?token=" +
+        token +
+        "&path=/enterprise/index";
     },
     handleCommand() {
       localStorage.clear();
       sessionStorage.clear();
       this.typeId == 8;
-      window.location.href =
-        "https://www.etechedu.com/auth/transLoginauth/login";
+      window.location.href = "http://profession.etechedu.com/#/login";
     },
     tojing(path) {
       let routeData = this.$router.resolve({ path });
